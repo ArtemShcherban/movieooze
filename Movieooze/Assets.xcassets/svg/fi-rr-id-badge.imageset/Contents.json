@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "fi-rr-id-badge.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

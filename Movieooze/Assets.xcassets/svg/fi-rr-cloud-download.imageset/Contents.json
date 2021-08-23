@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "fi-rr-cloud-download.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

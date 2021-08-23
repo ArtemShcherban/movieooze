@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "fi-rr-paint-brush.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

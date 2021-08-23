@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "fi-rr-time-oclock.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
