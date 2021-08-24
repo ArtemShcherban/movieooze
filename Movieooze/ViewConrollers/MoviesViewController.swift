@@ -73,7 +73,7 @@ func alamofireMoviesListRequest() {
     
     func alamofireGenresListRequest() {
         
-        AF.request("https://api.themoviedb.org/3/genre/movie/list?api_key=86b8d80830ef6774289e25cad39e4fbd&language=en-US").responseJSON { myJSONresponse in
+        AF.request("https://api.themoviedb.org/3/genre/movie/list?api_key=86b8d80830ef6774289e25cad39e4fbd").responseJSON { myJSONresponse in
             let decoder = JSONDecoder()
             if let dataGenres = try? decoder.decode(ResultGenres.self, from: myJSONresponse.data!) {
                 

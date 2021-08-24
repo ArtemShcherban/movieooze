@@ -41,33 +41,7 @@ struct RealmManager {
             realm?.add(movieForFavorites)
         }
     }
-    
-    func SaveMovieForFavoritesAfterDelete (movie: MovieForDelete) {
-        
-        let movieForFavorites = FavoriteMovieRealm()
-        movieForFavorites.title = movie.title
-        movieForFavorites.adult = movie.adult
-        movieForFavorites.overview = movie.overview
-        movieForFavorites.posterPath = movie.posterPath
-        movieForFavorites.voteAverage = movie.voteAverage
-        movieForFavorites.id = movie.id
-        movieForFavorites.backdropPath = movie.backdropPath
-        movieForFavorites.genreIdFirst = movie.genreId
-        movieForFavorites.mediaType = movie.mediaType
-        movieForFavorites.originalLanguage = movie.originalLanguage
-        movieForFavorites.originalTitle = movie.originalTitle
-        movieForFavorites.popularity = movie.popularity
-        movieForFavorites.releaseDate = movie.releaseDate
-        movieForFavorites.voteCount = movie.voteCount
-        movieForFavorites.video = movie.video
-        
-        try? realm?.write {
-            realm?.add(movieForFavorites)
-        }
-    }
 
-        
-        
     // MARK: - Чтение
     
             func newReadFromRealmMovieForFavorites(completion: ([Movie]) ->()) {
