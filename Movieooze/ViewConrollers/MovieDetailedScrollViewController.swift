@@ -14,7 +14,7 @@ import RealmSwift
 
 class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate {
     
-   static let reuseIdentifire = String(describing: MovieDetailedScrollViewController.self)
+    static let reuseIdentifire = String(describing: MovieDetailedScrollViewController.self)
     
     var scrollView: UIScrollView!
     var label: UILabel!
@@ -25,33 +25,31 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
     var titleTextLable, overviewTextLabel, releaseDateTextLabel, genreTextLabel : UILabel!
     var addToFavoriteButton: UIButton!
     var overviewClearButton: UIButton!
+    var overviewButtonPressed = false
     var movie: Movie? = nil
-    var movieFavorite: FavoriteMovieRealm? = nil
-    var movieForDelete: MovieForDelete? = nil
-    var buttonPressed = false
-   
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         createViews()
         setViewConstraints()
         getMoviePoster()
         checkMovieForFavorites()
-        fillDetailsOfMovie()
+        fillDetailsFromMovie()
         
-
+        
+        
         // Title Text Lable Customization
         self.titleTextLable.backgroundColor = .clear
         self.titleTextLable.font = UIFont.systemFont(ofSize: 30, weight: .semibold)
         self.titleTextLable.textColor = .white
-
+        
         // OverView Text Label Customization
         self.overviewTextLabel.backgroundColor = .clear
         self.overviewTextLabel.font = UIFont.systemFont(ofSize: 15)
         self.overviewTextLabel.textColor = .white
-
+        
         // Release Date Label Customization
         self.releaseDateTextLabel.backgroundColor = .clear
         self.releaseDateTextLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
@@ -61,7 +59,7 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         self.genreTextLabel.backgroundColor = .clear
         self.genreTextLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         self.genreTextLabel.textColor = myLightGreyColor
-
+        
         // Label Customization
         label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         label.textColor = .white
@@ -73,7 +71,7 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         // Make sure the top constraint of the ScrollView is equal to Superview and not Safe Area
         
         // Hide the navigation bar completely
-    //  self.navigationController?.setNavigationBarHidden(true, animated: false)
+        //  self.navigationController?.setNavigationBarHidden(true, animated: false)
         
         
         // Make the Navigation Bar background transparent
@@ -81,10 +79,10 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.navigationBar.tintColor = .white
-
-    //     Remove 'Back' text and Title from Navigation Bar
-    //    self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-    //    self.title = ""
+        
+        //     Remove 'Back' text and Title from Navigation Bar
+        //    self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        //    self.title = ""
         
         if addedToFavorite == false {
             self.addToFavoriteButton.setImage(UIImage(named: "fi-rr-add-white"), for: .normal)
@@ -94,14 +92,14 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
     }
     
     func createViews() {
-
+        
         // Scroll View
         scrollView = UIScrollView()
         scrollView.backgroundColor = myDarkGreyColor
         scrollView.delegate = self
         self.view.addSubview(scrollView)
         
-       // Main Container View
+        // Main Container View
         mainContainerView = UIView()
         mainContainerView.backgroundColor = .clear
         self.scrollView.addSubview(mainContainerView)
@@ -141,7 +139,7 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         titleTextLable.numberOfLines = 0
         titleTextLable.baselineAdjustment = .alignBaselines
         self.scrollView.addSubview(titleTextLable)
-
+        
         // Add To Favorite Button
         addToFavoriteButton = UIButton()
         addToFavoriteButton.backgroundColor = .clear
@@ -172,8 +170,8 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         self.overviewClearButton.addTarget(self, action: #selector(openOverviewLabel), for: .touchUpInside)
         self.scrollView.addSubview(overviewClearButton)
     }
-
-
+    
+    
     func setViewConstraints() {
         
         // Label Constraints
@@ -188,9 +186,9 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         // Scroll View Constraints
         self.scrollView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([self.scrollView.topAnchor.constraint(equalTo: self.view.topAnchor),
-                                    self.scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-                                    self.scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-                                    self.scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)])
+                                     self.scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+                                     self.scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+                                     self.scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)])
         
         // Main Container View Constraints
         self.mainContainerView.translatesAutoresizingMaskIntoConstraints = false
@@ -266,139 +264,59 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
                                      self.overviewClearButton.bottomAnchor.constraint(equalTo: self.overviewTextLabel.bottomAnchor)])
         
     }
-
+    
     func getMoviePoster() {
         var imageURL = ""
-        if movie != nil {
-            imageURL = posterBaseURL + "\(movie?.posterPath ?? "")"
-        } else if movieFavorite != nil {
-        imageURL = posterBaseURL + "\(movieFavorite?.posterPath ?? "")"
-        }
+        imageURL = posterBaseURL + "\(movie?.posterPath ?? "")"
         self.posterImageView.sd_setImage(with: URL(string: imageURL), placeholderImage: UIImage(named: "placeholder.png"))
     }
     
     func checkMovieForFavorites() {
-        if movie != nil {
-            let genre = reciveGenreIds(array: movie?.genreIds ?? [])
-            print(genre.number1 ?? 0, genre.number2 ?? 0)
-            addedToFavorite = RealmManager.shared.searchMovieForFavoritesIDInRealm(movieID: self.movie?.id ?? 0)
-        } else if movieFavorite != nil {
-            addedToFavorite = true
-       }
-    }
-
-    @objc func addToFavoriteButtonPressed() {
-        if addedToFavorite == false {
-             if movieForDelete != nil {
-                 RealmManager.shared.SaveMovieForFavoritesAfterDelete(movie: movieForDelete ?? MovieForDelete())
-                 addMovieForFavorites()
-                 addedToFavorite = true
-                 self.addToFavoriteButton.setImage(UIImage(named: "fi-rr-heart_grey"), for: .normal)
-                 
-                 } else if  movie != nil {
-             RealmManager.shared.createAndSaveMovieForFavorites(movie: movie)
-             addedToFavorite = true
-             self.addToFavoriteButton.setImage(UIImage(named: "fi-rr-heart_grey"), for: .normal)
-                     
-             //   🧐 убрать print
-//             print(movieTitle, addedToFavorite)
-             print(RealmManager.shared.readFromRealmMovieForFavorites())
-                     print(RealmManager.shared.readFromRealmMovieForFavorites().count)
-                     
-            }
-            
-         } else {
-             
-             if movie != nil {
-                 RealmManager.shared.deleteMoviesForFavoritesFromRealmByID(movieID: movie?.id ?? 0)
-                 
-             } else if movieFavorite != nil {
-                 addMovieForDelete()
-                 RealmManager.shared.deleteMoviesForFavoritesFromRealmByID(movieID: movieFavorite?.id ?? 0 )
-             }
-             addedToFavorite = false
-             self.addToFavoriteButton.setImage(UIImage(named: "fi-rr-add-white"), for: .normal)
-             
-             //   🧐 убрать print
-             print(RealmManager.shared.readFromRealmMovieForFavorites())
-                     print(RealmManager.shared.readFromRealmMovieForFavorites().count)
-//             print(movieTitle , addedToFavorite)
-
-         }
-     }
-     func addMovieForDelete() {
-         
-         movieForDelete = MovieForDelete()
-         movieForDelete?.title = movieFavorite?.title ?? ""
-         movieForDelete?.id  = movieFavorite?.id ?? 0
-         movieForDelete?.overview = movieFavorite?.overview ?? ""
-         movieForDelete?.adult = movieFavorite?.adult ?? false
-         movieForDelete?.backdropPath = movieFavorite?.backdropPath ?? ""
-         movieForDelete?.genreId = movieFavorite?.genreIdFirst ?? 0
-         movieForDelete?.mediaType = movieFavorite?.mediaType ?? ""
-         movieForDelete?.originalLanguage = movieFavorite?.originalLanguage ?? ""
-         movieForDelete?.popularity = movieFavorite?.popularity ?? 0.0
-         movieForDelete?.originalTitle = movieFavorite?.originalTitle ?? ""
-         movieForDelete?.posterPath = movieFavorite?.posterPath ?? ""
-         movieForDelete?.releaseDate = movieFavorite?.releaseDate ?? ""
-         movieForDelete?.video = movieFavorite?.video ?? false
-         movieForDelete?.voteAverage = movieFavorite?.voteAverage ?? 0.0
-         movieForDelete?.voteCount = movieFavorite?.voteCount ?? 0
-     }
-     
-     func addMovieForFavorites() {
-         
-         movieFavorite = FavoriteMovieRealm()
-         movieFavorite?.title = movieForDelete?.title ?? ""
-         movieFavorite?.id = movieForDelete?.id ?? 0
-         movieFavorite?.overview = movieForDelete?.overview ?? ""
-         movieFavorite?.adult = movieForDelete?.adult ?? false
-         movieFavorite?.backdropPath = movieForDelete?.backdropPath ?? ""
-         movieFavorite?.genreIdFirst = movieForDelete?.genreId ?? 0
-         movieFavorite?.mediaType  = movieForDelete?.mediaType ?? ""
-         movieFavorite?.originalLanguage = movieForDelete?.originalLanguage ?? ""
-         movieFavorite?.popularity = movieForDelete?.popularity ?? 0.0
-         movieFavorite?.originalTitle = movieForDelete?.originalTitle ?? ""
-         movieFavorite?.posterPath = movieForDelete?.posterPath ?? ""
-         movieFavorite?.releaseDate = movieForDelete?.releaseDate ?? ""
-         movieFavorite?.video = movieForDelete?.video ?? false
-         movieFavorite?.voteAverage = movieForDelete?.voteAverage ?? 0.0
-         movieFavorite?.voteCount = movieForDelete?.voteCount ?? 0
-     }
-
-    @objc func openOverviewLabel(){
-        if buttonPressed == false {
-            self.overviewTextLabel.numberOfLines = 0
-            buttonPressed = true
-            view.layoutIfNeeded()
-        } else if buttonPressed == true {
-            self.overviewTextLabel.numberOfLines = 3
-            buttonPressed = false
-            view.layoutIfNeeded()
-        }
-    }
-    func fillDetailsOfMovie()  {
-        if movie != nil {
-        fillDetailsFromMovie()
-        } else {
-            if movieFavorite != nil {
-              fillDetailsFromFavoriteMovie()
-            }
-        }
+        addedToFavorite = RealmManager.shared.searchMovieForFavoritesIDInRealm(movieID: self.movie?.id ?? 0)
     }
     
     func fillDetailsFromMovie() {
         titleTextLable.text = movie?.title
         overviewTextLabel.text = movie?.overview
         releaseDateTextLabel.text = dateFormat(date: movie?.releaseDate ?? "")
-        genreTextLabel.text = dicGenres[movie?.genreIds?[0] ?? 0]?.name
+        genreTextLabel.text = ("\(dicGenres[movie?.genreIds?[0] ?? 0]?.name ?? "")" + ", " + "\(dicGenres[movie?.genreIds?[1] ?? 0]?.name ?? "")")
     }
     
-    func fillDetailsFromFavoriteMovie() {
-        titleTextLable.text = movieFavorite?.title
-        overviewTextLabel.text = movieFavorite?.overview
-        releaseDateTextLabel.text = dateFormat(date: movieFavorite?.releaseDate ?? "")
-        genreTextLabel.text = dicGenres[movieFavorite?.genreIdFirst ?? 0]?.name
+    
+  
+    @objc func addToFavoriteButtonPressed() {
+        if addedToFavorite == false {
+            RealmManager.shared.createAndSaveMovieForFavorites(movie: movie)
+            addedToFavorite = true
+            self.addToFavoriteButton.setImage(UIImage(named: "fi-rr-heart_grey"), for: .normal)
+            
+            //   🧐 убрать print
+            //             print(movieTitle, addedToFavorite)
+            //             print(RealmManager.shared.readFromRealmMovieForFavorites())
+            //                     print(RealmManager.shared.readFromRealmMovieForFavorites().count)
+            print(RealmManager.shared.readFromRealmMovieForFavorites())
+            print(RealmManager.shared.readFromRealmMovieForFavorites().count)
+        } else {
+            RealmManager.shared.deleteMoviesForFavoritesFromRealmByID(movieID: movie?.id ?? 0)
+            addedToFavorite = false
+            self.addToFavoriteButton.setImage(UIImage(named: "fi-rr-add-white"), for: .normal)
+            
+            //   🧐 убрать print
+            print(RealmManager.shared.readFromRealmMovieForFavorites())
+            print(RealmManager.shared.readFromRealmMovieForFavorites().count)
+        }
+    }
+    
+    @objc func openOverviewLabel() {
+        if overviewButtonPressed == false {
+            self.overviewTextLabel.numberOfLines = 0
+            overviewButtonPressed = true
+            view.layoutIfNeeded()
+        } else if overviewButtonPressed == true {
+            self.overviewTextLabel.numberOfLines = 3
+            overviewButtonPressed = false
+            view.layoutIfNeeded()
+        }
     }
 }
 

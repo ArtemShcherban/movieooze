@@ -29,6 +29,7 @@ class MoviesViewController: UIViewController {
         super.viewWillAppear(animated)
         
     }
+
 }
 
 
@@ -42,7 +43,7 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
     
     guard  let cell = tableView.dequeueReusableCell(withIdentifier: ListMovieCellTableView.reuseIdentifire) as? ListMovieCellTableView else  { return UITableViewCell() }
     
-    cell.cellConfigure(with: indexPath.row)
+    cell.cellConfigure(movie: arrayOfMovies[indexPath.row])
     
     return cell
 }

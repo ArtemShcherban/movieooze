@@ -8,32 +8,33 @@
 import UIKit
 
 class FavoriteMovieViewController: UIViewController {
-
+    
     @IBOutlet weak var favoriteMovieTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.favoriteMovieTableView.register(UINib(nibName: ListMovieCellTableView.reuseIdentifire, bundle: nil), forCellReuseIdentifier: ListMovieCellTableView.reuseIdentifire)
         
+        self.favoriteMovieTableView.register(UINib(nibName: ListMovieCellTableView.reuseIdentifire, bundle: nil), forCellReuseIdentifier: ListMovieCellTableView.reuseIdentifire)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        RealmManager.shared.readFromRealmMovieForFavorites()
-
+        self.getMoviesFromRealm {
+            print("jfbjkbjkfbjk")
+        }
         self.favoriteMovieTableView.reloadData()
     }
 }
 
 extension FavoriteMovieViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-       return arrayOfMoviesForFavorites.count
-}
-
+        return arrayOfMoviesForFavorites.count
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard  let cell = tableView.dequeueReusableCell(withIdentifier: ListMovieCellTableView.reuseIdentifire, for: indexPath) as? ListMovieCellTableView else {return UITableViewCell() }
-        cell.cellRealmConfigure(with: indexPath.row)
+        
+        cell.cellConfigure(movie: arrayOfMoviesForFavorites[indexPath.row])
         
         return cell
     }
@@ -46,9 +47,16 @@ extension FavoriteMovieViewController: UITableViewDelegate {
         if let movieDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: MovieDetailedScrollViewController.reuseIdentifire) as? MovieDetailedScrollViewController {
             
             let movieFavorite = arrayOfMoviesForFavorites[indexPath.row]
-            movieDetailedScrollViewController.movieFavorite = movieFavorite
+            movieDetailedScrollViewController.movie = movieFavorite
             self .navigationController?.pushViewController(movieDetailedScrollViewController, animated: true)
+            //     🧐 Убрать print
+            print(movieFavorite)
         }
     }
+    
+    func getMoviesFromRealm(completion: @escaping(() -> ())) {
+        RealmManager.shared.newReadFromRealmMovieForFavorites(completion: { movies in arrayOfMoviesForFavorites = movies})
+    }
+    
 }
 
