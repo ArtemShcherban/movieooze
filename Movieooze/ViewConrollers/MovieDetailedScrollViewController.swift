@@ -38,8 +38,10 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
     var movie: Movie? = nil
     var actorsView, moviesView: UIView!
     var actorsCollectionView, moviesCollectionView: UICollectionView!
-    var layout: UICollectionViewFlowLayout!
+    var layoutActors: UICollectionViewFlowLayout!
+    var layoutMovies: UICollectionViewFlowLayout!
     var arrayOfActors: [Cast] = []
+    var dividerLineActorsView, dividerLineMoviesView: UIView!
     var arrayOfSimilarMovies: [SimilarMovie] = []
     
   
@@ -53,6 +55,8 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         alamofireMovieDetailsListRequest()
         alamofireSimilarMoviesRequest()
         createViews()
+//        createMovies()
+//        createActors()
         setViewConstraints()
         getMoviePoster()
         checkMovieForFavorites()
@@ -200,28 +204,46 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         
         // Actors View
         self.actorsView = UIView()
+        self.actorsView.backgroundColor = .clear
         self.scrollView.addSubview(actorsView)
         
         // Movies View
         self.moviesView = UIView()
         self.scrollView.addSubview(moviesView)
         
-        // Layout
-        self.layout = UICollectionViewFlowLayout()
-        self.layout.sectionInset = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
-        self.layout.itemSize = CGSize(width: 80, height: 170)
-        self.layout.scrollDirection = UICollectionView.ScrollDirection.horizontal
+        // Layout Actors
+        self.layoutActors = UICollectionViewFlowLayout()
+        self.layoutActors.sectionInset = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
+        self.layoutActors.itemSize = CGSize(width: 80, height: 160)
+        self.layoutActors.scrollDirection = UICollectionView.ScrollDirection.horizontal
+        
+        // Layout Movies
+        self.layoutMovies = UICollectionViewFlowLayout()
+        self.layoutMovies.sectionInset = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
+        self.layoutMovies.itemSize = CGSize(width: 80, height: 160)
+        self.layoutMovies.scrollDirection = UICollectionView.ScrollDirection.horizontal
 
         // Actors Collection View
-        self.actorsCollectionView = UICollectionView(frame: self.actorsView.frame, collectionViewLayout: layout)
+        self.actorsCollectionView = UICollectionView(frame: self.actorsView.frame, collectionViewLayout: layoutActors)
         self.actorsCollectionView.dataSource = self
         self.actorsCollectionView.delegate = self
         self.actorsCollectionView.register(ActorCollectionViewCell.self, forCellWithReuseIdentifier: ActorCollectionViewCell.reuseIndetifire)
         self.actorsCollectionView.backgroundColor = .clear
         self.actorsView.addSubview(actorsCollectionView)
         
+        
+        // Divider Line Actors View
+        self.dividerLineActorsView = UIView()
+        self.dividerLineActorsView.backgroundColor = UIColor(white: 0.4, alpha: 0.4)
+        self.actorsView.addSubview(dividerLineActorsView)
+        
+        // Divider Line Movies View
+        self.dividerLineMoviesView = UIView()
+        self.dividerLineMoviesView.backgroundColor = UIColor(white: 0.4, alpha: 0.4)
+        self.actorsView.addSubview(dividerLineMoviesView)
+        
         // Movies Collection View
-        self.moviesCollectionView = UICollectionView(frame: self.moviesView.frame, collectionViewLayout: layout)
+        self.moviesCollectionView = UICollectionView(frame: self.moviesView.frame, collectionViewLayout: layoutMovies)
         self.moviesCollectionView.dataSource = self
         self.moviesCollectionView.delegate = self
         self.moviesCollectionView.register(SimilarMovieCollectionViewCell.self, forCellWithReuseIdentifier: SimilarMovieCollectionViewCell.reuseIndetifire)
@@ -229,6 +251,32 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         self.moviesView.addSubview(moviesCollectionView)
         
     }
+//    func createMovies() {
+//        // Layout Movies
+//        let layoutMovies = UICollectionViewFlowLayout()
+//        layoutMovies.sectionInset = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
+//        layoutMovies.itemSize = CGSize(width: 80, height: 170)
+//        layoutMovies.scrollDirection = UICollectionView.ScrollDirection.horizontal
+//        self.moviesCollectionView = UICollectionView(frame: self.moviesView.frame, collectionViewLayout: layoutMovies)
+//        self.moviesCollectionView.dataSource = self
+//        self.moviesCollectionView.delegate = self
+//        self.moviesCollectionView.register(SimilarMovieCollectionViewCell.self, forCellWithReuseIdentifier: SimilarMovieCollectionViewCell.reuseIndetifire)
+//        self.moviesCollectionView.backgroundColor = .red
+//        self.moviesView.addSubview(moviesCollectionView)
+//    }
+//    func createActors(){
+//
+//        let layoutActors = UICollectionViewFlowLayout()
+//        layoutActors.sectionInset = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
+//        layoutActors.itemSize = CGSize(width: 80, height: 170)
+//        layoutActors.scrollDirection = UICollectionView.ScrollDirection.horizontal
+//        self.actorsCollectionView = UICollectionView(frame: self.moviesView.frame, collectionViewLayout: layoutActors)
+//        self.actorsCollectionView.dataSource = self
+//        self.actorsCollectionView.delegate = self
+//        self.actorsCollectionView.register(ActorCollectionViewCell.self, forCellWithReuseIdentifier: ActorCollectionViewCell.reuseIndetifire)
+//        self.actorsCollectionView.backgroundColor = .clear
+//        self.actorsView.addSubview(actorsCollectionView)
+//    }
     
     
     func setViewConstraints() {
@@ -327,7 +375,7 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         NSLayoutConstraint.activate([self.actorsView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
                                      self.actorsView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
                                      self.actorsView.topAnchor.constraint(equalTo: self.overviewTextLabel.bottomAnchor, constant: 28 ),
-                                     self.actorsView.heightAnchor.constraint(equalToConstant: 170)])
+                                     self.actorsView.heightAnchor.constraint(equalToConstant: 160)])
         
         // Actors Collection View Constraints
         actorsCollectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -336,12 +384,20 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
                                      self.actorsCollectionView.topAnchor.constraint(equalTo: self.actorsView.topAnchor),
                                      self.actorsCollectionView.bottomAnchor.constraint(equalTo: self.actorsView.bottomAnchor)])
         
-//        // Movies View Constraints
+        
+        // Divider Line Actors Constraints
+        dividerLineActorsView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([self.dividerLineActorsView.leadingAnchor.constraint(equalTo: self.actorsView.leadingAnchor, constant: 18),
+                                     self.dividerLineActorsView.trailingAnchor.constraint(equalTo: self.actorsView.trailingAnchor),
+                                     self.dividerLineActorsView.topAnchor.constraint(equalTo: self.actorsView.bottomAnchor, constant: 2 ),
+                                     self.dividerLineActorsView.heightAnchor.constraint(equalToConstant: 0.5)])
+        
+       // Movies View Constraints
         moviesView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([self.moviesView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
                                      self.moviesView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
                                      self.moviesView.topAnchor.constraint(equalTo: self.actorsView.bottomAnchor, constant: 20 ),
-                                     self.moviesView.heightAnchor.constraint(equalToConstant: 170)])
+                                     self.moviesView.heightAnchor.constraint(equalToConstant: 160)])
 
         // Movies Collection View Constraints
         moviesCollectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -349,6 +405,13 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
                                      self.moviesCollectionView.trailingAnchor.constraint(equalTo: self.moviesView.trailingAnchor),
                                      self.moviesCollectionView.topAnchor.constraint(equalTo: self.moviesView.topAnchor),
                                      self.moviesCollectionView.bottomAnchor.constraint(equalTo: self.moviesView.bottomAnchor)])
+        
+        // Divider Line Actors Constraints
+        dividerLineMoviesView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([self.dividerLineMoviesView.leadingAnchor.constraint(equalTo: self.moviesView.leadingAnchor, constant: 18),
+                                     self.dividerLineMoviesView.trailingAnchor.constraint(equalTo: self.moviesView.trailingAnchor),
+                                     self.dividerLineMoviesView.topAnchor.constraint(equalTo: self.moviesView.bottomAnchor, constant: 2 ),
+                                     self.dividerLineMoviesView.heightAnchor.constraint(equalToConstant: 0.5)])
         
     }
     
@@ -419,7 +482,7 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
             let decoder = JSONDecoder()
             if let dataMovies = try? decoder.decode(MoviesDetailsEN.self, from: myJSONresponse.data!) {
                 self.titleTextLable.text = dataMovies.title
-//               self.moviesListTableView.reloadData()
+
             }
             if let dataCredits = try? decoder.decode(MoviesDetailsEN.self, from: myJSONresponse.data!) {
                 self.arrayOfActors = dataCredits.credits?.cast ?? []
@@ -437,6 +500,7 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
             if let dataMovies = try? decoder.decode(ResultSimilarMovies.self, from: myJSONresponse.data!) {
                 
                 arrayOfSimilarMovies = dataMovies.results ?? []
+                self.moviesCollectionView.reloadData()
             }
         }
     }
@@ -448,6 +512,7 @@ extension MovieDetailedScrollViewController: UICollectionViewDataSource, UIColle
             return  arrayOfSimilarMovies.count
         } else {
             return arrayOfActors.count
+
         }
     }
     
@@ -457,12 +522,11 @@ extension MovieDetailedScrollViewController: UICollectionViewDataSource, UIColle
         if collectionView == moviesCollectionView {
            
             guard let movieCell = moviesCollectionView.dequeueReusableCell(withReuseIdentifier: SimilarMovieCollectionViewCell.reuseIndetifire, for: indexPath) as? SimilarMovieCollectionViewCell  else {return UICollectionViewCell()}
-//            movieCell.backgroundColor = .blue
+            movieCell.backgroundColor = .blue
             movieCell.cellConfigure(similarMovie: arrayOfSimilarMovies[indexPath.row])
               return movieCell
             
         } else {
-            
             guard let actorCell = actorsCollectionView.dequeueReusableCell(withReuseIdentifier: ActorCollectionViewCell.reuseIndetifire, for: indexPath) as? ActorCollectionViewCell  else {return UICollectionViewCell()}
             actorCell.cellConfigure(actor: arrayOfActors[indexPath.row])
             return actorCell

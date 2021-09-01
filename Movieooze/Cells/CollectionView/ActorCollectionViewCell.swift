@@ -23,21 +23,24 @@ class ActorCollectionViewCell: UICollectionViewCell {
         self.actorNameLabel?.text = nil
        
         self.backgroundColor = .clear
-        self.actorImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height * 0.7))
+        self.actorImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.frame.size.width, height: 120))
         loadActorImage(actor: actor)
         self.actorImageView.contentMode = .scaleAspectFill
         self.actorImageView.clipsToBounds = true
         self.actorImageView.layer.cornerRadius = 8
         self.addSubview(actorImageView)
   
-        self.actorNameLabel = UILabel(frame: CGRect(x: 0, y: 120, width: self.frame.size.width, height: self.frame.size.height * 0.2))
+        self.actorNameLabel = UILabel(frame: CGRect(x: 0, y: 120, width: self.frame.size.width, height: 30))
         self.actorNameLabel.font = UIFont.systemFont(ofSize: 10)
         self.actorNameLabel.textColor = .white
         self.actorNameLabel.textAlignment = .center
         self.actorNameLabel.numberOfLines = 0
         self.actorNameLabel.backgroundColor = .clear
         self.actorNameLabel.text = actor.name
+
         self.addSubview(actorNameLabel)
+       
+        
 //  🧐 Убрать print
         print(actor.name ?? "")
     }

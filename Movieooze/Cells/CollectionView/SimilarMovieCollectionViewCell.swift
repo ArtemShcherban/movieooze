@@ -23,13 +23,13 @@ class SimilarMovieCollectionViewCell: UICollectionViewCell {
         self.similarMovieTitleLabel?.text = nil
 
         self.backgroundColor = .clear
-        self.similarMovieImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height * 0.7))
+        self.similarMovieImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.frame.size.width, height: 120))
         self.similarMovieImageView.contentMode = .scaleAspectFill
         self.similarMovieImageView.clipsToBounds = true
         self.similarMovieImageView.layer.cornerRadius = 8
         self.addSubview(similarMovieImageView)
 
-        self.similarMovieTitleLabel = UILabel(frame: CGRect(x: 0, y: 120, width: self.frame.size.width, height: self.frame.size.height * 0.2))
+        self.similarMovieTitleLabel = UILabel(frame: CGRect(x: 0, y: 120, width: self.frame.size.width, height: 30))
         self.similarMovieTitleLabel.font = UIFont.systemFont(ofSize: 10)
         self.similarMovieTitleLabel.textColor = .white
         self.similarMovieTitleLabel.textAlignment = .center
