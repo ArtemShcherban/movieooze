@@ -8,8 +8,9 @@
 import UIKit
 
 class FavoriteMovieViewController: UIViewController {
-    
+
     @IBOutlet weak var favoriteMovieTableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -23,7 +24,7 @@ class FavoriteMovieViewController: UIViewController {
             print("jfbjkbjkfbjk")
         }
         self.favoriteMovieTableView.reloadData()
-    }
+    }    
 }
 
 extension FavoriteMovieViewController: UITableViewDataSource {

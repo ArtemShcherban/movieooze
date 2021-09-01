@@ -52,9 +52,18 @@ class ListMovieCellTableView: UITableViewCell {
         self.titleMovieTextLabel.text = movie.title
         self.yearTextLabel.text = dateFormat(date: movie.releaseDate ?? "")
         self.rightArrowView.image = UIImage.init(named: "fi-rr-angle-small-right-grey")
-        self.genresTextLabel.text = ("\(dicGenres[movie.genreIds?[0] ?? 0]?.name ?? "")" + ", " + "\(dicGenres[movie.genreIds?[1] ?? 0]?.name ?? "")")
+        
         let starsLevel = movie.voteAverage
         self.starsImageView.image = movieStarsLevel(level: starsLevel ?? 0)
+        numberOfGenres(movie: movie)
+    }
+    
+    func numberOfGenres(movie: Movie) {
+        if movie.genreIds?.count ?? 0 >= 2 {
+            self.genresTextLabel.text = ("\(dicGenres[movie.genreIds?[0] ?? 0]?.name ?? "")" + ", " + "\(dicGenres[movie.genreIds?[1] ?? 0]?.name ?? "")")
+        } else {
+            self.genresTextLabel.text = ("\(dicGenres[movie.genreIds?[0] ?? 0]?.name ?? "")")
+        }
     }
     
     func createLabels() {
