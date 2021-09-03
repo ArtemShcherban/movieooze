@@ -124,6 +124,21 @@
             </objects>
             <point key="canvasLocation" x="787" y="814"/>
         </scene>
+        <!--Player View Controller-->
+        <scene sceneID="QjT-T5-9He">
+            <objects>
+                <viewController storyboardIdentifier="PlayerViewController" id="Kc5-Ib-eY3" customClass="PlayerViewController" customModule="Movieooze" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="MI1-Ok-XpD">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="1LG-cr-f8W"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HIr-Kc-YSJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1703" y="814"/>
+        </scene>
         <!--Test View Controller-->
         <scene sceneID="Lpt-Qe-DQo">
             <objects>
@@ -151,7 +166,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="m2E-i7-HjF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1703" y="814"/>
+            <point key="canvasLocation" x="2491" y="709"/>
         </scene>
         <!--Movie Detailed Scroll View Controller-->
         <scene sceneID="qUN-5G-Oiw">

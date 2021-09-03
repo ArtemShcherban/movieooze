@@ -70,7 +70,7 @@ class ListMovieCellTableView: UITableViewCell {
         
         // Title Movie Text Label
         titleMovieTextLabel = UILabel()
-        titleMovieTextLabel.numberOfLines = 0
+        titleMovieTextLabel.numberOfLines = 3
         titleMovieTextLabel.baselineAdjustment = .alignBaselines
         self.contentView.addSubview(titleMovieTextLabel)
         

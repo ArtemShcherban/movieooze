@@ -11,18 +11,7 @@ import SDWebImage
 import RealmSwift
 
 class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate {
-    
-    
-//    override open var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-//        return .portrait
-//    }
-//    override open var shouldAutorotate: Bool {
-//        return false
-//    }
-//    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
-//        return .portrait
-//    }
-    
+
     static let reuseIdentifire = String(describing: MovieDetailedScrollViewController.self)
     
     var scrollView: UIScrollView!
@@ -32,14 +21,13 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
     var gradientView: UIView!
     var mainContainerView: UIView!
     var titleTextLable, overviewTextLabel, releaseDateTextLabel, genresTextLabel: UILabel!
-    var addToFavoriteButton: UIButton!
-    var overviewClearButton: UIButton!
+    var addToFavoriteButton, overviewClearButton, playButton: UIButton!
     var overviewButtonPressed = false
     var movie: Movie? = nil
     var actorsView, moviesView: UIView!
+    var nameOfCollectionViewActorsLabel, nameOfCollectionViewMoviesLabel: UILabel!
     var actorsCollectionView, moviesCollectionView: UICollectionView!
-    var layoutActors: UICollectionViewFlowLayout!
-    var layoutMovies: UICollectionViewFlowLayout!
+    var layoutActors, layoutMovies: UICollectionViewFlowLayout!
     var arrayOfActors: [Cast] = []
     var dividerLineActorsView, dividerLineMoviesView: UIView!
     var arrayOfSimilarMovies: [SimilarMovie] = []
@@ -52,7 +40,7 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        alamofireMovieDetailsListRequest()
+        alamofireMovieDetailsRequest()
         alamofireSimilarMoviesRequest()
         createViews()
 //        createMovies()
@@ -87,13 +75,23 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         // Actors View Customization
         self.actorsView.backgroundColor = .clear
         
+        // Name Of Collection View Actors Customization
+        self.nameOfCollectionViewActorsLabel.backgroundColor = .clear
+        self.nameOfCollectionViewActorsLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        self.nameOfCollectionViewActorsLabel.textColor = myLightGreyColor
+        
+        // Name Of Collection View Movies
+        self.nameOfCollectionViewMoviesLabel.backgroundColor = .clear
+        self.nameOfCollectionViewMoviesLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        self.nameOfCollectionViewMoviesLabel.textColor = myLightGreyColor
+        
         // Movies View Customization
         self.moviesView.backgroundColor = .clear
         
         // Label Customization
         label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         label.textColor = .white
-        label.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+        label.text = ""
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -166,6 +164,13 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         label.numberOfLines = 0
         self.scrollView.addSubview(label)
         
+        // Play Button
+        playButton = UIButton()
+        playButton.backgroundColor = .clear
+        playButton.setImage(UIImage(named: "fi-rr-play-alt_orange"), for: .normal)
+        playButton.addTarget(self, action: #selector(playButtonPressed), for: .touchUpInside)
+        self.scrollView.addSubview(playButton)
+        
         // Title Text Lable
         titleTextLable = UILabel()
         titleTextLable.numberOfLines = 0
@@ -204,8 +209,19 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         
         // Actors View
         self.actorsView = UIView()
-        self.actorsView.backgroundColor = .clear
         self.scrollView.addSubview(actorsView)
+        
+        // Name Of Collection View Actors Label
+        nameOfCollectionViewActorsLabel = UILabel()
+        nameOfCollectionViewActorsLabel.numberOfLines = 1
+        nameOfCollectionViewActorsLabel.baselineAdjustment = .alignBaselines
+        self.actorsView.addSubview(nameOfCollectionViewActorsLabel)
+        
+        // Name Of Collection View Movies
+        nameOfCollectionViewMoviesLabel = UILabel()
+        nameOfCollectionViewMoviesLabel.numberOfLines = 1
+        nameOfCollectionViewMoviesLabel.baselineAdjustment = .alignBaselines
+        self.actorsView.addSubview(nameOfCollectionViewMoviesLabel)
         
         // Movies View
         self.moviesView = UIView()
@@ -281,14 +297,14 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
     
     func setViewConstraints() {
         
-        // Label Constraints
-        self.label.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            self.label.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
-            self.label.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
-            self.label.bottomAnchor.constraint(equalTo: self.gradientView.bottomAnchor, constant: -10),
-            self.label.topAnchor.constraint(equalTo: self.moviesView.bottomAnchor, constant: 20)
-        ])
+//       //  Label Constraints
+//        self.label.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            self.label.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
+//            self.label.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
+//            self.label.bottomAnchor.constraint(equalTo: self.gradientView.bottomAnchor, constant: -10),
+//            self.label.topAnchor.constraint(equalTo: self.moviesView.bottomAnchor, constant: 20)
+//        ])
         
         // Scroll View Constraints
         self.scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -335,33 +351,39 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         self.titleTextLable.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([self.titleTextLable.bottomAnchor.constraint(equalTo: self.scrollView.topAnchor, constant: 320),
                                      self.titleTextLable.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
-                                     self.titleTextLable.trailingAnchor.constraint(lessThanOrEqualTo: self.view.trailingAnchor, constant: -144),
                                      self.titleTextLable.widthAnchor.constraint(equalToConstant: 250)])
         
         // Add To Favorite Button Constraints
         self.addToFavoriteButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([self.addToFavoriteButton.topAnchor.constraint(equalTo: self.scrollView.topAnchor, constant: 320),
-                                     self.addToFavoriteButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -100),
+                                     self.addToFavoriteButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
                                      self.addToFavoriteButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 32),
                                      self.addToFavoriteButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 32)])
+        
+        // Play Button Constraints
+        self.playButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([self.playButton.topAnchor.constraint(equalTo: self.titleTextLable.bottomAnchor, constant: 4),
+                                     self.playButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
+                                     self.playButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 40),
+                                     self.playButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 40)])
         
         // Release Date Label Constraints
         self.releaseDateTextLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([self.releaseDateTextLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
                                      self.releaseDateTextLabel.widthAnchor.constraint(equalToConstant: 35),
-                                     self.releaseDateTextLabel.topAnchor.constraint(equalTo: self.addToFavoriteButton.bottomAnchor, constant: 4)])
+                                     self.releaseDateTextLabel.topAnchor.constraint(equalTo: self.playButton.bottomAnchor, constant: 8)])
         
         // Genre Date Label Constraints
         self.genresTextLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([self.genresTextLabel.leadingAnchor.constraint(equalTo: self.releaseDateTextLabel.trailingAnchor, constant: 8),
                                      self.genresTextLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 60),
-                                     self.genresTextLabel.topAnchor.constraint(equalTo: self.addToFavoriteButton.bottomAnchor, constant: 4)])
+                                     self.genresTextLabel.topAnchor.constraint(equalTo: self.playButton.bottomAnchor, constant: 8)])
         
         // OverView Text Label Constraints
         self.overviewTextLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([self.overviewTextLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
                                      self.overviewTextLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
-                                     self.overviewTextLabel.topAnchor.constraint(equalTo: self.scrollView.topAnchor, constant: 382)])
+                                     self.overviewTextLabel.topAnchor.constraint(equalTo: self.releaseDateTextLabel.bottomAnchor, constant: 12)])
         
         // Overview Clear Button Constraints
         self.overviewClearButton.translatesAutoresizingMaskIntoConstraints = false
@@ -374,14 +396,21 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         actorsView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([self.actorsView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
                                      self.actorsView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
-                                     self.actorsView.topAnchor.constraint(equalTo: self.overviewTextLabel.bottomAnchor, constant: 28 ),
-                                     self.actorsView.heightAnchor.constraint(equalToConstant: 160)])
+                                     self.actorsView.topAnchor.constraint(equalTo: self.overviewTextLabel.bottomAnchor, constant: 4 ),
+                                     self.actorsView.heightAnchor.constraint(equalToConstant: 180)])
+        
+        // Name Of Collection View Actors Constraints
+        nameOfCollectionViewActorsLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([self.nameOfCollectionViewActorsLabel.leadingAnchor.constraint(equalTo: self.actorsView.leadingAnchor, constant: 18),
+                                     self.nameOfCollectionViewActorsLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
+                                     self.nameOfCollectionViewActorsLabel.bottomAnchor.constraint(equalTo: self.actorsCollectionView.topAnchor),
+                                     self.nameOfCollectionViewActorsLabel.heightAnchor.constraint(equalToConstant: 20)])
         
         // Actors Collection View Constraints
         actorsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([self.actorsCollectionView.leadingAnchor.constraint(equalTo: self.actorsView.leadingAnchor, constant: 18),
                                      self.actorsCollectionView.trailingAnchor.constraint(equalTo: self.actorsView.trailingAnchor),
-                                     self.actorsCollectionView.topAnchor.constraint(equalTo: self.actorsView.topAnchor),
+                                     self.actorsCollectionView.topAnchor.constraint(equalTo: self.actorsView.topAnchor, constant: 20),
                                      self.actorsCollectionView.bottomAnchor.constraint(equalTo: self.actorsView.bottomAnchor)])
         
         
@@ -389,21 +418,29 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         dividerLineActorsView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([self.dividerLineActorsView.leadingAnchor.constraint(equalTo: self.actorsView.leadingAnchor, constant: 18),
                                      self.dividerLineActorsView.trailingAnchor.constraint(equalTo: self.actorsView.trailingAnchor),
-                                     self.dividerLineActorsView.topAnchor.constraint(equalTo: self.actorsView.bottomAnchor, constant: 2 ),
+                                     self.dividerLineActorsView.topAnchor.constraint(equalTo: self.actorsView.bottomAnchor, constant: -2 ),
                                      self.dividerLineActorsView.heightAnchor.constraint(equalToConstant: 0.5)])
         
        // Movies View Constraints
         moviesView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([self.moviesView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
                                      self.moviesView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
-                                     self.moviesView.topAnchor.constraint(equalTo: self.actorsView.bottomAnchor, constant: 20 ),
-                                     self.moviesView.heightAnchor.constraint(equalToConstant: 160)])
+                                     self.moviesView.topAnchor.constraint(equalTo: self.actorsView.bottomAnchor, constant: 2 ),
+                                     self.moviesView.heightAnchor.constraint(equalToConstant: 180),
+                                     self.moviesView.bottomAnchor.constraint(equalTo: self.gradientView.bottomAnchor, constant: -10 )])
+        
+        // Name Of Collection View Movies Constraints
+        nameOfCollectionViewMoviesLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([self.nameOfCollectionViewMoviesLabel.leadingAnchor.constraint(equalTo: self.moviesView.leadingAnchor, constant: 18),
+                                     self.nameOfCollectionViewMoviesLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
+                                     self.nameOfCollectionViewMoviesLabel.bottomAnchor.constraint(equalTo: self.moviesCollectionView.topAnchor),
+                                     self.nameOfCollectionViewMoviesLabel.heightAnchor.constraint(equalToConstant: 20)])
 
         // Movies Collection View Constraints
         moviesCollectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([self.moviesCollectionView.leadingAnchor.constraint(equalTo: self.moviesView.leadingAnchor, constant: 18),
                                      self.moviesCollectionView.trailingAnchor.constraint(equalTo: self.moviesView.trailingAnchor),
-                                     self.moviesCollectionView.topAnchor.constraint(equalTo: self.moviesView.topAnchor),
+                                     self.moviesCollectionView.topAnchor.constraint(equalTo: self.moviesView.topAnchor, constant: 20),
                                      self.moviesCollectionView.bottomAnchor.constraint(equalTo: self.moviesView.bottomAnchor)])
         
         // Divider Line Actors Constraints
@@ -430,6 +467,8 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         overviewTextLabel.text = movie?.overview
         releaseDateTextLabel.text = dateFormat(date: movie?.releaseDate ?? "")
         numberOfGenres(genreIds: movie?.genreIds ?? [])
+        nameOfCollectionViewActorsLabel.text = "Actors:"
+        nameOfCollectionViewMoviesLabel.text = "Similar movies:"
     }
     
     func numberOfGenres(genreIds: [Int]) {
@@ -438,6 +477,14 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         } else {
             self.genresTextLabel.text = "\(dicGenres[genreIds[0]]?.name ?? "")"
         }
+    }
+    
+    @objc func playButtonPressed() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let playerViewConroller = storyboard.instantiateViewController(withIdentifier: PlayerViewController.reuseIdentifire) as? PlayerViewController {
+            navigationController?.pushViewController(playerViewConroller, animated: true)
+        }
+        
     }
     
   
@@ -475,14 +522,14 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
             view.layoutIfNeeded()
         }
     }
-    func alamofireMovieDetailsListRequest() {
+    func alamofireMovieDetailsRequest() {
         
         AF.request("https://api.themoviedb.org/3/movie/\(movie?.id ?? 0)?api_key=86b8d80830ef6774289e25cad39e4fbd&language=en-EN&append_to_response=videos,images,credits").responseJSON { [self] myJSONresponse in
             
             let decoder = JSONDecoder()
             if let dataMovies = try? decoder.decode(MoviesDetailsEN.self, from: myJSONresponse.data!) {
                 self.titleTextLable.text = dataMovies.title
-
+                
             }
             if let dataCredits = try? decoder.decode(MoviesDetailsEN.self, from: myJSONresponse.data!) {
                 self.arrayOfActors = dataCredits.credits?.cast ?? []
@@ -538,6 +585,7 @@ extension MovieDetailedScrollViewController: UICollectionViewDataSource, UIColle
 // 🧐 Удалить print
         print("User tapped on item \(indexPath.row)")
      print(arrayOfActors[indexPath.row].id ?? "")
+//        print(movie?.id)
 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let testViewController = storyboard.instantiateViewController(withIdentifier: "TestViewController") as? TestViewController {

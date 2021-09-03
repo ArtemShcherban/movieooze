@@ -5,7 +5,6 @@ import SDWebImage
 import RealmSwift
 
 var arrayOfMovies: [Movie] = []
-//var arrayOfMoviesForFavorites : [FavoriteMovieRealm] = []
 var arrayOfMoviesForFavorites : [Movie] = []
 var arrayOFGenres: [Genres] = []
 var dicGenres: [Int: Genres] = [:]

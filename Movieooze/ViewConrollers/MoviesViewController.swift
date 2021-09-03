@@ -17,27 +17,12 @@ class MoviesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-
-
-        
         self.moviesListTableView.register(UINib(nibName: ListMovieCellTableView.reuseIdentifire, bundle: nil), forCellReuseIdentifier: ListMovieCellTableView.reuseIdentifire)
 
         self.alamofireGenresListRequest()
         self.alamofireMoviesListRequest()
         self.moviesListTableView.reloadData()
     }
-//    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-//        return .landscapeLeft
-//    }
-//    override var shouldAutorotate: Bool {
-//        return true
-//    }
-//    
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        
-//    }
-
 }
 
 
