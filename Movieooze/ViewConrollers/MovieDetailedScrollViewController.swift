@@ -604,7 +604,7 @@ extension MovieDetailedScrollViewController: UICollectionViewDataSource, UIColle
 // 🧐 Удалить print
         print("User tapped on item \(indexPath.row)")
      print(arrayOfActors[indexPath.row].id ?? "")
-        print(movie?.id)
+//        print(movie?.id)
 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let testViewController = storyboard.instantiateViewController(withIdentifier: "TestViewController") as? TestViewController {
