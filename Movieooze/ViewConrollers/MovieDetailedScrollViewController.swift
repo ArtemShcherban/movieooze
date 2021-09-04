@@ -31,7 +31,7 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
     var arrayOfActors: [Cast] = []
     var dividerLineActorsView, dividerLineMoviesView: UIView!
     var arrayOfSimilarMovies: [SimilarMovie] = []
-    
+    var arrayOfTraillers: [String] = []
   
   
 
@@ -42,6 +42,7 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         
         alamofireMovieDetailsRequest()
         alamofireSimilarMoviesRequest()
+        alamofireVideoMaterialsRequest()
         createViews()
 //        createMovies()
 //        createActors()
@@ -482,6 +483,8 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
     @objc func playButtonPressed() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let playerViewConroller = storyboard.instantiateViewController(withIdentifier: PlayerViewController.reuseIdentifire) as? PlayerViewController {
+            
+            playerViewConroller.arrayOfTraillers = arrayOfTraillers
             navigationController?.pushViewController(playerViewConroller, animated: true)
         }
         
@@ -551,6 +554,22 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
             }
         }
     }
+    func alamofireVideoMaterialsRequest() {
+
+        AF.request("https://api.themoviedb.org/3/movie/\(movie?.id ?? 0)/videos?api_key=86b8d80830ef6774289e25cad39e4fbd").responseJSON {  myJSONresponse in
+
+            let decoder = JSONDecoder()
+            if let videoMat = try? decoder.decode(ResultVideoMaterials.self, from: myJSONresponse.data!) {
+            
+                let arrayOfVideos = videoMat.results
+                for item in arrayOfVideos ?? []{
+                    if item.type == "Trailer" {
+                        self.arrayOfTraillers.append(item.key ?? "")
+                    }
+                }
+            }
+        }
+    }
 }
 
 extension MovieDetailedScrollViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -585,7 +604,7 @@ extension MovieDetailedScrollViewController: UICollectionViewDataSource, UIColle
 // 🧐 Удалить print
         print("User tapped on item \(indexPath.row)")
      print(arrayOfActors[indexPath.row].id ?? "")
-//        print(movie?.id)
+        print(movie?.id)
 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let testViewController = storyboard.instantiateViewController(withIdentifier: "TestViewController") as? TestViewController {
