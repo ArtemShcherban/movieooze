@@ -17,32 +17,38 @@ struct RealmManager {
     
     // MARK: - Создание и запись экземпляра реалм
     
-    func createAndSaveMovieForFavorites (movie: Movie?) {
+    func createAndSaveMovieForFavorites (movie: MovieDetailsEN?) {
         
-        let movieForFavorites = FavoriteMovieRealm()
-        movieForFavorites.title = movie?.title ?? ""
+        let movieForFavorites = MovieForFavoritesRealm()
         movieForFavorites.adult = movie?.adult ?? false
-        movieForFavorites.overview = movie?.overview  ?? ""
-        movieForFavorites.posterPath = movie?.posterPath ?? ""
-        movieForFavorites.voteAverage = movie?.voteAverage ?? 0.0
-        movieForFavorites.id = movie?.id ?? 0
         movieForFavorites.backdropPath = movie?.backdropPath ?? ""
-        movieForFavorites.mediaType = movie?.mediaType ?? ""
+        movieForFavorites.budget = movie?.budget ?? 0
+        movieForFavorites.homepage = movie?.homepage ?? ""
+        movieForFavorites.id = movie?.id ?? 0
+        movieForFavorites.imdbId = movie?.imdbId ?? ""
         movieForFavorites.originalLanguage = movie?.originalLanguage ?? ""
         movieForFavorites.originalTitle = movie?.originalTitle ?? ""
+        movieForFavorites.overview = movie?.overview ?? ""
         movieForFavorites.popularity = movie?.popularity ?? 0.0
+        movieForFavorites.posterPath = movie?.posterPath ?? ""
         movieForFavorites.releaseDate = movie?.releaseDate ?? ""
-        movieForFavorites.voteCount = movie?.voteCount ?? 0
+        movieForFavorites.revenue = movie?.revenue ?? 0
+        movieForFavorites.runtime = movie?.runtime ?? 0
+        movieForFavorites.status = movie?.status ?? ""
+        movieForFavorites.tagline = movie?.tagline ?? ""
+        movieForFavorites.title = movie?.title ?? ""
         movieForFavorites.video = movie?.video ?? false
-        if movie?.genreIds?.count ?? 0 > 0 && movie?.genreIds?.count ?? 0 >= 2 {
-            movieForFavorites.genreIdFirst = movie?.genreIds?[0] ?? 0
-            movieForFavorites.genreIdSecond = movie?.genreIds?[1] ?? 0
-        } else if movie?.genreIds?.count ?? 0 == 1 {
-            movieForFavorites.genreIdFirst = movie?.genreIds?[0] ?? 0
-            movieForFavorites.genreIdSecond = 0
+        movieForFavorites.voteAverage = movie?.voteAverage ?? 0.0
+        movieForFavorites.voteCount = movie?.voteCount ?? 0
+        if movie?.genres?.count ?? 0 > 0 && movie?.genres?.count ?? 0 >= 2 {
+            movieForFavorites.genreIDFirst = movie?.genres?[0].id ?? 0
+            movieForFavorites.genreIDSecond = movie?.genres?[1].id ?? 0
+        } else if movie?.genres?.count ?? 0 == 1 {
+            movieForFavorites.genreIDFirst = movie?.genres?[0].id ?? 0
+            movieForFavorites.genreIDSecond = 0
         } else {
-            movieForFavorites.genreIdFirst = 0
-            movieForFavorites.genreIdSecond = 0
+            movieForFavorites.genreIDFirst = 0
+            movieForFavorites.genreIDSecond = 0
         }
         
        
@@ -55,48 +61,40 @@ struct RealmManager {
     // MARK: - Чтение
     
     func newReadFromRealmMovieForFavorites(completion: ([Movie]) ->()) {
-        var   arrayOfMoviesFromRealm: [FavoriteMovieRealm] = []
-        guard let movieForFavoritesFromRealm = realm?.objects(FavoriteMovieRealm.self) else { return }
+        var   arrayOfMoviesFromRealm: [MovieForFavoritesRealm] = []
+        guard let movieForFavoritesFromRealm = realm?.objects(MovieForFavoritesRealm.self) else { return }
         for eachMovie in movieForFavoritesFromRealm {
             arrayOfMoviesFromRealm.append(eachMovie)
         }
         completion(convertMovieForFavoritesToMovie(moviesFromRealm: arrayOfMoviesFromRealm))
     }
     
-    func convertMovieForFavoritesToMovie(moviesFromRealm: [FavoriteMovieRealm]) ->[Movie] {
+    func convertMovieForFavoritesToMovie(moviesFromRealm: [MovieForFavoritesRealm]) ->[Movie] {
         var movies = [Movie]()
         for eachMovie in moviesFromRealm {
             let movie = Movie(from: eachMovie)
             movies.append(movie)
         }
+        //🧐 удалить
         print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         print(movies)
         print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         return movies
     }
     
-    func readFromRealmMovieForFavorites() -> [FavoriteMovieRealm]  {
-        var   arrayOfMoviesFromRealm: [FavoriteMovieRealm] = []
-        guard let movieForFavoritesFromRealm = realm?.objects(FavoriteMovieRealm.self) else { return [] }
+    func readFromRealmMovieForFavorites() -> [MovieForFavoritesRealm]  {
+        var   arrayOfMoviesFromRealm: [MovieForFavoritesRealm] = []
+        guard let movieForFavoritesFromRealm = realm?.objects(MovieForFavoritesRealm.self) else { return [] }
         for eachMovie in movieForFavoritesFromRealm {
             arrayOfMoviesFromRealm.append(eachMovie)
         }
         return arrayOfMoviesFromRealm
     }
     
-    //    func readFromRealmMovieForFavorites() -> [FavoriteMovieRealm] {
-    //       arrayOfMoviesForFavorites = []
-    //        guard let movieForFavoritesFromRealm = realm?.objects(FavoriteMovieRealm.self) else { return [] }
-    //        for eachMovie in movieForFavoritesFromRealm {
-    //            arrayOfMoviesForFavorites.append(eachMovie)
-    //        }
-    //         return arrayOfMoviesForFavorites
-    //    }
-    
     // MARK: - Удаление объекта из Realm
     
     func deleteMoviesForFavoritesFromRealmByID(movieID: Int) {
-        if let movieForFavoritesInRealm = realm?.objects(FavoriteMovieRealm.self).filter("id = \(movieID)") {
+        if let movieForFavoritesInRealm = realm?.objects(MovieForFavoritesRealm.self).filter("id = \(movieID)") {
             try? realm?.write {
                 realm?.delete(movieForFavoritesInRealm)
             }
@@ -104,7 +102,7 @@ struct RealmManager {
     }
     
     func deleteAllDataFromRealmMoviesForFavorites() {
-        if let moviesForFavoritesInRealm = realm?.objects(FavoriteMovieRealm.self) {
+        if let moviesForFavoritesInRealm = realm?.objects(MovieForFavoritesRealm.self) {
             try? realm?.write {
                 realm?.delete(moviesForFavoritesInRealm)
             }
@@ -114,7 +112,7 @@ struct RealmManager {
     // MARK: - Поиск объекта по ID в Realm
     
     func searchMovieForFavoritesIDInRealm(movieID: Int) -> Bool {
-        let resultSearchInRealm = realm?.objects(FavoriteMovieRealm.self).filter("id = \(movieID)")
+        let resultSearchInRealm = realm?.objects(MovieForFavoritesRealm.self).filter("id = \(movieID)")
         if resultSearchInRealm == nil {
             return false
         } else if resultSearchInRealm?.count == 0 {

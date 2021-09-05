@@ -12,7 +12,7 @@ For support, please feel free to contact me at https://www.linkedin.com/in/syeda
 */
 
 import Foundation
-struct Belongs_to_collection : Codable {
+struct BelongsToCollection : Codable {
 	let id : Int?
 	let name : String?
 	let poster_path : String?

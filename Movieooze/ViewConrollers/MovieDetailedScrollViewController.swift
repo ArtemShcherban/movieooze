@@ -23,7 +23,9 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
     var titleTextLable, overviewTextLabel, releaseDateTextLabel, genresTextLabel: UILabel!
     var addToFavoriteButton, overviewClearButton, playButton: UIButton!
     var overviewButtonPressed = false
-    var movie: Movie? = nil
+//    var movie: Movie? = nil
+    var movieID: Int!
+    var movieWithDetails: MovieDetailsEN? = nil
     var actorsView, moviesView: UIView!
     var nameOfCollectionViewActorsLabel, nameOfCollectionViewMoviesLabel: UILabel!
     var actorsCollectionView, moviesCollectionView: UICollectionView!
@@ -47,10 +49,9 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
 //        createMovies()
 //        createActors()
         setViewConstraints()
-        getMoviePoster()
+        
         checkMovieForFavorites()
-        fillDetailsFromMovie()
-
+        
 
         
         // Title Text Lable Customization
@@ -98,7 +99,6 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-
         
         // Make sure the top constraint of the ScrollView is equal to Superview and not Safe Area
         
@@ -455,28 +455,36 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
     
     func getMoviePoster() {
         var imageURL = ""
-        imageURL = posterBaseURL + "\(movie?.posterPath ?? "")"
+        imageURL = posterBaseURL + "\(movieWithDetails?.posterPath ?? "")"
         self.posterImageView.sd_setImage(with: URL(string: imageURL), placeholderImage: UIImage(named: "placeholder.png"))
     }
     
     func checkMovieForFavorites() {
-        addedToFavorite = RealmManager.shared.searchMovieForFavoritesIDInRealm(movieID: self.movie?.id ?? 0)
+        addedToFavorite = RealmManager.shared.searchMovieForFavoritesIDInRealm(movieID: self.movieID ?? 0)
     }
     
     func fillDetailsFromMovie() {
-        titleTextLable.text = movie?.title
-        overviewTextLabel.text = movie?.overview
-        releaseDateTextLabel.text = dateFormat(date: movie?.releaseDate ?? "")
-        numberOfGenres(genreIds: movie?.genreIds ?? [])
+        titleTextLable.text = movieWithDetails?.title
+        overviewTextLabel.text = movieWithDetails?.overview
+        releaseDateTextLabel.text = dateFormat(date: movieWithDetails?.releaseDate ?? "")
+        numberOfGenres(genres: movieWithDetails?.genres ?? [])
         nameOfCollectionViewActorsLabel.text = "Actors:"
         nameOfCollectionViewMoviesLabel.text = "Similar movies:"
     }
-    
-    func numberOfGenres(genreIds: [Int]) {
-        if genreIds.count >= 2 {
-            self.genresTextLabel.text = ("\(dicGenres[genreIds[0]]?.name ?? "")" + ", " + "\(dicGenres[genreIds[1]]?.name ?? "")")
+//    func numberOfGenres(genreIds: [Int]) {
+//        if genreIds.count >= 2 {
+//            self.genresTextLabel.text = ("\(dicGenres[genreIds[0]]?.name ?? "")" + ", " + "\(dicGenres[genreIds[1]]?.name ?? "")")
+//        } else {
+//            self.genresTextLabel.text = "\(dicGenres[genreIds[0]]?.name ?? "")"
+//        }
+//    }
+    func numberOfGenres(genres: [Genres]) {
+        if genres.count >= 2 {
+            self.genresTextLabel.text = ("\(genres[0].name ?? "")" + ", " + "\(genres[1].name ?? "")")
+        } else if genres.count == 1 {
+            self.genresTextLabel.text = "\(genres[0].name ?? "")"
         } else {
-            self.genresTextLabel.text = "\(dicGenres[genreIds[0]]?.name ?? "")"
+            self.genresTextLabel.text = ""
         }
     }
     
@@ -493,7 +501,7 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
   
     @objc func addToFavoriteButtonPressed() {
         if addedToFavorite == false {
-            RealmManager.shared.createAndSaveMovieForFavorites(movie: movie)
+            RealmManager.shared.createAndSaveMovieForFavorites(movie: movieWithDetails)
             addedToFavorite = true
             self.addToFavoriteButton.setImage(UIImage(named: "fi-rr-heart_grey"), for: .normal)
             
@@ -504,7 +512,7 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
             print(RealmManager.shared.readFromRealmMovieForFavorites())
             print(RealmManager.shared.readFromRealmMovieForFavorites().count)
         } else {
-            RealmManager.shared.deleteMoviesForFavoritesFromRealmByID(movieID: movie?.id ?? 0)
+            RealmManager.shared.deleteMoviesForFavoritesFromRealmByID(movieID: movieID ?? 0)
             addedToFavorite = false
             self.addToFavoriteButton.setImage(UIImage(named: "fi-rr-add-white"), for: .normal)
             
@@ -527,24 +535,22 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
     }
     func alamofireMovieDetailsRequest() {
         
-        AF.request("https://api.themoviedb.org/3/movie/\(movie?.id ?? 0)?api_key=86b8d80830ef6774289e25cad39e4fbd&language=en-EN&append_to_response=videos,images,credits").responseJSON { [self] myJSONresponse in
+        AF.request("https://api.themoviedb.org/3/movie/\(movieID ?? 0)?api_key=86b8d80830ef6774289e25cad39e4fbd&language=en-EN&append_to_response=videos,images,credits").responseJSON { [self] myJSONresponse in
             
             let decoder = JSONDecoder()
-            if let dataMovies = try? decoder.decode(MoviesDetailsEN.self, from: myJSONresponse.data!) {
-                self.titleTextLable.text = dataMovies.title
-                
-            }
-            if let dataCredits = try? decoder.decode(MoviesDetailsEN.self, from: myJSONresponse.data!) {
-                self.arrayOfActors = dataCredits.credits?.cast ?? []
-          
-                              self.actorsCollectionView.reloadData()
+            if let dataOfMovie = try? decoder.decode(MovieDetailsEN.self, from: myJSONresponse.data!) {
+                self.movieWithDetails = dataOfMovie
+                self.getMoviePoster()
+                self.fillDetailsFromMovie()
+                self.arrayOfActors = movieWithDetails?.credits?.cast ?? []
+                self.actorsCollectionView.reloadData()
             }
         }
     }
     
     func alamofireSimilarMoviesRequest() {
         
-        AF.request("https://api.themoviedb.org/3/movie/\(movie?.id ?? 0)/similar?api_key=86b8d80830ef6774289e25cad39e4fbd&language=en-US&page=1").responseJSON { [self] myJSONresponse in
+        AF.request("https://api.themoviedb.org/3/movie/\(movieID ?? 0)/similar?api_key=86b8d80830ef6774289e25cad39e4fbd&language=en-US&page=1").responseJSON { [self] myJSONresponse in
             
             let decoder = JSONDecoder()
             if let dataMovies = try? decoder.decode(ResultSimilarMovies.self, from: myJSONresponse.data!) {
@@ -556,7 +562,7 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
     }
     func alamofireVideoMaterialsRequest() {
 
-        AF.request("https://api.themoviedb.org/3/movie/\(movie?.id ?? 0)/videos?api_key=86b8d80830ef6774289e25cad39e4fbd").responseJSON {  myJSONresponse in
+        AF.request("https://api.themoviedb.org/3/movie/\(movieID ?? 0)/videos?api_key=86b8d80830ef6774289e25cad39e4fbd").responseJSON {  myJSONresponse in
 
             let decoder = JSONDecoder()
             if let videoMat = try? decoder.decode(ResultVideoMaterials.self, from: myJSONresponse.data!) {
@@ -588,7 +594,6 @@ extension MovieDetailedScrollViewController: UICollectionViewDataSource, UIColle
         if collectionView == moviesCollectionView {
            
             guard let movieCell = moviesCollectionView.dequeueReusableCell(withReuseIdentifier: SimilarMovieCollectionViewCell.reuseIndetifire, for: indexPath) as? SimilarMovieCollectionViewCell  else {return UICollectionViewCell()}
-            movieCell.backgroundColor = .blue
             movieCell.cellConfigure(similarMovie: arrayOfSimilarMovies[indexPath.row])
               return movieCell
             
@@ -606,11 +611,18 @@ extension MovieDetailedScrollViewController: UICollectionViewDataSource, UIColle
      print(arrayOfActors[indexPath.row].id ?? "")
 //        print(movie?.id)
 
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        if let testViewController = storyboard.instantiateViewController(withIdentifier: "TestViewController") as? TestViewController {
+//            navigationController?.pushViewController(testViewController, animated: true)
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let testViewController = storyboard.instantiateViewController(withIdentifier: "TestViewController") as? TestViewController {
-            navigationController?.pushViewController(testViewController, animated: true)
+        if let movieDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: MovieDetailedScrollViewController.reuseIdentifire) as? MovieDetailedScrollViewController {
+            
+            
+            movieDetailedScrollViewController.movieID = arrayOfSimilarMovies[indexPath.row].id
+                    navigationController?.pushViewController(movieDetailedScrollViewController, animated: true)
+                
+            
         }
     }
 }
-
 

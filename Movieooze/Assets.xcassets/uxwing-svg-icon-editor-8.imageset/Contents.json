@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "uxwing-svg-icon-editor-8.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

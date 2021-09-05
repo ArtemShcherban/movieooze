@@ -46,7 +46,7 @@ func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
    let storyboard = UIStoryboard(name: "Main", bundle: nil)
     if let movieDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: MovieDetailedScrollViewController.reuseIdentifire) as? MovieDetailedScrollViewController {
 
-        movieDetailedScrollViewController.movie = arrayOfMovies[indexPath.row]
+        movieDetailedScrollViewController.movieID = arrayOfMovies[indexPath.row].id
         self.navigationController?.pushViewController(movieDetailedScrollViewController, animated: true)
     }
 }

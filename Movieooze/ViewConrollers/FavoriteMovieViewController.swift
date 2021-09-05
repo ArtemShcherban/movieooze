@@ -33,7 +33,6 @@ class FavoriteMovieViewController: UIViewController {
         
         
         self.getMoviesFromRealm {
-            print("jfbjkbjkfbjk")
         }
         self.favoriteMovieTableView.reloadData()
         
@@ -47,17 +46,10 @@ class FavoriteMovieViewController: UIViewController {
         return searchController.isActive && !isSearchBarisEmpty
     }
     
-//    func filterFavoritesMovies(_ searchText: String) {
-//        filteredFavoriteMovies = arrayOfMoviesForFavorites.filter { (movie: Movie) -> Bool in
-//
-//            return
-//                movie.title?.lowercased().contains(searchText.lowercased()) ?? false
-//        }
-//        favoriteMovieTableView.reloadData()
-//    }
+
     func filterFavoritesMovies(_ searchText: String) {
         filteredFavoriteMovies = arrayOfMoviesForFavorites.filter { (movie: Movie) -> Bool in
-//            if  let key = dicGenres.ke
+
             return
                 movie.title?.lowercased().contains(searchText.lowercased()) ?? false
         }
@@ -112,7 +104,7 @@ extension FavoriteMovieViewController: UITableViewDelegate {
                 //     🧐 Убрать print
                 print(movieFavorite)
             }
-            movieDetailedScrollViewController.movie = movieFavorite
+            movieDetailedScrollViewController.movieID = movieFavorite.id
             self .navigationController?.pushViewController(movieDetailedScrollViewController, animated: true)
         }
     }

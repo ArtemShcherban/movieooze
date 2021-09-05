@@ -55,7 +55,7 @@ struct Movie: Codable {
         mediaType = try values.decodeIfPresent(String.self, forKey: .mediaType)
     }
 
-        init(from movieForFavorites: FavoriteMovieRealm) {
+        init(from movieForFavorites: MovieForFavoritesRealm) {
         self.title = movieForFavorites.title
         self.adult = movieForFavorites.adult
         self.overview = movieForFavorites.overview
@@ -63,8 +63,8 @@ struct Movie: Codable {
         self.voteAverage = movieForFavorites.voteAverage
         self.id = movieForFavorites.id
         self.backdropPath = movieForFavorites.backdropPath
-        self.genreIds = [movieForFavorites.genreIdFirst, movieForFavorites.genreIdSecond]
-        self.mediaType = movieForFavorites.mediaType
+        self.genreIds = [movieForFavorites.genreIDFirst, movieForFavorites.genreIDSecond]
+//        self.mediaType = movieForFavorites.mediaType
         self.originalLanguage = movieForFavorites.originalLanguage
         self.originalTitle = movieForFavorites.originalTitle
         self.popularity = movieForFavorites.popularity

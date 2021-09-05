@@ -12,7 +12,7 @@ For support, please feel free to contact me at https://www.linkedin.com/in/syeda
 */
 
 import Foundation
-struct Production_countries : Codable {
+struct ProductionCountries : Codable {
 	let iso_3166_1 : String?
 	let name : String?
 

@@ -12,23 +12,26 @@ For support, please feel free to contact me at https://www.linkedin.com/in/syeda
 */
 
 import Foundation
-struct Spoken_languages : Codable {
-	let english_name : String?
-	let iso_639_1 : String?
+struct ProductionCompanies : Codable {
+	let id : Int?
+	let logo_path : String?
 	let name : String?
+	let origin_country : String?
 
 	enum CodingKeys: String, CodingKey {
 
-		case english_name = "english_name"
-		case iso_639_1 = "iso_639_1"
+		case id = "id"
+		case logo_path = "logo_path"
 		case name = "name"
+		case origin_country = "origin_country"
 	}
 
 	init(from decoder: Decoder) throws {
 		let values = try decoder.container(keyedBy: CodingKeys.self)
-		english_name = try values.decodeIfPresent(String.self, forKey: .english_name)
-		iso_639_1 = try values.decodeIfPresent(String.self, forKey: .iso_639_1)
+		id = try values.decodeIfPresent(Int.self, forKey: .id)
+		logo_path = try values.decodeIfPresent(String.self, forKey: .logo_path)
 		name = try values.decodeIfPresent(String.self, forKey: .name)
+		origin_country = try values.decodeIfPresent(String.self, forKey: .origin_country)
 	}
 
 }
