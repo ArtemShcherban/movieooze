@@ -107,25 +107,9 @@ struct MovieDetailsEN : Codable {
 	}
     
     init(from movieForFavorites: MovieForFavoritesRealm) {
-//    self.title = movieForFavorites.title
-//    self.adult = movieForFavorites.adult
-//    self.overview = movieForFavorites.overview
-//    self.posterPath = movieForFavorites.posterPath
-//    self.voteAverage = movieForFavorites.voteAverage
-//    self.id = movieForFavorites.id
-//    self.backdropPath = movieForFavorites.backdropPath
-//    self.genreIds = [movieForFavorites.genreIdFirst, movieForFavorites.genreIdSecond]
-//    self.mediaType = movieForFavorites.mediaType
-//    self.originalLanguage = movieForFavorites.originalLanguage
-//    self.originalTitle = movieForFavorites.originalTitle
-//    self.popularity = movieForFavorites.popularity
-//    self.releaseDate = movieForFavorites.releaseDate
-//    self.voteCount = movieForFavorites.voteCount
-//    self.video = movieForFavorites.video
         self.adult = movieForFavorites.adult
         self.backdropPath = movieForFavorites.backdropPath
         self.budget = movieForFavorites.budget
-//        self.genres = movieForFavorites.
         self.homepage = movieForFavorites.homepage
         self.id = movieForFavorites.id
         self.imdbId = movieForFavorites.imdbId
@@ -134,21 +118,16 @@ struct MovieDetailsEN : Codable {
         self.overview = movieForFavorites.overview
         self.popularity = movieForFavorites.popularity
         self.posterPath = movieForFavorites.posterPath
-//        self.productionCompanies : [ProductionCompanies]?
-//        self.productionCountries : [ProductionCountries]?
         self.releaseDate = movieForFavorites.releaseDate
         self.revenue = movieForFavorites.revenue
         self.runtime = movieForFavorites.runtime
-//        self.spokenLanguages : [SpokenLanguages]?
         self.status = movieForFavorites.status
         self.tagline = movieForFavorites.tagline
         self.title = movieForFavorites.tagline
         self.video = movieForFavorites.video
         self.voteAverage = movieForFavorites.voteAverage
         self.voteCount = movieForFavorites.voteCount
-//        self.videos : Videos?
-//        self.images : Images?
-//        self.credits : Credits?
+
 
 }
 

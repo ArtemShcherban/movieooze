@@ -64,7 +64,6 @@ struct Movie: Codable {
         self.id = movieForFavorites.id
         self.backdropPath = movieForFavorites.backdropPath
         self.genreIds = [movieForFavorites.genreIDFirst, movieForFavorites.genreIDSecond]
-//        self.mediaType = movieForFavorites.mediaType
         self.originalLanguage = movieForFavorites.originalLanguage
         self.originalTitle = movieForFavorites.originalTitle
         self.popularity = movieForFavorites.popularity

@@ -40,6 +40,8 @@ class PlayerViewController: UIViewController {
         playerView = YTPlayerView()
         playerView.backgroundColor = .clear
         self.view.addSubview(playerView)
+        
+        // Check If Array Of Traillers is empty
         if arrayOfTraillers.isEmpty {
         noTrailerFunction()
         } else {

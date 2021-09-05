@@ -32,7 +32,7 @@ struct MovieForDelete {
     var video = false
 }
 
-func dateFormat(date: String) -> String {
+func dateFormatYear(date: String) -> String {
 
     let dateFormatterGet = DateFormatter()
     dateFormatterGet.dateFormat = "yyyy-MM-dd"
@@ -43,7 +43,22 @@ func dateFormat(date: String) -> String {
     if let date = dateFormatterGet.date(from: date) {
         return    dateFormatterSet.string(from: date)
     } else {
-        return "There was an error decoding the string (Date)"
+        return ""
+    }
+}
+
+func dateFormatDDMMYY(date: String) -> String {
+
+    let dateFormatterGet = DateFormatter()
+    dateFormatterGet.dateFormat = "yyyy-MM-dd"
+    
+    let dateFormatterSet = DateFormatter()
+    dateFormatterSet.dateFormat = "dd.MM.yyyy"
+   
+    if let date = dateFormatterGet.date(from: date) {
+        return    dateFormatterSet.string(from: date)
+    } else {
+        return " "
     }
 }
 

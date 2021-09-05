@@ -37,8 +37,7 @@ class SimilarMovieCollectionViewCell: UICollectionViewCell {
         self.similarMovieTitleLabel.backgroundColor = .clear
         self.similarMovieTitleLabel.text = similarMovie.title
         self.addSubview(similarMovieTitleLabel)
-////  🧐 Убрать print
-        print(similarMovieTitleLabel ?? "")
+
         let imageURL = posterBaseURL + "\(similarMovie.poster_path ?? "")"
         self.similarMovieImageView.sd_setImage(with: URL(string: imageURL), placeholderImage: UIImage(named: "placeholder.png"))
     }

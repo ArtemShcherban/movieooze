@@ -75,10 +75,6 @@ struct RealmManager {
             let movie = Movie(from: eachMovie)
             movies.append(movie)
         }
-        //🧐 удалить
-        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-        print(movies)
-        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         return movies
     }
     

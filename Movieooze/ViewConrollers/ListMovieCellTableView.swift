@@ -50,7 +50,7 @@ class ListMovieCellTableView: UITableViewCell {
         self.posterView.layer.cornerRadius = 8
         
         self.titleMovieTextLabel.text = movie.title
-        self.yearTextLabel.text = dateFormat(date: movie.releaseDate ?? "")
+        self.yearTextLabel.text = dateFormatYear(date: movie.releaseDate ?? "")
         self.rightArrowView.image = UIImage.init(named: "fi-rr-angle-small-right-grey")
         
         let starsLevel = movie.voteAverage

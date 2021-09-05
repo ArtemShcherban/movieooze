@@ -14,7 +14,7 @@ class FavoriteMovieViewController: UIViewController {
     @IBOutlet weak var favoriteMovieTableView: UITableView!
     
     let searchController = UISearchController(searchResultsController: nil)
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -46,10 +46,10 @@ class FavoriteMovieViewController: UIViewController {
         return searchController.isActive && !isSearchBarisEmpty
     }
     
-
+    
     func filterFavoritesMovies(_ searchText: String) {
         filteredFavoriteMovies = arrayOfMoviesForFavorites.filter { (movie: Movie) -> Bool in
-
+            
             return
                 movie.title?.lowercased().contains(searchText.lowercased()) ?? false
         }
@@ -97,11 +97,10 @@ extension FavoriteMovieViewController: UITableViewDelegate {
             
             if isFiltering {
                 movieFavorite = filteredFavoriteMovies[indexPath.row]
-                //     🧐 Убрать print
-                print(movieFavorite)
+                
             } else {
                 movieFavorite = arrayOfMoviesForFavorites[indexPath.row]
-                //     🧐 Убрать print
+                
                 print(movieFavorite)
             }
             movieDetailedScrollViewController.movieID = movieFavorite.id

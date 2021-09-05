@@ -39,11 +39,8 @@ class ActorCollectionViewCell: UICollectionViewCell {
         self.actorNameLabel.text = actor.name
 
         self.addSubview(actorNameLabel)
-       
-        
-//  🧐 Убрать print
-        print(actor.name ?? "")
     }
+    
     func loadActorImage(actor: Cast) {
         if actor.profile_path == nil {
             if actor.gender  == 1 {
