@@ -100,7 +100,7 @@ extension FavoriteMovieViewController: UITableViewDelegate {
                 
             } else {
                 movieFavorite = arrayOfMoviesForFavorites[indexPath.row]
-                
+//🧐 убрать print
                 print(movieFavorite)
             }
             movieDetailedScrollViewController.movieID = movieFavorite.id

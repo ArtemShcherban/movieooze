@@ -20,8 +20,9 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
     var posterImageView: UIImageView!
     var gradientView: UIView!
     var mainContainerView: UIView!
-    var titleTextLable, overviewTextLabel, releaseDateTextLabel, genresTextLabel, runtimeTextLabel: UILabel!
-    var addToFavoriteButton, overviewClearButton, playButton: UIButton!
+    var titleTextLable, overviewTextLabel, releaseDateTextLabel, genresTextLabel, runtimeTextLabel, countryTextLabel: UILabel!
+    var overviewClearButton, playButton: UIButton!
+    var addToFavoriteButton: UIBarButtonItem!
     var overviewButtonPressed = false
     var movieID: Int!
     var movieWithDetails: MovieDetailsEN? = nil
@@ -33,6 +34,9 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
     var dividerTopLineActorView, dividerLineActorsView, dividerLineMoviesView: UIView!
     var arrayOfSimilarMovies: [SimilarMovie] = []
     var arrayOfTraillers: [String] = []
+    var logoImageView: UIImageView!
+    var logoAspectRatio: Float = 0.0
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +47,7 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         createViews()
         setViewConstraints()
         checkMovieForFavorites()
- 
+        
         // Title Text Lable Customization
         self.titleTextLable.backgroundColor = .clear
         self.titleTextLable.font = UIFont.systemFont(ofSize: 30, weight: .semibold)
@@ -56,18 +60,23 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         
         // Release Date Label Customization
         self.releaseDateTextLabel.backgroundColor = .clear
-        self.releaseDateTextLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
-        self.releaseDateTextLabel.textColor = myLightGreyColor
+        self.releaseDateTextLabel.font = UIFont.systemFont(ofSize: 13, weight: .thin)
+        self.releaseDateTextLabel.textColor = .white
         
         // Genre Label Customization
         self.genresTextLabel.backgroundColor = .clear
-        self.genresTextLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
-        self.genresTextLabel.textColor = myLightGreyColor
+        self.genresTextLabel.font = UIFont.systemFont(ofSize: 13, weight: .thin)
+        self.genresTextLabel.textColor = .white
         
         // Run Time Text Label Customization
         self.runtimeTextLabel.backgroundColor = .clear
-        self.runtimeTextLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
-        self.runtimeTextLabel.textColor = myLightGreyColor
+        self.runtimeTextLabel.font = UIFont.systemFont(ofSize: 13, weight: .thin)
+        self.runtimeTextLabel.textColor = .white
+        
+        // Country Text Label Customization
+        self.countryTextLabel.backgroundColor = .clear
+        self.countryTextLabel.font = UIFont.systemFont(ofSize: 13, weight: .thin)
+        self.countryTextLabel.textColor = .white
         
         // Actors View Customization
         self.actorsView.backgroundColor = .clear
@@ -84,7 +93,8 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         
         // Movies View Customization
         self.moviesView.backgroundColor = .clear
-        
+           
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -96,14 +106,17 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.navigationBar.tintColor = .white
         
+        
         // Set Image for Add To Favorite Button
         if addedToFavorite == false {
-            self.addToFavoriteButton.setImage(UIImage(named: "fi-rr-add-white"), for: .normal)
+            self.addToFavoriteButton.image = UIImage(named: "fi-rr-add-white")
+            self.addToFavoriteButton.tintColor = .white
         } else {
-            self.addToFavoriteButton.setImage(UIImage(named: "fi-rr-heart_grey"), for: .normal)
+            self.addToFavoriteButton.image = UIImage(named: "fi-rr-heart_orange")
+            self.addToFavoriteButton.tintColor = .orange
         }
     }
-    
+
     func createViews() {
         
         // Scroll View
@@ -135,16 +148,11 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         let newLayer = CAGradientLayer()
         newLayer.colors = [UIColor.clear.cgColor,
                            myDarkGreyColor.cgColor]
-        newLayer.endPoint = CGPoint(x: 0.5, y: 0.40)
+        newLayer.endPoint = CGPoint(x: 0.5, y: 0.47)
         newLayer.frame = self.view.frame
         self.gradientView.layer.addSublayer(newLayer)
         self.scrollView.addSubview(gradientView)
         
-        // Label
-        label = UILabel()
-        label.backgroundColor = .clear
-        label.numberOfLines = 0
-        self.scrollView.addSubview(label)
         
         // Play Button
         playButton = UIButton()
@@ -153,6 +161,13 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         playButton.addTarget(self, action: #selector(playButtonPressed), for: .touchUpInside)
         self.scrollView.addSubview(playButton)
         
+        // Logo Image View
+        logoImageView = UIImageView()
+        logoImageView.clipsToBounds = true
+        logoImageView.backgroundColor = .clear
+        logoImageView.contentMode = .scaleAspectFit
+        self.scrollView.addSubview(logoImageView)
+        
         // Title Text Lable
         titleTextLable = UILabel()
         titleTextLable.numberOfLines = 0
@@ -160,10 +175,12 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         self.scrollView.addSubview(titleTextLable)
         
         // Add To Favorite Button
-        addToFavoriteButton = UIButton()
-        addToFavoriteButton.backgroundColor = .clear
-        addToFavoriteButton.addTarget(self, action: #selector(addToFavoriteButtonPressed), for: .touchUpInside)
-        self.scrollView.addSubview(addToFavoriteButton)
+        addToFavoriteButton = UIBarButtonItem()
+        addToFavoriteButton.style = .done
+        addToFavoriteButton.target = self
+        addToFavoriteButton.action = #selector(addToFavoriteButtonPressed)
+        self.navigationItem.rightBarButtonItem = addToFavoriteButton
+
         
         // Release Date Label
         releaseDateTextLabel = UILabel()
@@ -182,6 +199,12 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         runtimeTextLabel.numberOfLines = 1
         runtimeTextLabel.baselineAdjustment = .alignBaselines
         self.scrollView.addSubview(runtimeTextLabel)
+        
+        // Country Text Label
+        countryTextLabel = UILabel()
+        countryTextLabel.numberOfLines = 1
+        countryTextLabel.baselineAdjustment = .alignBaselines
+        self.scrollView.addSubview(countryTextLabel)
         
         // OverView Text Label
         overviewTextLabel = UILabel()
@@ -309,13 +332,6 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
                                      self.titleTextLable.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
                                      self.titleTextLable.widthAnchor.constraint(equalToConstant: 250)])
         
-        // Add To Favorite Button Constraints
-        self.addToFavoriteButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([self.addToFavoriteButton.topAnchor.constraint(equalTo: self.scrollView.topAnchor, constant: 320),
-                                     self.addToFavoriteButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
-                                     self.addToFavoriteButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 32),
-                                     self.addToFavoriteButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 32)])
-        
         // Play Button Constraints
         self.playButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([self.playButton.topAnchor.constraint(equalTo: self.titleTextLable.bottomAnchor, constant: 4),
@@ -323,24 +339,29 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
                                      self.playButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 40),
                                      self.playButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 40)])
         
-        // Release Date Label Constraints
+        // Release Date Text Label Constraints
         self.releaseDateTextLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([self.releaseDateTextLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
-                                     self.releaseDateTextLabel.widthAnchor.constraint(equalToConstant: 35),
+                                     self.releaseDateTextLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 33),
                                      self.releaseDateTextLabel.topAnchor.constraint(equalTo: self.playButton.bottomAnchor, constant: 8)])
         
-        // Genre Date Label Constraints
+        // Genre Date Text Label Constraints
         self.genresTextLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([self.genresTextLabel.leadingAnchor.constraint(equalTo: self.releaseDateTextLabel.trailingAnchor, constant: 8),
-                                     self.genresTextLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 60),
+        NSLayoutConstraint.activate([self.genresTextLabel.leadingAnchor.constraint(equalTo: self.releaseDateTextLabel.trailingAnchor, constant: 4),
+                                     self.genresTextLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 150),
                                      self.genresTextLabel.topAnchor.constraint(equalTo: self.playButton.bottomAnchor, constant: 8)])
         
-        // Genre Date Label Constraints
+        // Run Time Text Label Constraints
         self.runtimeTextLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([self.runtimeTextLabel.leadingAnchor.constraint(equalTo: self.genresTextLabel.trailingAnchor, constant: 8),
-                                     self.runtimeTextLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 60),
+        NSLayoutConstraint.activate([self.runtimeTextLabel.leadingAnchor.constraint(equalTo: self.genresTextLabel.trailingAnchor, constant: 4),
+                                     self.runtimeTextLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 55),
                                      self.runtimeTextLabel.topAnchor.constraint(equalTo: self.playButton.bottomAnchor, constant: 8)])
         
+        // Country Text Label Constraints
+        self.countryTextLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([self.countryTextLabel.leadingAnchor.constraint(equalTo: self.runtimeTextLabel.trailingAnchor, constant: 4),
+                                     self.countryTextLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 120),
+                                     self.countryTextLabel.topAnchor.constraint(equalTo: self.playButton.bottomAnchor, constant: 8)])
         // OverView Text Label Constraints
         self.overviewTextLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([self.overviewTextLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
@@ -418,6 +439,16 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
                                      self.dividerLineMoviesView.topAnchor.constraint(equalTo: self.moviesView.bottomAnchor, constant: 4 ),
                                      self.dividerLineMoviesView.heightAnchor.constraint(equalToConstant: 0.5)])
     }
+        // Logo Image View Constraints
+    func setLogoConstraints() {
+        self.logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([self.logoImageView.bottomAnchor.constraint(equalTo: self.playButton.bottomAnchor),
+                                     self.logoImageView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
+                                     self.logoImageView.widthAnchor.constraint(equalToConstant: 75),
+                                     self.logoImageView.heightAnchor.constraint(equalTo: self.logoImageView.widthAnchor, multiplier: CGFloat(logoAspectRatio))])
+        
+    }
+
     
     func getMoviePoster() {
         var imageURL = ""
@@ -430,15 +461,62 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
     }
     
     func fillDetailsFromMovie() {
+        getProductionCompany()
         titleTextLable.text = movieWithDetails?.title
         overviewTextLabel.text = movieWithDetails?.overview
         releaseDateTextLabel.text = dateFormatYear(date: movieWithDetails?.releaseDate ?? "")
         numberOfGenres(genres: movieWithDetails?.genres ?? [])
         runtimeTextLabel.text = "\(movieWithDetails?.runtime ?? 0)" + " min."
+        countryTextLabel.text = getProductionCountries()
         nameOfCollectionViewActorsLabel.text = "Actors:"
         nameOfCollectionViewMoviesLabel.text = "Similar movies:"
+        
+        
     }
-     
+    func getProductionCountries() -> String {
+        if movieWithDetails?.productionCountries?.isEmpty == true {
+            return ""
+        } else {
+            if movieWithDetails?.productionCountries?[0].iso_3166_1 == "US" {
+                return "United States"
+            } else {
+                return movieWithDetails?.productionCountries?[0].name ?? ""
+            }
+        }
+    }
+    
+    func getProductionCompany() {
+        _ = 0
+        var indexInArray = 0
+        if movieWithDetails?.productionCompanies?.isEmpty == true {
+        } else {
+            if (movieWithDetails?.productionCompanies?.count ?? 0) > 1 {
+                var smalestID = movieWithDetails?.productionCompanies?[0].id
+                for index in  0..<(movieWithDetails?.productionCompanies?.count)! {
+                    if let a = movieWithDetails?.productionCompanies?[index].id {
+                        
+                        if a < smalestID ?? 0 {
+                            smalestID = a
+                            indexInArray = index
+                        }
+                    }
+                }
+                let productionCompanyID = movieWithDetails?.productionCompanies?[indexInArray].id ?? 0
+                alamofirePoductionCompanyLogo(productionCompanyID: productionCompanyID)
+    //🧐 убрать print
+                print(movieWithDetails?.productionCompanies?[indexInArray].id ?? 0)
+                print(movieWithDetails?.id ?? 0)
+            } else {
+                let productionCompanyID = movieWithDetails?.productionCompanies?[indexInArray].id ?? 0
+                alamofirePoductionCompanyLogo(productionCompanyID: productionCompanyID)
+    //🧐 убрать print
+                print(movieWithDetails?.productionCompanies?[indexInArray].id ?? "")
+                print(movieWithDetails?.id ?? 0)
+            }
+        }
+    }
+    
+    
     func numberOfGenres(genres: [Genres]) {
         if genres.count >= 2 {
             self.genresTextLabel.text = ("\(genres[0].name ?? "")" + ", " + "\(genres[1].name ?? "")")
@@ -457,17 +535,18 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
             navigationController?.pushViewController(playerViewConroller, animated: true)
         }
     }
-    
+
     @objc func addToFavoriteButtonPressed() {
         if addedToFavorite == false {
             RealmManager.shared.createAndSaveMovieForFavorites(movie: movieWithDetails)
             addedToFavorite = true
-            self.addToFavoriteButton.setImage(UIImage(named: "fi-rr-heart_grey"), for: .normal)
-            
+            self.addToFavoriteButton.image = UIImage(named: "fi-rr-heart_grey")
+            self.addToFavoriteButton.tintColor = .orange
         } else {
             RealmManager.shared.deleteMoviesForFavoritesFromRealmByID(movieID: movieID ?? 0)
             addedToFavorite = false
-            self.addToFavoriteButton.setImage(UIImage(named: "fi-rr-add-white"), for: .normal)
+            self.addToFavoriteButton.image = UIImage(named: "fi-rr-add-white")
+            self.addToFavoriteButton.tintColor = .white
         }
     }
     
@@ -483,6 +562,21 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         }
     }
     
+    func setTitleForBackButton() {
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: self.movieWithDetails?.title?[0..<25] , style: .plain, target: self, action: nil)
+    }
+    
+    func getLogoAspectRatio(height: Int, width: Int){
+        logoAspectRatio = Float(height) / Float(width)
+        setLogoConstraints()
+    }
+    
+    func setLogoImage(logoPath: String) {
+        var imageURL = ""
+        imageURL = posterBaseURL + "\(logoPath )"
+        self.logoImageView.sd_setImage(with: URL(string: imageURL), placeholderImage: UIImage(named: "placeholder.png"))
+    }
+    
     func alamofireMovieDetailsRequest() {
         
         AF.request("https://api.themoviedb.org/3/movie/\(movieID ?? 0)?api_key=86b8d80830ef6774289e25cad39e4fbd&language=en-EN&append_to_response=videos,images,credits").responseJSON { [self] myJSONresponse in
@@ -492,12 +586,35 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
                 self.movieWithDetails = dataOfMovie
                 self.getMoviePoster()
                 self.fillDetailsFromMovie()
+                self.setTitleForBackButton()
                 self.arrayOfActors = movieWithDetails?.credits?.cast ?? []
                 self.actorsCollectionView.reloadData()
+            }
+            if let movieImages = try? decoder.decode(Images.self, from: myJSONresponse.data!) {
+//🧐 убрать print
+                print(movieImages)
             }
         }
     }
     
+    func alamofirePoductionCompanyLogo(productionCompanyID: Int) {
+        
+        AF.request("https://api.themoviedb.org/3/company/\(productionCompanyID)/images?api_key=86b8d80830ef6774289e25cad39e4fbd").responseJSON { [self] myJSONresponse in
+            
+            let decoder = JSONDecoder()
+            if let movieImagesData = try? decoder.decode(ResultProductionCompanyLogo.self, from: myJSONresponse.data!) {
+                if movieImagesData.logos?.isEmpty == true {
+                    
+                } else {
+                    let logo = movieImagesData.logos?[0]
+                    let logoPath = logo?.file_path
+                    setLogoImage(logoPath: logoPath ?? "")
+                    getLogoAspectRatio(height: logo?.height ?? 0, width: logo?.width ?? 0)
+                }
+            }
+        }
+    }
+
     func alamofireSimilarMoviesRequest() {
         
         AF.request("https://api.themoviedb.org/3/movie/\(movieID ?? 0)/similar?api_key=86b8d80830ef6774289e25cad39e4fbd&language=en-US&page=1").responseJSON { [self] myJSONresponse in
@@ -534,7 +651,6 @@ extension MovieDetailedScrollViewController: UICollectionViewDataSource, UIColle
             return  arrayOfSimilarMovies.count
         } else {
             return arrayOfActors.count
-            
         }
     }
     

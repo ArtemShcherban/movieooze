@@ -18,7 +18,7 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
     var actorsPhotoImageView: UIImageView!
     var gradientView: UIView!
     var mainContainerView: UIView!
-    var nameTextLable, biographyTextLabel, dateOfBirthTextLabel, dateOfDeathTextLabel: UILabel!
+    var nameTextLable, biographyTextLabel, dateOfBirthTextLabel, dateOfDeathTextLabel, placeOfBirth: UILabel!
     var biographyClearButton: UIButton!
     var biographyButtonPressed = false
     var actorID: Int!
@@ -50,13 +50,18 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         
         // Date Of Birth Label Customization
         self.dateOfBirthTextLabel.backgroundColor = .clear
-        self.dateOfBirthTextLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
-        self.dateOfBirthTextLabel.textColor = myLightGreyColor
+        self.dateOfBirthTextLabel.font = UIFont.systemFont(ofSize: 13, weight: .thin)
+        self.dateOfBirthTextLabel.textColor = .white
         
         // Date Of Death Text Label Customization
         self.dateOfDeathTextLabel.backgroundColor = .clear
-        self.dateOfDeathTextLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
-        self.dateOfDeathTextLabel.textColor = myLightGreyColor
+        self.dateOfDeathTextLabel.font = UIFont.systemFont(ofSize: 13, weight: .thin)
+        self.dateOfDeathTextLabel.textColor = .white
+        
+        // Place Of Birth Label Customization
+        self.placeOfBirth.backgroundColor = .clear
+        self.placeOfBirth.font = UIFont.systemFont(ofSize: 13, weight: .thin)
+        self.placeOfBirth.textColor = .white
         
         // Movies View Customization
         self.moviesView.backgroundColor = .clear
@@ -71,8 +76,7 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        
+
         // Make the Navigation Bar background transparent
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
@@ -135,6 +139,12 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         dateOfDeathTextLabel.numberOfLines = 1
         dateOfDeathTextLabel.baselineAdjustment = .alignBaselines
         self.scrollView.addSubview(dateOfDeathTextLabel)
+        
+        // Place Of Birth Text Label
+        placeOfBirth = UILabel()
+        placeOfBirth.numberOfLines = 1
+        placeOfBirth.baselineAdjustment = .alignBaselines
+        self.scrollView.addSubview(placeOfBirth)
         
         // Biography Text Label
         biographyTextLabel = UILabel()
@@ -235,20 +245,30 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         // Date Of Birth Text Label Constraints
         self.dateOfBirthTextLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([self.dateOfBirthTextLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
-                                     self.dateOfBirthTextLabel.widthAnchor.constraint(equalToConstant: 73),
+                                     self.dateOfBirthTextLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 73),
+                                     self.dateOfBirthTextLabel.heightAnchor.constraint(lessThanOrEqualToConstant: 13),
                                      self.dateOfBirthTextLabel.topAnchor.constraint(equalTo: self.nameTextLable.bottomAnchor, constant: 5)])
         
         // Date Of Death Text Label Constraints
         self.dateOfDeathTextLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([self.dateOfDeathTextLabel.leadingAnchor.constraint(equalTo: self.dateOfBirthTextLabel.trailingAnchor, constant: 0),
-                                     self.dateOfDeathTextLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 60),
+                                     self.dateOfDeathTextLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 75),
+                                     self.dateOfDeathTextLabel.heightAnchor.constraint(lessThanOrEqualToConstant: 13),
                                      self.dateOfDeathTextLabel.topAnchor.constraint(equalTo: self.nameTextLable.bottomAnchor, constant: 5)])
+        
+        // Place of Birth Text Label Constraints
+        self.placeOfBirth.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([self.placeOfBirth.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
+                                     self.placeOfBirth.widthAnchor.constraint(lessThanOrEqualTo: self.view.widthAnchor, constant: -40),
+                                     self.placeOfBirth.heightAnchor.constraint(lessThanOrEqualToConstant: 13),
+                                     self.placeOfBirth.topAnchor.constraint(equalTo: self.dateOfBirthTextLabel.bottomAnchor, constant: 4)])
         
         // Biography Text Label Constraints
         self.biographyTextLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([self.biographyTextLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
                                      self.biographyTextLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
-                                     self.biographyTextLabel.topAnchor.constraint(equalTo: self.dateOfBirthTextLabel.bottomAnchor, constant: 16)])
+                                     self.biographyTextLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 0),
+                                     self.biographyTextLabel.topAnchor.constraint(equalTo: self.placeOfBirth.bottomAnchor, constant: 8)])
         
         // Overview Clear Button Constraints
         self.biographyClearButton.translatesAutoresizingMaskIntoConstraints = false
@@ -295,6 +315,11 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         
     }
     
+    func setTitleForBackButton() {
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: self.actor?.name?[0..<25] , style: .plain, target: self, action: nil)
+        
+    }
+    
     func getActorPhoto() {
         var imageURL = ""
         imageURL = posterBaseURL + "\(actor?.profile_path ?? "")"
@@ -305,12 +330,17 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         
         nameTextLable.text = actor?.name
         biographyTextLabel.text = actor?.biography
-        dateOfBirthTextLabel.text = dateFormatDDMMYY(date: actor?.birthday ?? "")
+        if actor?.birthday != nil {
+            dateOfBirthTextLabel.text = dateFormatDDMMYY(date: actor?.birthday ?? "")
+        }
+        
         if actor?.deathday != nil {
             dateOfDeathTextLabel.text = " - \(dateFormatDDMMYY(date: actor?.deathday ?? ""))"
         } else {
             dateOfDeathTextLabel.text = ""
         }
+        
+        placeOfBirth.text = actor?.place_of_birth ?? ""
         nameOfActorMoviesCollectionViewLabel.text = "Actor's movies:"
     }
     
@@ -336,6 +366,7 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
                 
                 self.getActorPhoto()
                 self.fillActorDetails()
+                setTitleForBackButton()
             }
         }
     }
