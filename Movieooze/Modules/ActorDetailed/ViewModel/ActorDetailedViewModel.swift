@@ -72,7 +72,7 @@ class ActorDetailedViewModel {
     
     func getActorDeathday() -> String {
         if actor?.deathday != nil {
-            return  DateFormat.dateFormatDDMMYY(date: actor?.deathday ?? "")
+            return  " - \(DateFormat.dateFormatDDMMYY(date: actor?.deathday ?? ""))"
         } else {
             return  ""
         }

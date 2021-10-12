@@ -11,8 +11,21 @@ class VideoPlayerViewModel {
     
     var arrayOfTraillers: [String] = []
     
-    func videoMaterialsRequest(movieID: Int, completion: @escaping(() -> ())) {
-        VideoPlayerNetworkService.alamofireVideoMaterialsRequest(movieID: movieID) {
+    func movieVideoMaterialsRequest(movieID: Int, completion: @escaping(() -> ())) {
+        VideoPlayerNetworkService.afMovieVideoMaterialsRequest(movieID: movieID) {
+            videoMaterials in
+            let arrayOfVideos = videoMaterials.results
+            for item in arrayOfVideos ?? [] {
+                if item.type == "Trailer" {
+                    self.arrayOfTraillers.append(item.key ?? "")
+                    completion()
+                }
+            }
+        }
+    }
+    
+    func tvShowVideoMaterialsRequest(tvShowID: Int, completion: @escaping(() -> ())) {
+        VideoPlayerNetworkService.afTVShowVideoMaterialsRequest(tvShowID: tvShowID) {
             videoMaterials in
             let arrayOfVideos = videoMaterials.results
             for item in arrayOfVideos ?? [] {

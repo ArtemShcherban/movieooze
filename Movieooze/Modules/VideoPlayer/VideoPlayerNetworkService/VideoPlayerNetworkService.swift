@@ -9,9 +9,23 @@ import Foundation
 
 class VideoPlayerNetworkService {
     
-  static func alamofireVideoMaterialsRequest(movieID: Int, completion: @escaping(ResultVideoMaterials) -> ()) {
+    static func afMovieVideoMaterialsRequest(movieID: Int, completion: @escaping(ResultVideoMaterials) -> ()) {
         
         let request = "movie/\(movieID)/videos?"
+        
+        NetworkService.shared.getDataFromTMBD(request: request) {  myJSONresponse in
+            
+            let decoder = JSONDecoder()
+            if let videoMaterials = try? decoder.decode(ResultVideoMaterials.self, from: myJSONresponse) {
+                
+                completion(videoMaterials)
+            }
+        }
+    }
+    
+    static func afTVShowVideoMaterialsRequest(tvShowID: Int, completion: @escaping(ResultVideoMaterials) -> ()) {
+        
+        let request = "tv/\(tvShowID)/videos?"
         
         NetworkService.shared.getDataFromTMBD(request: request) {  myJSONresponse in
             

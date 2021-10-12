@@ -19,15 +19,19 @@ class PlayerViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+       
+        self.tabBarController?.tabBar.isHidden = false
         
         if (self.isMovingFromParent) {
           UIDevice.current.setValue(Int(UIInterfaceOrientation.portrait.rawValue), forKey: "orientation")
         }
 
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.tabBarController?.tabBar.isHidden = true
         arrayOfTraillers = videoPlayerViewModel.arrayOfTraillers
         createPlayerView()
         setPlayerConstraints()
@@ -47,7 +51,7 @@ class PlayerViewController: UIViewController {
         if arrayOfTraillers.isEmpty {
         noTrailerFunction()
         } else {
-        playerView.load(withVideoId: arrayOfTraillers.randomElement() ?? "")
+            playerView.load(withVideoId: arrayOfTraillers.randomElement() ?? "", playerVars: ["playsinline": 0 ] )
         playerView.delegate = self
         }
     }
@@ -77,6 +81,7 @@ class PlayerViewController: UIViewController {
 
 extension PlayerViewController: YTPlayerViewDelegate {
     func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
+        
         playerView.playVideo()
     }
 }

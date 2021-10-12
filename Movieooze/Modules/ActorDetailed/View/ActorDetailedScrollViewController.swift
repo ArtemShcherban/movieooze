@@ -24,13 +24,11 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
     var biographyClearButton: UIButton!
     var biographyButtonPressed = false
     var actorID: Int!
-//    var actor: ActorDetails? = nil
     var moviesView: UIView!
     var nameOfActorMoviesCollectionViewLabel: UILabel!
     var actorMoviesCollectionView: UICollectionView!
     var layoutActorMovies: UICollectionViewFlowLayout!
-    var dividerTopLineView, dividerBottomLineView: UIView!
-//    var arrayOfActorMovies: [MovieWithActor] = []
+    var dividerTopLineMoviesView, dividerBottomLineMoviesView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,8 +46,7 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         })
         createViews()
         setViewConstraints()
-//        alamofireActorDetailsRequest()
-//        alamofireActorMoviesRequest()
+
 
         
         // Name Text Lable Customization
@@ -68,20 +65,7 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
             textLabel.font = UIFont.systemFont(ofSize: 13, weight: .thin)
             textLabel.textColor = .white
         }
-//        self.dateOfBirthTextLabel.backgroundColor = .clear
-//        self.dateOfBirthTextLabel.font = UIFont.systemFont(ofSize: 13, weight: .thin)
-//        self.dateOfBirthTextLabel.textColor = .white
-//
-//        // Date Of Death Text Label Customization
-//        self.dateOfDeathTextLabel.backgroundColor = .clear
-//        self.dateOfDeathTextLabel.font = UIFont.systemFont(ofSize: 13, weight: .thin)
-//        self.dateOfDeathTextLabel.textColor = .white
-//
-//        // Place Of Birth Label Customization
-//        self.placeOfBirth.backgroundColor = .clear
-//        self.placeOfBirth.font = UIFont.systemFont(ofSize: 13, weight: .thin)
-//        self.placeOfBirth.textColor = .white
-//
+
         // Movies View Customization
         self.moviesView.backgroundColor = .clear
         
@@ -155,23 +139,7 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
             textLabel.baselineAdjustment = .alignBaselines
             self.scrollView.addSubview(textLabel)
         }
-//        dateOfBirthTextLabel = UILabel()
-//        dateOfBirthTextLabel.numberOfLines = 1
-//        dateOfBirthTextLabel.baselineAdjustment = .alignBaselines
-//        self.scrollView.addSubview(dateOfBirthTextLabel)
-//
-//        // Date Of Death Text Label
-//        dateOfDeathTextLabel = UILabel()
-//        dateOfDeathTextLabel.numberOfLines = 1
-//        dateOfDeathTextLabel.baselineAdjustment = .alignBaselines
-//        self.scrollView.addSubview(dateOfDeathTextLabel)
-//
-//        // Place Of Birth Text Label
-//        placeOfBirth = UILabel()
-//        placeOfBirth.numberOfLines = 1
-//        placeOfBirth.baselineAdjustment = .alignBaselines
-//        self.scrollView.addSubview(placeOfBirth)
-//
+
         // Biography Text Label
         biographyTextLabel = UILabel()
         biographyTextLabel.numberOfLines = 3
@@ -196,20 +164,15 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         
         // Layout Movies
         self.layoutActorMovies = UICollectionViewFlowLayout()
-        self.layoutActorMovies.sectionInset = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
-        self.layoutActorMovies.itemSize = CGSize(width: 80, height: 160)
+        self.layoutActorMovies.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 4)
+        self.layoutActorMovies.itemSize = CGSize(width: 80, height: 150)
         self.layoutActorMovies.scrollDirection = UICollectionView.ScrollDirection.horizontal
         
-        // Divider Top Line Actors View
-        self.dividerTopLineView = UIView()
-        self.dividerTopLineView.backgroundColor = UIColor(white: 0.4, alpha: 0.4)
-        self.moviesView.addSubview(dividerTopLineView)
-        
-        // Divider Bottom Line Movies View
-        self.dividerBottomLineView = UIView()
-        self.dividerBottomLineView.backgroundColor = UIColor(white: 0.4, alpha: 0.4)
-        self.moviesView.addSubview(dividerBottomLineView)
-        
+        // Divider Top Line Movies View
+        self.dividerTopLineMoviesView = UIView()
+        self.dividerTopLineMoviesView.backgroundColor = UIColor(white: 0.4, alpha: 0.4)
+        self.moviesView.addSubview(dividerTopLineMoviesView)
+                
         // Movies Collection View
         self.actorMoviesCollectionView = UICollectionView(frame: self.moviesView.frame, collectionViewLayout: layoutActorMovies)
         self.actorMoviesCollectionView.dataSource = self
@@ -217,6 +180,11 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         self.actorMoviesCollectionView.register(ActorMoviesCollectionViewCell.self, forCellWithReuseIdentifier: ActorMoviesCollectionViewCell.reuseIndetifire)
         self.actorMoviesCollectionView.backgroundColor = .clear
         self.moviesView.addSubview(actorMoviesCollectionView)
+        
+        // Divider Bottom Line Movies View
+        self.dividerBottomLineMoviesView = UIView()
+        self.dividerBottomLineMoviesView.backgroundColor = UIColor(white: 0.4, alpha: 0.4)
+        self.moviesView.addSubview(dividerBottomLineMoviesView)
     }
     
     func setViewConstraints() {
@@ -232,7 +200,7 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         self.mainContainerView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([self.mainContainerView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
                                      self.mainContainerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-                                     self.mainContainerView.topAnchor.constraint(equalTo: self.scrollView.topAnchor, constant: 500),
+                                     self.mainContainerView.topAnchor.constraint(equalTo: self.scrollView.topAnchor, constant: 400),
                                      self.mainContainerView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor)])
         
         // Head Conteiner View Constraints
@@ -265,12 +233,12 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         // Name Text Lable Constraints
         self.nameTextLable.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([self.nameTextLable.bottomAnchor.constraint(equalTo: self.scrollView.topAnchor, constant: 320),
-                                     self.nameTextLable.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
+                                     self.nameTextLable.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 12),
                                      self.nameTextLable.widthAnchor.constraint(equalToConstant: 250)])
         
         // Date Of Birth Text Label Constraints
         self.dateOfBirthTextLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([self.dateOfBirthTextLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
+        NSLayoutConstraint.activate([self.dateOfBirthTextLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 12),
                                      self.dateOfBirthTextLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 0),
                                      self.dateOfBirthTextLabel.heightAnchor.constraint(lessThanOrEqualToConstant: 13),
                                      self.dateOfBirthTextLabel.topAnchor.constraint(equalTo: self.nameTextLable.bottomAnchor, constant: 5)])
@@ -284,60 +252,60 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         
         // Place of Birth Text Label Constraints
         self.placeOfBirth.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([self.placeOfBirth.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
+        NSLayoutConstraint.activate([self.placeOfBirth.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 12),
                                      self.placeOfBirth.widthAnchor.constraint(lessThanOrEqualTo: self.view.widthAnchor, constant: -40),
                                      self.placeOfBirth.heightAnchor.constraint(lessThanOrEqualToConstant: 13),
                                      self.placeOfBirth.topAnchor.constraint(equalTo: self.dateOfBirthTextLabel.bottomAnchor, constant: 4)])
         
         // Biography Text Label Constraints
         self.biographyTextLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([self.biographyTextLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
+        NSLayoutConstraint.activate([self.biographyTextLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 12),
                                      self.biographyTextLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
                                      self.biographyTextLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 0),
                                      self.biographyTextLabel.topAnchor.constraint(equalTo: self.placeOfBirth.bottomAnchor, constant: 8)])
         
-        // Overview Clear Button Constraints
+        // Biography Clear Button Constraints
         self.biographyClearButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([self.biographyClearButton.leadingAnchor.constraint(equalTo: self.biographyTextLabel.leadingAnchor),
                                      self.biographyClearButton.trailingAnchor.constraint(equalTo: self.biographyTextLabel.trailingAnchor),
                                      self.biographyClearButton.topAnchor.constraint(equalTo: self.biographyTextLabel.topAnchor),
                                      self.biographyClearButton.bottomAnchor.constraint(equalTo: self.biographyTextLabel.bottomAnchor)])
         
-        // Divider Top Line View Constraints
-        dividerTopLineView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([self.dividerTopLineView.leadingAnchor.constraint(equalTo: self.moviesView.leadingAnchor, constant: 18),
-                                     self.dividerTopLineView.trailingAnchor.constraint(equalTo: self.moviesView.trailingAnchor),
-                                     self.dividerTopLineView.topAnchor.constraint(equalTo: self.moviesView.topAnchor, constant: 8 ),
-                                     self.dividerTopLineView.heightAnchor.constraint(equalToConstant: 0.5)])
-        
         // Movies View Constraints
         moviesView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([self.moviesView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-                                     self.moviesView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
-                                     self.moviesView.topAnchor.constraint(equalTo: self.biographyTextLabel.bottomAnchor, constant: 2 ),
-                                     self.moviesView.heightAnchor.constraint(equalToConstant: 190),
-                                     self.moviesView.bottomAnchor.constraint(equalTo: self.gradientView.bottomAnchor, constant: -10 )])
+                                     self.moviesView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -12),
+                                     self.moviesView.topAnchor.constraint(equalTo: self.biographyTextLabel.bottomAnchor, constant: 4),
+                                     self.moviesView.heightAnchor.constraint(equalToConstant: 180),
+                                     self.moviesView.bottomAnchor.constraint(equalTo: self.gradientView.bottomAnchor, constant: -10)])
+        
+        // Divider Top Line Movies View Constraints
+        dividerTopLineMoviesView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([self.dividerTopLineMoviesView.leadingAnchor.constraint(equalTo: self.moviesView.leadingAnchor, constant: 12),
+                                     self.dividerTopLineMoviesView.trailingAnchor.constraint(equalTo: self.moviesView.trailingAnchor),
+                                     self.dividerTopLineMoviesView.topAnchor.constraint(equalTo: self.moviesView.topAnchor, constant: 4 ),
+                                     self.dividerTopLineMoviesView.heightAnchor.constraint(equalToConstant: 0.5)])
         
         // Name Of Collection View Movies Constraints
         nameOfActorMoviesCollectionViewLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([self.nameOfActorMoviesCollectionViewLabel.leadingAnchor.constraint(equalTo: self.moviesView.leadingAnchor, constant: 18),
-                                     self.nameOfActorMoviesCollectionViewLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
-                                     self.nameOfActorMoviesCollectionViewLabel.bottomAnchor.constraint(equalTo: self.actorMoviesCollectionView.topAnchor),
+        NSLayoutConstraint.activate([self.nameOfActorMoviesCollectionViewLabel.leadingAnchor.constraint(equalTo: self.moviesView.leadingAnchor, constant: 12),
+                                     self.nameOfActorMoviesCollectionViewLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -12),
+                                     self.nameOfActorMoviesCollectionViewLabel.bottomAnchor.constraint(equalTo: self.actorMoviesCollectionView.topAnchor, constant: -4),
                                      self.nameOfActorMoviesCollectionViewLabel.heightAnchor.constraint(equalToConstant: 20)])
         
         // Movies Collection View Constraints
         actorMoviesCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([self.actorMoviesCollectionView.leadingAnchor.constraint(equalTo: self.moviesView.leadingAnchor, constant: 18),
+        NSLayoutConstraint.activate([self.actorMoviesCollectionView.leadingAnchor.constraint(equalTo: self.moviesView.leadingAnchor, constant: 12),
                                      self.actorMoviesCollectionView.trailingAnchor.constraint(equalTo: self.moviesView.trailingAnchor),
                                      self.actorMoviesCollectionView.topAnchor.constraint(equalTo: self.moviesView.topAnchor, constant: 30),
                                      self.actorMoviesCollectionView.bottomAnchor.constraint(equalTo: self.moviesView.bottomAnchor)])
         
-        // Divider Bottom Line View Constraints
-        dividerBottomLineView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([self.dividerBottomLineView.leadingAnchor.constraint(equalTo: self.moviesView.leadingAnchor, constant: 18),
-                                     self.dividerBottomLineView.trailingAnchor.constraint(equalTo: self.moviesView.trailingAnchor),
-                                     self.dividerBottomLineView.topAnchor.constraint(equalTo: self.moviesView.bottomAnchor, constant: 2 ),
-                                     self.dividerBottomLineView.heightAnchor.constraint(equalToConstant: 0.5)])
+        // Divider Bottom Line Movies View Constraints
+        dividerBottomLineMoviesView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([self.dividerBottomLineMoviesView.leadingAnchor.constraint(equalTo: self.moviesView.leadingAnchor, constant: 12),
+                                     self.dividerBottomLineMoviesView.trailingAnchor.constraint(equalTo: self.moviesView.trailingAnchor),
+                                     self.dividerBottomLineMoviesView.topAnchor.constraint(equalTo: self.moviesView.bottomAnchor, constant: 4),
+                                     self.dividerBottomLineMoviesView.heightAnchor.constraint(equalToConstant: 0.5)])
         
     }
     
@@ -360,15 +328,7 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         dateOfDeathTextLabel.text = actorDetailedViewModel.deathday
         placeOfBirth.text = actorDetailedViewModel.place_of_birth
         nameOfActorMoviesCollectionViewLabel.text = "Actor's movies:"
-//        if actorDetailedViewModel.birthday != "" {
-//            dateOfBirthTextLabel.text = dateFormatDDMMYY(date: actorDetailedViewModel.birthday )
-//        }
-//
-//        if actorDetailedViewModel.deathday != "" {
-//            dateOfDeathTextLabel.text = " - \(dateFormatDDMMYY(date: actor?.deathday ?? ""))"
-//        } else {
-//            dateOfDeathTextLabel.text = ""
-//        }
+
     }
     
     @objc func openOverviewLabel() {
@@ -383,33 +343,6 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
             view.layoutIfNeeded()
         }
     }
-//    func alamofireActorDetailsRequest() {
-//
-//        AF.request("https://api.themoviedb.org/3/person/\(actorID ?? 0)?api_key=86b8d80830ef6774289e25cad39e4fbd").responseJSON { [self] myJSONresponse in
-//
-//            let decoder = JSONDecoder()
-//            if let dataOfActor = try? decoder.decode(ActorDetails.self, from: myJSONresponse.data!) {
-//                self.actor = dataOfActor
-//
-//                self.getActorPhoto()
-//                self.fillActorDetails()
-//                setTitleForBackButton()
-//            }
-//        }
-//    }
-    
-//    func alamofireActorMoviesRequest() {
-//
-//        AF.request("https://api.themoviedb.org/3/person/\(actorID ?? 0)/movie_credits?api_key=86b8d80830ef6774289e25cad39e4fbd").responseJSON { [self] myJSONresponse in
-//
-//            let decoder = JSONDecoder()
-//            if let dataMovies = try? decoder.decode(ResultActor.self, from: myJSONresponse.data!) {
-//
-//                arrayOfActorMovies = dataMovies.cast ?? []
-//                self.actorMoviesCollectionView.reloadData()
-//            }
-//        }
-//    }
 }
 
 extension ActorDetailedScrollViewController: UICollectionViewDataSource, UICollectionViewDelegate {

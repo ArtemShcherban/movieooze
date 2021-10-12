@@ -10,14 +10,13 @@ import Foundation
 struct ListOfGenres {
     static var arrayOFGenres: [Genres] = []
     
-    static  func genresOfMovies(genreIds: [Int]) -> String {
+    static  func genresOfMoviesAndTVShows(genreIds: [Int]) -> String {
         
         if genreIds.isEmpty == true {
             
         } else if genreIds.count >= 2 {
             if genreIds[0] == 0 && genreIds[1] == 0 {
-                print("genreIds[0] = 0 ")
-            }else if genreIds[1] == 0 {
+            } else if genreIds[1] == 0 {
                 let genreFirst = arrayOFGenres.filter({$0.id == genreIds[0]}).first
                 let genre = "\(genreFirst?.name ?? "")"
                 return genre
@@ -35,8 +34,18 @@ struct ListOfGenres {
         return ""
     }
     
+    static  func addTvShowsGenresToArray(array: [Genres]) {
+        for each in array {
+            let located = arrayOFGenres.filter({$0.id == each.id}).first
+            if located == nil {
+                arrayOFGenres.append(each)
+            }
+        }
+    }
     
-    static  func movieGenres(genres: [Genres]) -> String {
+    
+    
+    static  func movieAndTVShowGenres(genres: [Genres]) -> String {
         if genres.count >= 2 {
             let stringOfgenres = ("\(genres[0].name ?? "")" + ", " + "\(genres[1].name ?? "")")
             return stringOfgenres

@@ -1,18 +1,20 @@
 PODS:
-  - Alamofire (5.4.3)
-  - Realm (10.15.1):
-    - Realm/Headers (= 10.15.1)
-  - Realm/Headers (10.15.1)
-  - RealmSwift (10.15.1):
-    - Realm (= 10.15.1)
-  - SDWebImage (5.11.1):
-    - SDWebImage/Core (= 5.11.1)
-  - SDWebImage/Core (5.11.1)
+  - Alamofire (5.4.4)
+  - Realm (10.17.0):
+    - Realm/Headers (= 10.17.0)
+  - Realm/Headers (10.17.0)
+  - RealmSwift (10.17.0):
+    - Realm (= 10.17.0)
+  - Reveal-SDK (31)
+  - SDWebImage (5.12.0):
+    - SDWebImage/Core (= 5.12.0)
+  - SDWebImage/Core (5.12.0)
   - youtube-ios-player-helper (1.0.3)
 
 DEPENDENCIES:
   - Alamofire
   - RealmSwift
+  - Reveal-SDK
   - SDWebImage
   - youtube-ios-player-helper
 
@@ -21,16 +23,18 @@ SPEC REPOS:
     - Alamofire
     - Realm
     - RealmSwift
+    - Reveal-SDK
     - SDWebImage
     - youtube-ios-player-helper
 
 SPEC CHECKSUMS:
-  Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
-  Realm: fbcbde2620d51623cc5b18e28f5b165c39abef52
-  RealmSwift: e4bea8e42efad3d543aea23b56504069c6faaea2
-  SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
+  Alamofire: f3b09a368f1582ab751b3fff5460276e0d2cf5c9
+  Realm: 9533276bd76f66aa2fd0d3ffe700c1f6023dcab6
+  RealmSwift: 57f5d59aa29852587aad1e861989e7af139894b5
+  Reveal-SDK: 62ae124d57732c4fe7e88635274ca24054dd2d29
+  SDWebImage: 4ea20cca2986adc5aacde07aa686742fd4c67a37
   youtube-ios-player-helper: 0185c57db23c80d63d6ca11251d110abb8a4ca61
 
-PODFILE CHECKSUM: 4161215ff2fdb91f34c4b579f6b88a48de71cb80
+PODFILE CHECKSUM: 64778ce4677f1696c4616145e35743d90b9350e2
 
 COCOAPODS: 1.10.2

@@ -13,7 +13,7 @@ For support, please feel free to contact me at https://www.linkedin.com/in/syeda
 
 import Foundation
 struct Videos : Codable {
-	let results : [Results]?
+	let results : [TV]?
 
 	enum CodingKeys: String, CodingKey {
 
@@ -22,7 +22,7 @@ struct Videos : Codable {
 
 	init(from decoder: Decoder) throws {
 		let values = try decoder.container(keyedBy: CodingKeys.self)
-		results = try values.decodeIfPresent([Results].self, forKey: .results)
+		results = try values.decodeIfPresent([TV].self, forKey: .results)
 	}
 
 }

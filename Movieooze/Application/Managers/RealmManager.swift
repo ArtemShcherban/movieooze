@@ -78,14 +78,14 @@ struct RealmManager {
         return movies
     }
     
-    func readFromRealmMovieForFavorites() -> [MovieForFavoritesRealm]  {
-        var   arrayOfMoviesFromRealm: [MovieForFavoritesRealm] = []
-        guard let movieForFavoritesFromRealm = realm?.objects(MovieForFavoritesRealm.self) else { return [] }
-        for eachMovie in movieForFavoritesFromRealm {
-            arrayOfMoviesFromRealm.append(eachMovie)
-        }
-        return arrayOfMoviesFromRealm
-    }
+//    func readFromRealmMovieForFavorites() -> [MovieForFavoritesRealm]  {
+//        var   arrayOfMoviesFromRealm: [MovieForFavoritesRealm] = []
+//        guard let movieForFavoritesFromRealm = realm?.objects(MovieForFavoritesRealm.self) else { return [] }
+//        for eachMovie in movieForFavoritesFromRealm {
+//            arrayOfMoviesFromRealm.append(eachMovie)
+//        }
+//        return arrayOfMoviesFromRealm
+//    }
     
     // MARK: - Удаление объекта из Realm
     

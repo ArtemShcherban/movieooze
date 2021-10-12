@@ -7,62 +7,80 @@
 
 import UIKit
 
-class FavoriteMovieViewController: UIViewController {
+class FavoriteMovieViewController: UIViewController, UISearchControllerDelegate {
+    
+    @IBOutlet weak var searchBar: UISearchBar!
+    
+    static let reuseIdentifire = String(describing: FavoriteMovieViewController.self)
+   
+    var pageIndex: Int!
     
     var favoriteMoviesTableViewViewModel: FavoriteMoviesTableViewViewModel!
     var filteredFavoriteMovies: [Movie] = []
     
     @IBOutlet weak var favoriteMovieTableView: UITableView!
-    
-    let searchController = UISearchController(searchResultsController: nil)
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+//        RealmManagerTVShow.shared.deleteAllDataFromRealmTVShowForFavorites()
+        configureSearchBar()
         favoriteMoviesTableViewViewModel = FavoriteMoviesTableViewViewModel()
-        
-        self.favoriteMovieTableView.register(UINib(nibName: ListMovieCellTableView.reuseIdentifire, bundle: nil), forCellReuseIdentifier: ListMovieCellTableView.reuseIdentifire)
-        
-        searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation =  false
-        searchController.searchBar.placeholder = "Search favorite movie"
-        navigationItem.searchController = searchController
-        definesPresentationContext = true
-        
-    }
-    
+        self.favoriteMovieTableView.register(UINib(nibName: ListCellTableView.reuseIdentifire, bundle: nil), forCellReuseIdentifier: ListCellTableView.reuseIdentifire)
+  }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        
         favoriteMoviesTableViewViewModel.getMoviesFromRealm(completion: {
             self.favoriteMovieTableView.reloadData()
         })
+
+    }
+
+    func configureSearchBar() {
+        self.searchBar.sizeToFit()
+        self.searchBar.delegate = self
+        self.searchBar.clipsToBounds = true
+        self.searchBar.layer.cornerRadius = 15
+        self.searchBar.searchTextField.textColor = .white
+        self.searchBar.searchTextField.font = UIFont.systemFont(ofSize: 16, weight: .thin)
+        self.searchBar.placeholder = "Search favorite movie"
     }
     
-    var isSearchBarisEmpty: Bool {
-        return searchController.searchBar.text?.isEmpty ?? true
-    }
-    
-    var isFiltering: Bool {
-        return searchController.isActive && !isSearchBarisEmpty
-    }
+        var isFiltering: Bool {
+            return searchBar.searchTextField.hasText
+        }
     
     
     func filterFavoritesMovies(_ searchText: String) {
         filteredFavoriteMovies = favoriteMoviesTableViewViewModel.arrayOfMoviesForFavorites.filter { (movie: Movie) -> Bool in
-            
             return
                 movie.title?.lowercased().contains(searchText.lowercased()) ?? false
         }
         favoriteMovieTableView.reloadData()
     }
-}
 
-extension FavoriteMovieViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        let searchBar = searchController.searchBar
-        filterFavoritesMovies(searchBar.text ?? "")
+}
+extension FavoriteMovieViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        filterFavoritesMovies(searchText)
+        
+    }
+
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        self.searchBar.showsCancelButton = true
+        
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        self.searchBar.showsCancelButton = false
+        self.searchBar.text = ""
+        self.searchBar(searchBar, textDidChange: "")
+        searchBar.resignFirstResponder()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+//        view.endEditing(true)
+        searchBar.resignFirstResponder()
     }
 }
 
@@ -76,15 +94,15 @@ extension FavoriteMovieViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard  let cell = tableView.dequeueReusableCell(withIdentifier: ListMovieCellTableView.reuseIdentifire, for: indexPath) as? ListMovieCellTableView else {return UITableViewCell() }
+        guard  let cell = tableView.dequeueReusableCell(withIdentifier: ListCellTableView.reuseIdentifire, for: indexPath) as? ListCellTableView else {return UITableViewCell() }
         
         if isFiltering {
             let  cellViewModel = favoriteMoviesTableViewViewModel.createCellViewModel(indexPath: indexPath, filteredArray: filteredFavoriteMovies)
-               cell.cellConfigure(cellViewModel: cellViewModel)
+               cell.cellConfigureMovie(cellViewModel: cellViewModel)
             
         } else {
          let  cellViewModel = favoriteMoviesTableViewViewModel.createCellViewModel(indexPath: indexPath)
-            cell.cellConfigure(cellViewModel: cellViewModel)
+            cell.cellConfigureMovie(cellViewModel: cellViewModel)
         }
         
         return cell

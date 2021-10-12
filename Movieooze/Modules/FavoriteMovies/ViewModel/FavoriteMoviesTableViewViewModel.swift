@@ -16,6 +16,7 @@ class FavoriteMoviesTableViewViewModel {
         })
         completion()
     }
+
     
     func numberOfRows() -> Int {
         return arrayOfMoviesForFavorites.count

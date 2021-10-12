@@ -8,122 +8,122 @@
 import Foundation
 
 class MovieDetailedViewModel {
-
-    var movieID: Int!
-    var movieWithDetailsNew: MovieDetailsEN! = nil
+    
+    //    var movieID: Int!
+    var movieWithDetails: MovieDetailsEN! = nil
     var logoPath: String!
     var logoAspectRatio: Float = 0.0
     
     func movieDetailsRequest(movieID: Int, completion: @escaping(() -> ())) {
         MovieDetailedNetworkService.alamofireMovieDetailsRequest(movieID: movieID) { dataOfMovie in
-            self.movieWithDetailsNew = dataOfMovie.self
+            self.movieWithDetails = dataOfMovie.self
             completion()
         }
     }
     
     var adult : Bool {
-        movieWithDetailsNew.adult ?? false
+        movieWithDetails.adult ?? false
     }
     var backdropPath : String {
-        movieWithDetailsNew.backdropPath ?? ""
+        movieWithDetails.backdropPath ?? ""
     }
     var belongsToCollection : BelongsToCollection? {
-        movieWithDetailsNew.belongsToCollection
+        movieWithDetails.belongsToCollection
     }
     var budget : Int {
-        movieWithDetailsNew.budget ?? 0
+        movieWithDetails.budget ?? 0
     }
-
+    
     var genres : String {
-        ListOfGenres.movieGenres(genres: movieWithDetailsNew.genres ?? [])
+        ListOfGenres.movieAndTVShowGenres(genres: movieWithDetails.genres ?? [])
     }
     var homepage : String {
-        movieWithDetailsNew.homepage ?? ""
+        movieWithDetails.homepage ?? ""
     }
     var id : Int {
-        movieWithDetailsNew.id ?? 0
+        movieWithDetails.id ?? 0
     }
     var imdbId : String {
-        movieWithDetailsNew.imdbId ?? ""
+        movieWithDetails.imdbId ?? ""
     }
     var originalLanguage : String {
-        movieWithDetailsNew.originalLanguage ?? ""
+        movieWithDetails.originalLanguage ?? ""
     }
     var originalTitle : String {
-        movieWithDetailsNew.originalTitle ?? ""
+        movieWithDetails.originalTitle ?? ""
     }
     var overview : String {
-        movieWithDetailsNew.overview ?? ""
+        movieWithDetails.overview ?? ""
     }
     var popularity : Double {
-        movieWithDetailsNew.popularity ?? 0.0
+        movieWithDetails.popularity ?? 0.0
     }
     var posterPath : String {
-        movieWithDetailsNew.posterPath ?? ""
+        movieWithDetails.posterPath ?? ""
     }
     var productionCompanies : [ProductionCompanies] {
-        movieWithDetailsNew.productionCompanies ?? []
+        movieWithDetails.productionCompanies ?? []
     }
     var productionCountries : String {
         getProductionCountries()
     }
     var releaseDate : String {
-        DateFormat.dateFormatYear(date: movieWithDetailsNew.releaseDate ?? "")
+        DateFormat.dateFormatYear(date: movieWithDetails.releaseDate ?? "")
     }
     var revenue : Int {
-        movieWithDetailsNew.revenue ?? 0
+        movieWithDetails.revenue ?? 0
     }
-
+    
     var runtime : String {
         runtimeString()
     }
     
     var spokenLanguages : [SpokenLanguages] {
-        movieWithDetailsNew.spokenLanguages ?? []
+        movieWithDetails.spokenLanguages ?? []
     }
     var status : String {
-        movieWithDetailsNew.status ?? ""
+        movieWithDetails.status ?? ""
     }
     var tagline : String {
-        movieWithDetailsNew.tagline ?? ""
+        movieWithDetails.tagline ?? ""
     }
     var title : String {
-        movieWithDetailsNew.title ?? ""
+        movieWithDetails.title ?? ""
     }
     var video : Bool {
-        movieWithDetailsNew.video ?? false
+        movieWithDetails.video ?? false
     }
     var voteAverage : Double {
-        movieWithDetailsNew.voteAverage ?? 0.0
+        movieWithDetails.voteAverage ?? 0.0
     }
     var voteCount : Int {
-        movieWithDetailsNew.voteCount ?? 0
+        movieWithDetails.voteCount ?? 0
     }
     var videos : Videos? {
-        movieWithDetailsNew.videos
+        movieWithDetails.videos
     }
     var images : Images? {
-        movieWithDetailsNew.images
+        movieWithDetails.images
     }
     var credits : Credits? {
-        movieWithDetailsNew.credits
+        movieWithDetails.credits
     }
     var productionCompanyLogoURL : String {
         "\(Constants.Network.posterBaseURL)" + "\(logoPath ?? "" )"
     }
-
+    
     
     
     func getProductionCompany(completion: @escaping(() -> ())) {
-       
+        
         var indexInArray = 0
-        if movieWithDetailsNew.productionCompanies?.isEmpty == true {
+        if movieWithDetails.productionCompanies?.isEmpty == true {
             completion()
         } else {
-            if (movieWithDetailsNew.productionCompanies?.count ?? 0) > 1 {
-                var smalestID = movieWithDetailsNew.productionCompanies?[0].id
-                for index in  0..<(movieWithDetailsNew.productionCompanies?.count ?? 0) {
-                    if let a = movieWithDetailsNew.productionCompanies?[index].id {
+            if (movieWithDetails.productionCompanies?.count ?? 0) > 1 {
+                var smalestID = movieWithDetails.productionCompanies?[0].id
+                for index in  0..<(movieWithDetails.productionCompanies?.count ?? 0) {
+                    if let a = movieWithDetails.productionCompanies?[index].id {
                         
                         if a < smalestID ?? 0 {
                             smalestID = a
@@ -131,7 +131,7 @@ class MovieDetailedViewModel {
                         }
                     }
                 }
-                let productionCompanyID = movieWithDetailsNew.productionCompanies?[indexInArray].id ?? 0
+                let productionCompanyID = movieWithDetails.productionCompanies?[indexInArray].id ?? 0
                 MovieDetailedNetworkService.alamofirePoductionCompanyLogo(productionCompanyID: productionCompanyID) { movieImagesData in
                     if movieImagesData.logos?.isEmpty == true || movieImagesData.logos == nil{
                         completion()
@@ -143,11 +143,11 @@ class MovieDetailedViewModel {
                         completion()
                     }
                 }
-    //🧐 убрать print
-                print(movieWithDetailsNew.productionCompanies?[indexInArray].id ?? 0)
-                print(movieWithDetailsNew.id ?? 0 )
+                //🧐 убрать print
+                print(movieWithDetails.productionCompanies?[indexInArray].id ?? 0)
+                print(movieWithDetails.id ?? 0 )
             } else {
-                let productionCompanyID = movieWithDetailsNew.productionCompanies?[indexInArray].id ?? 0
+                let productionCompanyID = movieWithDetails.productionCompanies?[indexInArray].id ?? 0
                 
                 MovieDetailedNetworkService.alamofirePoductionCompanyLogo(productionCompanyID: productionCompanyID) { movieImagesData in
                     if movieImagesData.logos?.isEmpty == true || movieImagesData.logos == nil{
@@ -159,33 +159,33 @@ class MovieDetailedViewModel {
                         completion()
                     }
                 }
-    //🧐 убрать print
-                print(movieWithDetailsNew.productionCompanies?[indexInArray].id ?? "")
-                print(movieWithDetailsNew.id ?? 0 )
+                //🧐 убрать print
+                print(movieWithDetails.productionCompanies?[indexInArray].id ?? "")
+                print(movieWithDetails.id ?? 0 )
             }
         }
     }
     
-    func runtimeString() -> String  {
-        if movieWithDetailsNew.runtime ?? 0 > 0{
-            return "\(movieWithDetailsNew.runtime ?? 0)" + " min."
+    private func runtimeString() -> String  {
+        if movieWithDetails.runtime ?? 0 > 0{
+            return "\(movieWithDetails.runtime ?? 0)" + " min."
         } else {
             return ""
         }
     }
     
-    func getLogoAspectRatio(height: Int, width: Int) {
+    private func getLogoAspectRatio(height: Int, width: Int) {
         logoAspectRatio = Float(height) / Float(width)
     }
     
-    func getProductionCountries() -> String {
-        if movieWithDetailsNew.productionCountries?.isEmpty == true {
+    private func getProductionCountries() -> String {
+        if movieWithDetails.productionCountries?.isEmpty == true {
             return ""
         } else {
-            if movieWithDetailsNew.productionCountries?[0].iso_3166_1 == "US" {
+            if movieWithDetails.productionCountries?[0].iso_3166_1 == "US" {
                 return "United States"
             } else {
-                return movieWithDetailsNew.productionCountries?[0].name ?? ""
+                return movieWithDetails.productionCountries?[0].name ?? ""
             }
         }
     }

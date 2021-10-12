@@ -11,8 +11,12 @@ class ActorsCollectionViewModel {
 
     var arrayOfActors: [Cast] = []
     
-    func getArrayOfActors(movieDetailedViewModel: MovieDetailedViewModel) {
-        self.arrayOfActors = movieDetailedViewModel.movieWithDetailsNew.credits?.cast ?? []
+    func getArrayOfMovieActors(movieDetailedViewModel: MovieDetailedViewModel) {
+        self.arrayOfActors = movieDetailedViewModel.movieWithDetails.credits?.cast ?? []
+    }
+    
+    func getArrayOfTVShowActors(tvShowViewModel: TVShowViewModel) {
+        self.arrayOfActors = tvShowViewModel.tvShowWithDetails.credits?.cast ?? [] 
     }
     
     func numberOfRows() -> Int {
