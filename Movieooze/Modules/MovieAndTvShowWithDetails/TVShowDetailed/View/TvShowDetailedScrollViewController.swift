@@ -7,6 +7,7 @@
 
 import UIKit
 import SDWebImage
+import UIImageColors
 
 class TvShowDetailedScrollViewController: UIViewController, UIScrollViewDelegate {
     
@@ -39,8 +40,8 @@ class TvShowDetailedScrollViewController: UIViewController, UIScrollViewDelegate
     var logoImageView: UIImageView!
     var logoAspectRatio = 0.0
     var addedToFavorite: Bool!
-    
-    
+    var addToFavoriteButtonColor = UIColor.clear
+    var backButtonColor = UIColor.clear
     var episodesTableView: UITableView!
     
     
@@ -67,7 +68,7 @@ class TvShowDetailedScrollViewController: UIViewController, UIScrollViewDelegate
         })
         createViews()
         setViewsConstraints()
-        checkTVShowForFavorites()
+
         
         
         
@@ -108,21 +109,24 @@ class TvShowDetailedScrollViewController: UIViewController, UIScrollViewDelegate
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        checkTVShowForFavorites()
+        
         // Make the Navigation Bar background transparent
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.navigationBar.tintColor = .white
+        self.navigationController?.navigationBar.tintColor = backButtonColor
         
         
                 // Set Image for Add To Favorite Button
                 if addedToFavorite == false {
                     self.addToFavoriteButton.image = UIImage(named: "fi-rr-add-white")
-                    self.addToFavoriteButton.tintColor = .white
+                    self.addToFavoriteButton.tintColor = addToFavoriteButtonColor
                 } else {
                     self.addToFavoriteButton.image = UIImage(named: "fi-rr-heart")
                     self.addToFavoriteButton.tintColor = .orange
                 }
+
     }
     
     func createViews() {
@@ -147,7 +151,6 @@ class TvShowDetailedScrollViewController: UIViewController, UIScrollViewDelegate
         posterImageView.clipsToBounds = true
         posterImageView.backgroundColor = .black
         posterImageView.contentMode = .scaleAspectFill
-        //        posterImageView.image = UIImage(named: "gFZriCkpJYsApPZEF3jhxL4yLzG")
         self.headerContainerView.addSubview(posterImageView)
         
         
@@ -449,12 +452,16 @@ func setLogoConstraints(aspectRatio: Float) {
     
     func checkTVShowForFavorites() {
         addedToFavorite = RealmManagerTVShow.shared.searchTVShowForFavoritesIDInRealm(tvShowID: tvShowID)
+        if addedToFavorite != true {
+            addToFavoriteButtonColor = backButtonColor
+        }
     }
     
     func fillDetailsOfTVShow() {
         self.getTVShowPoster()
         self.getStarsLevel(starsLevel: tvShowViewModel.vote_average)
         self.getProductionCompanyLogo(logoURL: tvShowViewModel.productionCompanyLogoURL)
+        self.getColorsFromPoster()
         titleTextLable.text = tvShowViewModel.name
         releaseDateTextLabel.text = tvShowViewModel.first_air_date
         genresTextLabel.text = tvShowViewModel.genres
@@ -463,8 +470,41 @@ func setLogoConstraints(aspectRatio: Float) {
         overviewTextLabel.text = tvShowViewModel.overview
         nameOfCollectionViewActorsLabel.text = "Actors:"
         nameOfCollectionViewSeasonsLabel.text = "Seasons: \(tvShowViewModel.number_of_seasons)"
-        
     }
+    
+    func getColorsFromPoster() {
+        let fragmentOfPosterImage = snapshot(in: self.posterImageView, rect: CGRect(x: 335, y: 42, width: 30, height: 50))
+        let quality = UIImageColorsQuality.low
+        let start = DispatchTime.now()
+        if  let colors = fragmentOfPosterImage.getColors(quality: quality) {
+            let end = DispatchTime.now()
+//            self.starsImageView.tintColor = colors.background
+            let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
+            let timeInterval = Double(nanoTime) / 1_000_000_000
+            print("\(timeInterval) s.")
+            setColorForAddToFavoriteButton(colors: colors)
+        }
+    }
+    
+    func snapshot(in imageView: UIImageView, rect: CGRect) -> UIImage {
+        return UIGraphicsImageRenderer(bounds: rect).image { _ in
+            imageView.drawHierarchy(in: imageView.bounds, afterScreenUpdates: true)
+        }
+    }
+    
+    func setColorForAddToFavoriteButton(colors: UIImageColors) {
+        if addedToFavorite == true {
+            backButtonColor = colors.background.isDarkColor == true ? .white : Constants.MyColors.myDarkGreyColor
+            self.navigationController?.navigationBar.tintColor = backButtonColor
+            
+        } else {
+            addToFavoriteButtonColor = colors.background.isDarkColor == true ? .white : Constants.MyColors.myDarkGreyColor
+            self.addToFavoriteButton.tintColor = addToFavoriteButtonColor
+            backButtonColor = colors.background.isDarkColor == true ? .white : Constants.MyColors.myDarkGreyColor
+            self.navigationController?.navigationBar.tintColor = backButtonColor
+        }
+    }
+    
     func getTVShowPoster() {
         var imageURL = ""
         imageURL = Constants.Network.posterBaseURL + "\(tvShowViewModel.poster_path)"
@@ -495,12 +535,15 @@ func setLogoConstraints(aspectRatio: Float) {
             RealmManagerTVShow.shared.createAndSaveTVShowForFavorites(tvShow: tvShowViewModel.tvShowWithDetails)
             addedToFavorite = true
             self.addToFavoriteButton.image = UIImage(named: "fi-rr-heart")
-            self.addToFavoriteButton.tintColor = .orange
+            self.addToFavoriteButtonColor = .orange
+            self.addToFavoriteButton.tintColor = addToFavoriteButtonColor
+            
         } else {
             RealmManagerTVShow.shared.deleteTVShowForFavoritesFromRealmByID(tvShowID: tvShowID)
             addedToFavorite = false
             self.addToFavoriteButton.image = UIImage(named: "fi-rr-add-white")
-            self.addToFavoriteButton.tintColor = .white
+            self.addToFavoriteButtonColor = backButtonColor
+            self.addToFavoriteButton.tintColor = addToFavoriteButtonColor
         }
     }
     

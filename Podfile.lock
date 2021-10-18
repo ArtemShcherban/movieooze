@@ -9,6 +9,7 @@ PODS:
   - SDWebImage (5.12.0):
     - SDWebImage/Core (= 5.12.0)
   - SDWebImage/Core (5.12.0)
+  - UIImageColors (2.1.0)
   - youtube-ios-player-helper (1.0.3)
 
 DEPENDENCIES:
@@ -16,6 +17,7 @@ DEPENDENCIES:
   - RealmSwift
   - Reveal-SDK
   - SDWebImage
+  - UIImageColors
   - youtube-ios-player-helper
 
 SPEC REPOS:
@@ -25,6 +27,7 @@ SPEC REPOS:
     - RealmSwift
     - Reveal-SDK
     - SDWebImage
+    - UIImageColors
     - youtube-ios-player-helper
 
 SPEC CHECKSUMS:
@@ -33,8 +36,9 @@ SPEC CHECKSUMS:
   RealmSwift: 57f5d59aa29852587aad1e861989e7af139894b5
   Reveal-SDK: 62ae124d57732c4fe7e88635274ca24054dd2d29
   SDWebImage: 4ea20cca2986adc5aacde07aa686742fd4c67a37
+  UIImageColors: d2ef3b0877d203cbb06489eeb78ea8b7788caabe
   youtube-ios-player-helper: 0185c57db23c80d63d6ca11251d110abb8a4ca61
 
-PODFILE CHECKSUM: 64778ce4677f1696c4616145e35743d90b9350e2
+PODFILE CHECKSUM: c173a62a274fea55cbbe176750b3ab6dc66ed54b
 
 COCOAPODS: 1.10.2
