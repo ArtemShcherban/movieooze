@@ -13,7 +13,7 @@ class SimilarMoviesCollectionNetworkService {
         
         let request = "movie/\(movieID)/similar?"
         
-        NetworkService.shared.getSimilarMovies(request: request) { myJSONresponse in
+        NetworkService.shared.getSimilarMoviesOrTvShows(request: request) { myJSONresponse in
             
             let decoder = JSONDecoder()
             if let similarMoviesData = try? decoder.decode(ResultSimilarMovies.self, from: myJSONresponse) {

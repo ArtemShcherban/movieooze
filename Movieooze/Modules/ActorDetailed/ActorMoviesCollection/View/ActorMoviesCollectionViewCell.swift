@@ -36,9 +36,10 @@ class ActorMoviesCollectionViewCell: UICollectionViewCell {
         self.actorMovieTitleLabel.numberOfLines = 0
         self.actorMovieTitleLabel.backgroundColor = .clear
         self.actorMovieTitleLabel.text = cellViewModel.title
+        self.addSubview(actorMovieTitleLabel)
         
         loadMoviePoster(posterPath: cellViewModel.posterPath)
-        self.addSubview(actorMovieTitleLabel)
+        
     }
     
     func loadMoviePoster(posterPath: String) {

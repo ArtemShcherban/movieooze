@@ -14,6 +14,7 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
     
     var actorDetailedViewModel: ActorDetailedViewModel!
     var actorMoviesCollectionViewModel: ActorMoviesCollectionViewModel!
+    var actorTvShowsCollectionViewModel: ActorTvShowsCollectionViewModel!
     var scrollView: UIScrollView!
     var headerContainerView: UIView!
     var actorsPhotoImageView: UIImageView!
@@ -24,30 +25,32 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
     var biographyClearButton: UIButton!
     var biographyButtonPressed = false
     var actorID: Int!
-    var moviesView: UIView!
-    var nameOfActorMoviesCollectionViewLabel: UILabel!
-    var actorMoviesCollectionView: UICollectionView!
-    var layoutActorMovies: UICollectionViewFlowLayout!
-    var dividerTopLineMoviesView, dividerBottomLineMoviesView: UIView!
+    var moviesView, tvShowsView: UIView!
+    var nameOfActorMoviesCollectionViewLabel, nameOfActorTvShowsCollectionViewLabel: UILabel!
+    var actorMoviesCollectionView, actorTvShowsCollectionView: UICollectionView!
+    var layoutActorMovies, layoutActorTvShows: UICollectionViewFlowLayout!
+    var dividerTopLineMoviesView, dividerBottomLineMoviesView, dividerTopLineTvShowsView, dividerBottomLineTvShowsView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.actorDetailedViewModel = ActorDetailedViewModel()
         self.actorMoviesCollectionViewModel = ActorMoviesCollectionViewModel()
+        self.actorTvShowsCollectionViewModel = ActorTvShowsCollectionViewModel()
         
         actorDetailedViewModel.actorDetailsRequest(actorID: actorID, completion: {
-                            self.getActorPhoto()
-                            self.fillActorDetails()
-                            self.setTitleForBackButton()
+            self.getActorPhoto()
+            self.fillActorDetails()
+            self.setTitleForBackButton()
         })
         actorMoviesCollectionViewModel.actorMoviesRequest(actorID: actorID, completion: {
             self.actorMoviesCollectionView.reloadData()
         })
+        actorTvShowsCollectionViewModel.actorTvShowsRequest(actorID: actorID, completion: {
+            self.actorTvShowsCollectionView.reloadData()
+        })
         createViews()
         setViewConstraints()
-
-
         
         // Name Text Lable Customization
         self.nameTextLable.backgroundColor = .clear
@@ -65,7 +68,7 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
             textLabel.font = UIFont.systemFont(ofSize: 13, weight: .thin)
             textLabel.textColor = .white
         }
-
+        
         // Movies View Customization
         self.moviesView.backgroundColor = .clear
         
@@ -75,11 +78,16 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         self.nameOfActorMoviesCollectionViewLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         self.nameOfActorMoviesCollectionViewLabel.textColor = Constants.MyColors.myLightGreyColor
         
+        // Name Of Actor Tv Shows Collection View
+        self.nameOfActorTvShowsCollectionViewLabel.backgroundColor = .clear
+        self.nameOfActorTvShowsCollectionViewLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        self.nameOfActorTvShowsCollectionViewLabel.textColor = Constants.MyColors.myLightGreyColor
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
         // Make the Navigation Bar background transparent
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
@@ -139,7 +147,7 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
             textLabel.baselineAdjustment = .alignBaselines
             self.scrollView.addSubview(textLabel)
         }
-
+        
         // Biography Text Label
         biographyTextLabel = UILabel()
         biographyTextLabel.numberOfLines = 3
@@ -172,7 +180,7 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         self.dividerTopLineMoviesView = UIView()
         self.dividerTopLineMoviesView.backgroundColor = UIColor(white: 0.4, alpha: 0.4)
         self.moviesView.addSubview(dividerTopLineMoviesView)
-                
+        
         // Movies Collection View
         self.actorMoviesCollectionView = UICollectionView(frame: self.moviesView.frame, collectionViewLayout: layoutActorMovies)
         self.actorMoviesCollectionView.dataSource = self
@@ -181,10 +189,39 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         self.actorMoviesCollectionView.backgroundColor = .clear
         self.moviesView.addSubview(actorMoviesCollectionView)
         
-        // Divider Bottom Line Movies View
-        self.dividerBottomLineMoviesView = UIView()
-        self.dividerBottomLineMoviesView.backgroundColor = UIColor(white: 0.4, alpha: 0.4)
-        self.moviesView.addSubview(dividerBottomLineMoviesView)
+        // Tv Shows View
+        self.tvShowsView = UIView()
+        self.scrollView.addSubview(tvShowsView)
+        
+        // Name Of Collection View Tv Shows
+        nameOfActorTvShowsCollectionViewLabel = UILabel()
+        nameOfActorTvShowsCollectionViewLabel.numberOfLines = 1
+        nameOfActorTvShowsCollectionViewLabel.baselineAdjustment = .alignBaselines
+        self.tvShowsView.addSubview(nameOfActorTvShowsCollectionViewLabel)
+        
+        // Layout Tv Shows
+        self.layoutActorTvShows = UICollectionViewFlowLayout()
+        self.layoutActorTvShows.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 4)
+        self.layoutActorTvShows.itemSize = CGSize(width: 80, height: 150)
+        self.layoutActorTvShows.scrollDirection = UICollectionView.ScrollDirection.horizontal
+        
+        // Divider Top Line Tv Shows View
+        self.dividerTopLineTvShowsView = UIView()
+        self.dividerTopLineTvShowsView.backgroundColor = UIColor(white: 0.4, alpha: 0.4)
+        self.tvShowsView.addSubview(dividerTopLineTvShowsView)
+        
+        // Tv Shows Collection View
+        self.actorTvShowsCollectionView = UICollectionView(frame: self.tvShowsView.frame, collectionViewLayout: layoutActorTvShows)
+        self.actorTvShowsCollectionView.dataSource = self
+        self.actorTvShowsCollectionView.delegate = self
+        self.actorTvShowsCollectionView.register(ActorTvShowsCollectionViewCell.self, forCellWithReuseIdentifier: ActorTvShowsCollectionViewCell.reuseIndetifire)
+        self.actorTvShowsCollectionView.backgroundColor = .clear
+        self.tvShowsView.addSubview(actorTvShowsCollectionView)
+
+        // Divider Bottom Line Tv Shows View
+        self.dividerBottomLineTvShowsView = UIView()
+        self.dividerBottomLineTvShowsView.backgroundColor = UIColor(white: 0.4, alpha: 0.4)
+        self.tvShowsView.addSubview(dividerBottomLineTvShowsView)
     }
     
     func setViewConstraints() {
@@ -276,8 +313,7 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         NSLayoutConstraint.activate([self.moviesView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
                                      self.moviesView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -12),
                                      self.moviesView.topAnchor.constraint(equalTo: self.biographyTextLabel.bottomAnchor, constant: 4),
-                                     self.moviesView.heightAnchor.constraint(equalToConstant: 180),
-                                     self.moviesView.bottomAnchor.constraint(equalTo: self.gradientView.bottomAnchor, constant: -10)])
+                                     self.moviesView.heightAnchor.constraint(equalToConstant: 180)])
         
         // Divider Top Line Movies View Constraints
         dividerTopLineMoviesView.translatesAutoresizingMaskIntoConstraints = false
@@ -300,12 +336,41 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
                                      self.actorMoviesCollectionView.topAnchor.constraint(equalTo: self.moviesView.topAnchor, constant: 30),
                                      self.actorMoviesCollectionView.bottomAnchor.constraint(equalTo: self.moviesView.bottomAnchor)])
         
-        // Divider Bottom Line Movies View Constraints
-        dividerBottomLineMoviesView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([self.dividerBottomLineMoviesView.leadingAnchor.constraint(equalTo: self.moviesView.leadingAnchor, constant: 12),
-                                     self.dividerBottomLineMoviesView.trailingAnchor.constraint(equalTo: self.moviesView.trailingAnchor),
-                                     self.dividerBottomLineMoviesView.topAnchor.constraint(equalTo: self.moviesView.bottomAnchor, constant: 4),
-                                     self.dividerBottomLineMoviesView.heightAnchor.constraint(equalToConstant: 0.5)])
+        // Tv Shows View Constraints
+        tvShowsView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([self.tvShowsView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+                                     self.tvShowsView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -12),
+                                     self.tvShowsView.topAnchor.constraint(equalTo: self.moviesView.bottomAnchor),
+                                     self.tvShowsView.heightAnchor.constraint(equalToConstant: 180),
+                                     self.tvShowsView.bottomAnchor.constraint(equalTo: self.gradientView.bottomAnchor, constant: -10)])
+        
+        // Divider Top Line Tv Shows View Constraints
+        dividerTopLineTvShowsView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([self.dividerTopLineTvShowsView.leadingAnchor.constraint(equalTo: self.tvShowsView.leadingAnchor, constant: 12),
+                                     self.dividerTopLineTvShowsView.trailingAnchor.constraint(equalTo: self.tvShowsView.trailingAnchor),
+                                     self.dividerTopLineTvShowsView.topAnchor.constraint(equalTo: self.tvShowsView.topAnchor, constant: 4 ),
+                                     self.dividerTopLineTvShowsView.heightAnchor.constraint(equalToConstant: 0.5)])
+        
+        // Name Of Collection View Tv Shows Constraints
+        nameOfActorTvShowsCollectionViewLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([self.nameOfActorTvShowsCollectionViewLabel.leadingAnchor.constraint(equalTo: self.tvShowsView.leadingAnchor, constant: 12),
+                                     self.nameOfActorTvShowsCollectionViewLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -12),
+                                     self.nameOfActorTvShowsCollectionViewLabel.bottomAnchor.constraint(equalTo: self.actorTvShowsCollectionView.topAnchor, constant: -4),
+                                     self.nameOfActorTvShowsCollectionViewLabel.heightAnchor.constraint(equalToConstant: 20)])
+        
+        // Tv Shows Collection View Constraints
+        actorTvShowsCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([self.actorTvShowsCollectionView.leadingAnchor.constraint(equalTo: self.tvShowsView.leadingAnchor, constant: 12),
+                                     self.actorTvShowsCollectionView.trailingAnchor.constraint(equalTo: self.tvShowsView.trailingAnchor),
+                                     self.actorTvShowsCollectionView.topAnchor.constraint(equalTo: self.tvShowsView.topAnchor, constant: 30),
+                                     self.actorTvShowsCollectionView.bottomAnchor.constraint(equalTo: self.tvShowsView.bottomAnchor)])
+        
+        // Divider Bottom Line Tv Shows View Constraints
+        dividerBottomLineTvShowsView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([self.dividerBottomLineTvShowsView.leadingAnchor.constraint(equalTo: self.tvShowsView.leadingAnchor, constant: 12),
+                                     self.dividerBottomLineTvShowsView.trailingAnchor.constraint(equalTo: self.tvShowsView.trailingAnchor),
+                                     self.dividerBottomLineTvShowsView.topAnchor.constraint(equalTo: self.tvShowsView.bottomAnchor, constant: 4),
+                                     self.dividerBottomLineTvShowsView.heightAnchor.constraint(equalToConstant: 0.5)])
         
     }
     
@@ -328,7 +393,7 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         dateOfDeathTextLabel.text = actorDetailedViewModel.deathday
         placeOfBirth.text = actorDetailedViewModel.place_of_birth
         nameOfActorMoviesCollectionViewLabel.text = "Actor's movies:"
-
+        nameOfActorTvShowsCollectionViewLabel.text = "Actor's Tv Shows:"
     }
     
     @objc func openOverviewLabel() {
@@ -348,28 +413,62 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
 extension ActorDetailedScrollViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return  actorMoviesCollectionViewModel.numberOfRows()
-        
+        switch collectionView {
+        case actorMoviesCollectionView:
+            return  actorMoviesCollectionViewModel.numberOfRows()
+        case actorTvShowsCollectionView:
+            return actorTvShowsCollectionViewModel.numberOfRows()
+        default:
+            return 0
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        guard let movieCell = collectionView.dequeueReusableCell(withReuseIdentifier: ActorMoviesCollectionViewCell.reuseIndetifire, for: indexPath) as? ActorMoviesCollectionViewCell  else {return UICollectionViewCell()}
-        let cellViewModel = actorMoviesCollectionViewModel.createCellViewModel(indexPath: indexPath)
-        movieCell.cellConfigure(cellViewModel: cellViewModel)
-        return movieCell
-        
+        switch collectionView {
+        case actorMoviesCollectionView:
+            guard let movieCell = collectionView.dequeueReusableCell(withReuseIdentifier: ActorMoviesCollectionViewCell.reuseIndetifire, for: indexPath) as? ActorMoviesCollectionViewCell  else {return UICollectionViewCell()}
+            let cellViewModel = actorMoviesCollectionViewModel.createCellViewModel(indexPath: indexPath)
+            movieCell.cellConfigure(cellViewModel: cellViewModel)
+            return movieCell
+            
+        case actorTvShowsCollectionView:
+            guard let tvShowCell = collectionView.dequeueReusableCell(withReuseIdentifier: ActorTvShowsCollectionViewCell.reuseIndetifire, for: indexPath) as? ActorTvShowsCollectionViewCell  else {return UICollectionViewCell()}
+            let cellViewModel = actorTvShowsCollectionViewModel.createCellViewModel(indexPath: indexPath)
+            tvShowCell.cellConfigure(cellViewModel: cellViewModel)
+            return tvShowCell
+            
+        default:
+            return UICollectionViewCell()
+            
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
-        if let movieDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: MovieDetailedScrollViewController.reuseIdentifire) as? MovieDetailedScrollViewController {
+        switch collectionView {
+        
+        case actorMoviesCollectionView:
+            if let movieDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: MovieDetailedScrollViewController.reuseIdentifire) as? MovieDetailedScrollViewController {
+                
+                movieDetailedScrollViewController.movieID = actorMoviesCollectionViewModel.arrayOfActorMovies[indexPath.row].id
+                
+                navigationController?.pushViewController(movieDetailedScrollViewController, animated: true)
+            }
             
-            movieDetailedScrollViewController.movieID = actorMoviesCollectionViewModel.arrayOfActorMovies[indexPath.row].id
+        case actorTvShowsCollectionView:
+            if let tvShowDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: TvShowDetailedScrollViewController.reuseIdentifire) as? TvShowDetailedScrollViewController {
+                
+                tvShowDetailedScrollViewController.tvShowID = actorTvShowsCollectionViewModel.arrayOfActorTvShows[indexPath.row].id
+                
+                navigationController?.pushViewController(tvShowDetailedScrollViewController, animated: true)
+            }
             
-            navigationController?.pushViewController(movieDetailedScrollViewController, animated: true)
+        default:
+            break
         }
     }
 }
+

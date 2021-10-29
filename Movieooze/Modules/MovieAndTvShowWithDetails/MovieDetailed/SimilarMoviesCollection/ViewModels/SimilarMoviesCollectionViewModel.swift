@@ -11,7 +11,7 @@ class SimilarMoviesCollectionViewModel {
     
     var arrayOfSimilarMovies: [SimilarMovie] = []
     
-    func similarMovieRequest(movieID: Int, completion: @escaping(() -> ())) {
+    func similarMoviesRequest(movieID: Int, completion: @escaping(() -> ())) {
         SimilarMoviesCollectionNetworkService.alamofireSimilarMoviesRequest(movieID: movieID) { similarMoviesData in
             self.arrayOfSimilarMovies = similarMoviesData.results ?? []
             completion()

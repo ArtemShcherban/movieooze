@@ -8,17 +8,17 @@
 import Foundation
 
 class ActorMoviesCellCollectionViewModel {
-   private var movie: MovieWithActor!
+   private var actorMovie: MovieWithActor!
     
     var title : String {
-        movie.title ?? ""
+        actorMovie.title ?? ""
     }
     
     var posterPath : String {
-        movie.poster_path ?? ""
+        actorMovie.poster_path ?? ""
     }
 
-    init(movie: MovieWithActor) {
-        self.movie = movie
+    init(actorMovie: MovieWithActor) {
+        self.actorMovie = actorMovie
     }
 }

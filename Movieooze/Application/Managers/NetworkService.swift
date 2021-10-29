@@ -25,7 +25,7 @@ class NetworkService {
         }
     }
     
-    public func getSimilarMovies(request: String, completion: @escaping (Data) -> ()) {
+    public func getSimilarMoviesOrTvShows(request: String, completion: @escaping (Data) -> ()) {
         AF.request("\(Constants.Network.tmbdDefaultPath)\(request)\(Constants.Network.apiKey)\(Constants.Network.languageOfRequest)").responseJSON { myJSONresponse in
             completion(myJSONresponse.data!)
         }

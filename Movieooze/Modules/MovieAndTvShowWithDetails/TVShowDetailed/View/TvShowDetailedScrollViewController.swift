@@ -17,6 +17,7 @@ class TvShowDetailedScrollViewController: UIViewController, UIScrollViewDelegate
     var videoPlayerViewModel: VideoPlayerViewModel!
     var actorsCollectionViewModel: ActorsCollectionViewModel!
     var seasonsCollectionViewModel: SeasonsCollectionViewModel!
+    var similarTvShowsCollectionViewModel: SimilarTvShowsCollectionViewModel!
     
     var scrollView: UIScrollView!
     var headerContainerView: UIView!
@@ -30,12 +31,11 @@ class TvShowDetailedScrollViewController: UIViewController, UIScrollViewDelegate
     var overviewButtonPressed = false
     var addToFavoriteButton: UIBarButtonItem!
     var tvShowID: Int!
-    var actorsView: UIView!
-    var seasonsView: UIView!
-    var nameOfCollectionViewActorsLabel, nameOfCollectionViewSeasonsLabel: UILabel!
-    var actorsCollectionView, seasonsCollectionView: UICollectionView!
-    var layoutActors, layoutSeasons: UICollectionViewFlowLayout!
-    var dividerTopLineActorView, dividerTopLineSeasonsView, dividerBottomLineSeasonsView: UIView!
+    var actorsView, seasonsView, similarTvShowsView: UIView!
+    var nameOfCollectionViewActorsLabel, nameOfCollectionViewSeasonsLabel, nameOfCollectionViewSimilarTvShowsLabel: UILabel!
+    var actorsCollectionView, seasonsCollectionView, similarTVShowsCollectionView: UICollectionView!
+    var layoutActors, layoutSeasons, layoutSimilarTvShows: UICollectionViewFlowLayout!
+    var dividerTopLineActorView, dividerTopLineSeasonsView, dividerTopLineSimilarTvShowsView, dividerBottomLineSimilarTvShowsView: UIView!
     var arrayOfDividerLines: [UIView] = []
     var logoImageView: UIImageView!
     var logoAspectRatio = 0.0
@@ -51,26 +51,35 @@ class TvShowDetailedScrollViewController: UIViewController, UIScrollViewDelegate
         actorsCollectionViewModel = ActorsCollectionViewModel()
         seasonsCollectionViewModel = SeasonsCollectionViewModel()
         videoPlayerViewModel = VideoPlayerViewModel()
+        similarTvShowsCollectionViewModel = SimilarTvShowsCollectionViewModel()
         tvShowViewModel.tvShowDetailsRequest(tvShowID: tvShowID, completion: {
             self.tvShowViewModel.getProductionCompany(completion: {
-            self.fillDetailsOfTVShow()
-            self.setTitleForBackButton()
-            self.setLogoConstraints(aspectRatio: self.tvShowViewModel.logoAspectRatio)
-            self.actorsCollectionViewModel.getArrayOfTVShowActors(tvShowViewModel: self.tvShowViewModel)
-            self.seasonsCollectionViewModel.getArrayOFSeasons(tvShowViewModel: self.tvShowViewModel)
-            self.actorsCollectionView.reloadData()
-            self.seasonsCollectionView.reloadData()
-            self.videoPlayerViewModel.tvShowVideoMaterialsRequest(tvShowID: self.tvShowID, completion: {})
-            //🧐 убрать print
-            print(self.tvShowViewModel.name)
-            
+                self.fillDetailsOfTVShow()
+                self.setTitleForBackButton()
+                self.setLogoConstraints(aspectRatio: self.tvShowViewModel.logoAspectRatio)
+                self.actorsCollectionViewModel.getArrayOfTVShowActors(tvShowViewModel: self.tvShowViewModel)
+                self.seasonsCollectionViewModel.getArrayOFSeasons(tvShowViewModel: self.tvShowViewModel)
+                self.actorsCollectionView.reloadData()
+                self.seasonsCollectionView.reloadData()
+                self.videoPlayerViewModel.tvShowVideoMaterialsRequest(tvShowID: self.tvShowID, completion: {})
+                self.similarTvShowsCollectionViewModel.similarTvShowsRequest(tvShowID: self.tvShowID, completion: {
+                    self.similarTVShowsCollectionView.reloadData()
+                })
+                //🧐 убрать print
+                print(self.tvShowViewModel.name)
+                
+                print(self.playButton.frame.maxY)
+                print(self.releaseDateTextLabel.frame.minY)
+                print(self.releaseDateTextLabel.frame.midY)
+                print(self.releaseDateTextLabel.frame.maxY)
+                print(self.overviewTextLabel.frame.minY)
+                let font = UIFont.systemFont(ofSize: 13, weight: .thin)
+                print(font.lineHeight)
+               
             })
         })
         createViews()
         setViewsConstraints()
-
-        
-        
         
         // Title Text Lable Customization
         self.titleTextLable.backgroundColor = .clear
@@ -92,6 +101,12 @@ class TvShowDetailedScrollViewController: UIViewController, UIScrollViewDelegate
         // Actors View Customization
         self.actorsView.backgroundColor = .clear
         
+        // TV Show Seasons View Customization
+        self.seasonsView.backgroundColor = .clear
+        
+        // TV Show Seasons View Customization
+        self.similarTvShowsView.backgroundColor = .clear
+        
         // Name Of Collection View Actors Customization
         self.nameOfCollectionViewActorsLabel.backgroundColor = .clear
         self.nameOfCollectionViewActorsLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
@@ -102,8 +117,10 @@ class TvShowDetailedScrollViewController: UIViewController, UIScrollViewDelegate
         self.nameOfCollectionViewSeasonsLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         self.nameOfCollectionViewSeasonsLabel.textColor = Constants.MyColors.myLightGreyColor
         
-        // TV Show Seasons View Customization
-        self.seasonsView.backgroundColor = .clear
+        // Name Of Collection View Similar TvShows
+        self.nameOfCollectionViewSimilarTvShowsLabel.backgroundColor = .clear
+        self.nameOfCollectionViewSimilarTvShowsLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        self.nameOfCollectionViewSimilarTvShowsLabel.textColor = Constants.MyColors.myLightGreyColor
         
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -118,15 +135,15 @@ class TvShowDetailedScrollViewController: UIViewController, UIScrollViewDelegate
         self.navigationController?.navigationBar.tintColor = backButtonColor
         
         
-                // Set Image for Add To Favorite Button
-                if addedToFavorite == false {
-                    self.addToFavoriteButton.image = UIImage(named: "fi-rr-add-white")
-                    self.addToFavoriteButton.tintColor = addToFavoriteButtonColor
-                } else {
-                    self.addToFavoriteButton.image = UIImage(named: "fi-rr-heart")
-                    self.addToFavoriteButton.tintColor = .orange
-                }
-
+        // Set Image for Add To Favorite Button
+        if addedToFavorite == false {
+            self.addToFavoriteButton.image = UIImage(named: "fi-rr-add-white")
+            self.addToFavoriteButton.tintColor = addToFavoriteButtonColor
+        } else {
+            self.addToFavoriteButton.image = UIImage(named: "fi-rr-heart")
+            self.addToFavoriteButton.tintColor = .orange
+        }
+        
     }
     
     func createViews() {
@@ -239,6 +256,16 @@ class TvShowDetailedScrollViewController: UIViewController, UIScrollViewDelegate
         nameOfCollectionViewSeasonsLabel.baselineAdjustment = .alignBaselines
         self.seasonsView.addSubview(nameOfCollectionViewSeasonsLabel)
         
+        // Similar TV Shows View
+        self.similarTvShowsView = UIView()
+        self.scrollView.addSubview(similarTvShowsView)
+        
+        // Name Of Collection View Similar TV Shows
+        nameOfCollectionViewSimilarTvShowsLabel = UILabel()
+        nameOfCollectionViewSimilarTvShowsLabel.numberOfLines = 1
+        nameOfCollectionViewSimilarTvShowsLabel.baselineAdjustment = .alignBaselines
+        self.similarTvShowsView.addSubview(nameOfCollectionViewSimilarTvShowsLabel)
+        
         // Layout Actors
         self.layoutActors = UICollectionViewFlowLayout()
         self.layoutActors.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 4)
@@ -250,6 +277,12 @@ class TvShowDetailedScrollViewController: UIViewController, UIScrollViewDelegate
         self.layoutSeasons.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 4)
         self.layoutSeasons.itemSize = CGSize(width: 80, height: 150)
         self.layoutSeasons.scrollDirection = UICollectionView.ScrollDirection.horizontal
+        
+        // Layout Similar Tv Shows
+        self.layoutSimilarTvShows = UICollectionViewFlowLayout()
+        self.layoutSimilarTvShows.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 4)
+        self.layoutSimilarTvShows.itemSize = CGSize(width: 80, height: 150)
+        self.layoutSimilarTvShows.scrollDirection = UICollectionView.ScrollDirection.horizontal
         
         // Actors Collection View
         self.actorsCollectionView = UICollectionView(frame: self.actorsView.frame, collectionViewLayout: layoutActors)
@@ -272,12 +305,25 @@ class TvShowDetailedScrollViewController: UIViewController, UIScrollViewDelegate
         self.seasonsCollectionView.backgroundColor = .clear
         self.seasonsView.addSubview(seasonsCollectionView)
         
-        // Divider Top Line Season View, Divider Bottom Line Seasons
-        dividerTopLineSeasonsView = UIView(); dividerBottomLineSeasonsView = UIView()
-        arrayOfDividerLines = [dividerTopLineSeasonsView, dividerBottomLineSeasonsView]
+        // Divider Top Line Season View
+        dividerTopLineSeasonsView = UIView()
+        dividerTopLineSeasonsView.backgroundColor = UIColor(white: 0.4, alpha: 0.4)
+        self.actorsView.addSubview(dividerTopLineSeasonsView)
+        
+        // Similar Tv Shows Collection View
+        self.similarTVShowsCollectionView = UICollectionView(frame: self.similarTvShowsView.frame, collectionViewLayout: layoutSimilarTvShows)
+        self.similarTVShowsCollectionView.dataSource = self
+        self.similarTVShowsCollectionView.delegate = self
+        self.similarTVShowsCollectionView.register(SimilarTvShowsCollectionViewCell.self, forCellWithReuseIdentifier: SimilarTvShowsCollectionViewCell.reuseIndetifire)
+        self.similarTVShowsCollectionView.backgroundColor = .clear
+        self.similarTvShowsView.addSubview(similarTVShowsCollectionView)
+        
+        // Divider Top Line Similar Tv Shows View, Divider Bottom Line Similar Tv Shows View
+        dividerTopLineSimilarTvShowsView = UIView(); dividerBottomLineSimilarTvShowsView = UIView()
+        arrayOfDividerLines = [dividerTopLineSimilarTvShowsView, dividerBottomLineSimilarTvShowsView]
         for dividerLine in arrayOfDividerLines {
             dividerLine.backgroundColor = UIColor(white: 0.4, alpha: 0.4)
-            self.seasonsView.addSubview(dividerLine)
+            self.similarTvShowsView.addSubview(dividerLine)
         }
     }
     
@@ -368,7 +414,7 @@ class TvShowDetailedScrollViewController: UIViewController, UIScrollViewDelegate
         overviewTextLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([self.overviewTextLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 12),
                                      self.overviewTextLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -12),
-                                     self.overviewTextLabel.topAnchor.constraint(equalTo: self.releaseDateTextLabel.bottomAnchor, constant: 12)])
+                                     self.overviewTextLabel.topAnchor.constraint(equalTo: self.playButton.bottomAnchor, constant: 35)])
         // Overview Clear Button Constraints
         self.overviewClearButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([self.overviewClearButton.leadingAnchor.constraint(equalTo: self.overviewTextLabel.leadingAnchor),
@@ -409,8 +455,7 @@ class TvShowDetailedScrollViewController: UIViewController, UIScrollViewDelegate
         NSLayoutConstraint.activate([self.seasonsView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
                                      self.seasonsView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -12),
                                      self.seasonsView.topAnchor.constraint(equalTo: self.actorsView.bottomAnchor),
-                                     self.seasonsView.heightAnchor.constraint(equalToConstant: 180),
-                                     self.seasonsView.bottomAnchor.constraint(equalTo: self.gradientView.bottomAnchor, constant: -10 )])
+                                     self.seasonsView.heightAnchor.constraint(equalToConstant: 180)])
         
         // Divider Top Line Seasons Constraints
         dividerTopLineSeasonsView.translatesAutoresizingMaskIntoConstraints = false
@@ -433,22 +478,52 @@ class TvShowDetailedScrollViewController: UIViewController, UIScrollViewDelegate
                                      self.seasonsCollectionView.topAnchor.constraint(equalTo: self.seasonsView.topAnchor, constant: 30),
                                      self.seasonsCollectionView.bottomAnchor.constraint(equalTo: self.seasonsView.bottomAnchor)])
         
+        // Similar Tv Shows View Constraints
+        similarTvShowsView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([self.similarTvShowsView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+                                     self.similarTvShowsView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -12),
+                                     self.similarTvShowsView.topAnchor.constraint(equalTo: self.seasonsView.bottomAnchor),
+                                     self.similarTvShowsView.heightAnchor.constraint(equalToConstant: 180),
+                                     self.similarTvShowsView.bottomAnchor.constraint(equalTo: self.gradientView.bottomAnchor, constant: -10 )])
+        
+        
+        // Divider Top Line Similar Tv Shows Constraints
+        dividerTopLineSimilarTvShowsView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([self.dividerTopLineSimilarTvShowsView.leadingAnchor.constraint(equalTo: self.similarTvShowsView.leadingAnchor, constant: 12),
+                                     self.dividerTopLineSimilarTvShowsView.trailingAnchor.constraint(equalTo: self.similarTvShowsView.trailingAnchor),
+                                     self.dividerTopLineSimilarTvShowsView.topAnchor.constraint(equalTo: self.similarTvShowsView.topAnchor, constant: 4),
+                                     self.dividerTopLineSimilarTvShowsView.heightAnchor.constraint(equalToConstant: 0.5)])
+        
+        // Name Of Collection View Similar Tv Shows Constraints
+        nameOfCollectionViewSimilarTvShowsLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([self.nameOfCollectionViewSimilarTvShowsLabel.leadingAnchor.constraint(equalTo: self.similarTvShowsView.leadingAnchor, constant: 12),
+                                     self.nameOfCollectionViewSimilarTvShowsLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -12),
+                                     self.nameOfCollectionViewSimilarTvShowsLabel.bottomAnchor.constraint(equalTo: self.similarTVShowsCollectionView.topAnchor, constant: -4),
+                                     self.nameOfCollectionViewSimilarTvShowsLabel.heightAnchor.constraint(equalToConstant: 20)])
+        
+        // Similar Tv Shows Collection View Constraints
+        similarTVShowsCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([self.similarTVShowsCollectionView.leadingAnchor.constraint(equalTo: self.similarTvShowsView.leadingAnchor, constant: 12),
+                                     self.similarTVShowsCollectionView.trailingAnchor.constraint(equalTo: self.similarTvShowsView.trailingAnchor),
+                                     self.similarTVShowsCollectionView.topAnchor.constraint(equalTo: self.similarTvShowsView.topAnchor, constant: 30),
+                                     self.similarTVShowsCollectionView.bottomAnchor.constraint(equalTo: self.similarTvShowsView.bottomAnchor)])
+        
         // Divider Bottom Line Seasons Constraints
-        dividerBottomLineSeasonsView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([self.dividerBottomLineSeasonsView.leadingAnchor.constraint(equalTo: self.seasonsView.leadingAnchor, constant: 12),
-                                     self.dividerBottomLineSeasonsView.trailingAnchor.constraint(equalTo: self.seasonsView.trailingAnchor),
-                                     self.dividerBottomLineSeasonsView.topAnchor.constraint(equalTo: self.seasonsView.bottomAnchor, constant: 4),
-                                     self.dividerBottomLineSeasonsView.heightAnchor.constraint(equalToConstant: 0.5)])
+        dividerBottomLineSimilarTvShowsView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([self.dividerBottomLineSimilarTvShowsView.leadingAnchor.constraint(equalTo: self.similarTvShowsView.leadingAnchor, constant: 12),
+                                     self.dividerBottomLineSimilarTvShowsView.trailingAnchor.constraint(equalTo: self.similarTvShowsView.trailingAnchor),
+                                     self.dividerBottomLineSimilarTvShowsView.topAnchor.constraint(equalTo: self.similarTvShowsView.bottomAnchor, constant: 4),
+                                     self.dividerBottomLineSimilarTvShowsView.heightAnchor.constraint(equalToConstant: 0.5)])
     }
     
     // Logo Image View Constraints
-func setLogoConstraints(aspectRatio: Float) {
-    self.logoImageView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([self.logoImageView.bottomAnchor.constraint(equalTo: self.playButton.bottomAnchor),
-                                 self.logoImageView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -12),
-                                 self.logoImageView.widthAnchor.constraint(equalToConstant: 75),
-                                 self.logoImageView.heightAnchor.constraint(equalTo: self.logoImageView.widthAnchor, multiplier: CGFloat(aspectRatio))])
-}
+    func setLogoConstraints(aspectRatio: Float) {
+        self.logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([self.logoImageView.bottomAnchor.constraint(equalTo: self.playButton.bottomAnchor),
+                                     self.logoImageView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -12),
+                                     self.logoImageView.widthAnchor.constraint(equalToConstant: 75),
+                                     self.logoImageView.heightAnchor.constraint(equalTo: self.logoImageView.widthAnchor, multiplier: CGFloat(aspectRatio))])
+    }
     
     func checkTVShowForFavorites() {
         addedToFavorite = RealmManagerTVShow.shared.searchTVShowForFavoritesIDInRealm(tvShowID: tvShowID)
@@ -470,6 +545,7 @@ func setLogoConstraints(aspectRatio: Float) {
         overviewTextLabel.text = tvShowViewModel.overview
         nameOfCollectionViewActorsLabel.text = "Actors:"
         nameOfCollectionViewSeasonsLabel.text = "Seasons: \(tvShowViewModel.number_of_seasons)"
+        nameOfCollectionViewSimilarTvShowsLabel.text = "Similar Tv Shows:"
     }
     
     func getColorsFromPoster() {
@@ -478,7 +554,7 @@ func setLogoConstraints(aspectRatio: Float) {
         let start = DispatchTime.now()
         if  let colors = fragmentOfPosterImage.getColors(quality: quality) {
             let end = DispatchTime.now()
-//            self.starsImageView.tintColor = colors.background
+            //            self.starsImageView.tintColor = colors.background
             let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
             let timeInterval = Double(nanoTime) / 1_000_000_000
             print("\(timeInterval) s.")
@@ -567,46 +643,88 @@ extension TvShowDetailedScrollViewController: UICollectionViewDelegate, UICollec
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView == actorsCollectionView {
+
+        switch collectionView {
+        
+        case actorsCollectionView:
             return self.actorsCollectionViewModel.numberOfRows()
-        } else {
+        case seasonsCollectionView:
             return self.seasonsCollectionViewModel.numberOfRows()
+        case similarTVShowsCollectionView:
+            return similarTvShowsCollectionViewModel.numberOfRows()
+        default:
+            return 0
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if collectionView == actorsCollectionView {
+        
+        switch collectionView {
+        
+        case actorsCollectionView:
+            guard let actorCell =
+                    actorsCollectionView.dequeueReusableCell(withReuseIdentifier:
+                        ActorCollectionViewCell.reuseIndetifire, for: indexPath) as?
+                            ActorCollectionViewCell  else {return UICollectionViewCell()}
             
-            guard let actorCell = actorsCollectionView.dequeueReusableCell(withReuseIdentifier: ActorCollectionViewCell.reuseIndetifire, for: indexPath) as? ActorCollectionViewCell  else {return UICollectionViewCell()}
             let cellViewModel = actorsCollectionViewModel.createCellViewModel(indexPath: indexPath)
             actorCell.cellConfigure(cellViewModel: cellViewModel)
-            return actorCell
             
-        } else {
-            guard let seasonCell = seasonsCollectionView.dequeueReusableCell(withReuseIdentifier: SeasonCollectionViewCell.reuseIndetifire, for: indexPath) as? SeasonCollectionViewCell  else {return UICollectionViewCell()}
+            return actorCell
+        
+        case seasonsCollectionView:
+            guard let seasonCell =
+                    seasonsCollectionView.dequeueReusableCell(withReuseIdentifier: SeasonCollectionViewCell.reuseIndetifire, for: indexPath) as?
+                            SeasonCollectionViewCell  else {return UICollectionViewCell()}
+           
             let cellViewModel = seasonsCollectionViewModel.createCellViewModel(indexPath: indexPath)
             seasonCell.cellConfigure(cellViewModel: cellViewModel)
-            return seasonCell
             
+            return seasonCell
+       
+        case similarTVShowsCollectionView:
+            guard let similarTvShowCell =
+                    similarTVShowsCollectionView.dequeueReusableCell(withReuseIdentifier:
+                        SimilarTvShowsCollectionViewCell .reuseIndetifire, for: indexPath) as? SimilarTvShowsCollectionViewCell  else {return UICollectionViewCell()}
+           
+            let cellViewModel = similarTvShowsCollectionViewModel.createCellViewModel(indexPath: indexPath)
+            similarTvShowCell.cellConfigure(cellViewModel: cellViewModel)
+            
+            return similarTvShowCell
+       
+        default:
+            
+            return UICollectionViewCell()
         }
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
-        if collectionView == actorsCollectionView {
+        switch collectionView {
+        
+        case actorsCollectionView:
             if let actorDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: ActorDetailedScrollViewController.reuseIdentifire) as? ActorDetailedScrollViewController {
-                
-                actorDetailedScrollViewController.actorID = self.actorsCollectionViewModel.arrayOfActors[indexPath.row].id
-                navigationController?.pushViewController(actorDetailedScrollViewController, animated: true)
-            }
-        } else {
             
+                    actorDetailedScrollViewController.actorID = self.actorsCollectionViewModel.arrayOfActors[indexPath.row].id
+                            navigationController?.pushViewController(actorDetailedScrollViewController, animated: true)
+                        }
+            
+        case seasonsCollectionView:
             if let tvShowSeasonScrollViewController = storyboard.instantiateViewController(withIdentifier: TVShowSeasonScrollViewController.reuseIdentifire) as? TVShowSeasonScrollViewController {
-                tvShowSeasonScrollViewController.tvShowSeason =  (tvShowID,
-                                                                  seasonNumber: self.seasonsCollectionViewModel.arrayOFSeasons[indexPath.row].season_number ?? 0)
-                navigationController?.pushViewController(tvShowSeasonScrollViewController, animated: true)
+                
+                    tvShowSeasonScrollViewController.tvShowSeason =  (tvShowID,
+                                                                              seasonNumber: self.seasonsCollectionViewModel.arrayOFSeasons[indexPath.row].season_number ?? 0)
+                            navigationController?.pushViewController(tvShowSeasonScrollViewController, animated: true)
+                        }
+            
+        case similarTVShowsCollectionView:
+            if let tvShowDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: TvShowDetailedScrollViewController.reuseIdentifire) as? TvShowDetailedScrollViewController {
+                
+                tvShowDetailedScrollViewController.tvShowID = similarTvShowsCollectionViewModel.arrayOfSimilarTvShows[indexPath.row].id
+                navigationController?.pushViewController(tvShowDetailedScrollViewController, animated: true)
             }
+        default: break
         }
     }
 }

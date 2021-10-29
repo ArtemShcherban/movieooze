@@ -24,6 +24,6 @@ class ActorMoviesCollectionViewModel {
     
     func createCellViewModel(indexPath: IndexPath) -> ActorMoviesCellCollectionViewModel {
         let movie = arrayOfActorMovies[indexPath.row]
-        return ActorMoviesCellCollectionViewModel(movie: movie)
+        return ActorMoviesCellCollectionViewModel(actorMovie: movie)
     }
 }

@@ -63,7 +63,7 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
                 self.setLogoConstraints(aspectRatio: self.movieDetailedViewModel.logoAspectRatio)
                 self.actorsCollectionViewModel.getArrayOfMovieActors(movieDetailedViewModel: self.movieDetailedViewModel)
                 self.actorsCollectionView.reloadData()
-                self.similarMoviesCollectionViewModel.similarMovieRequest(movieID: self.movieID, completion: {
+                self.similarMoviesCollectionViewModel.similarMoviesRequest(movieID: self.movieID, completion: {
                     self.moviesCollectionView.reloadData()
                 })
             })
@@ -371,7 +371,7 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         self.overviewTextLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([self.overviewTextLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 12),
                                      self.overviewTextLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -12),
-                                     self.overviewTextLabel.topAnchor.constraint(equalTo: self.releaseDateTextLabel.bottomAnchor, constant: 12)])
+                                     self.overviewTextLabel.topAnchor.constraint(equalTo: self.playButton.bottomAnchor, constant: 35)])
         
         // Overview Clear Button Constraints
         self.overviewClearButton.translatesAutoresizingMaskIntoConstraints = false

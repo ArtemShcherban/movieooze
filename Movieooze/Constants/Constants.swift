@@ -24,4 +24,8 @@ struct  Constants {
         static let myDarkGreyColor = UIColor(red: 24/255, green: 26/255, blue: 28/255, alpha: 1)
         static let myLightGreyColor = UIColor(red: 86/255, green: 92/255, blue: 100/255, alpha: 1)
     }
+    
+    struct ExcludedGenres {
+        static let genresOfTvShow = [10767, 10763, 10764, 99]
+    }
 }
