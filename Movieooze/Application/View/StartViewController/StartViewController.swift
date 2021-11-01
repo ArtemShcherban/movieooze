@@ -19,11 +19,11 @@ class StartViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        moviesTrendingViewModel = MoviesTrendingTableViewViewModel()
-        tvShowsTrendingTableViewModel = TVShowsTrendingTableViewModel()
-        moviesTrendingViewModel.moviesGenresRequest()
-        tvShowsTrendingTableViewModel.tvShowsGenresRequest()
+// 🧐 удалить
+//        moviesTrendingViewModel = MoviesTrendingTableViewViewModel()
+//        tvShowsTrendingTableViewModel = TVShowsTrendingTableViewModel()
+//        moviesTrendingViewModel.moviesGenresRequest()
+//        tvShowsTrendingTableViewModel.tvShowsGenresRequest()
         
         title = "Directory"
         setupTabs()

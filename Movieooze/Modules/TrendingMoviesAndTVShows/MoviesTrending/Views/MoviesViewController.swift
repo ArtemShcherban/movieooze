@@ -24,8 +24,13 @@ class MoviesViewController: UIViewController {
         
         self.moviesListTableView.register(UINib(nibName: ListCellTableView.reuseIdentifire, bundle: nil), forCellReuseIdentifier: ListCellTableView.reuseIdentifire)
        
+        tableViewViewModel.moviesGenresRequest(completion: {
+            
+        })
         tableViewViewModel?.moviesTrendingRequest(completion: {
-        self.moviesListTableView.reloadData() })
+        self.moviesListTableView.reloadData()
+            
+        })
     }
 }
 

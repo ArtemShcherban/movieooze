@@ -21,6 +21,11 @@ class TVShowsViewConroller: UIViewController {
         self.tvShowsTableView.register(UINib(nibName: ListCellTableView.reuseIdentifire, bundle: nil), forCellReuseIdentifier: ListCellTableView.reuseIdentifire)
         
         tableViewViewModel = TVShowsTrendingTableViewModel()
+        
+        tableViewViewModel.tvShowsGenresRequest(completion: {
+            
+        })
+        
         tableViewViewModel.tvShowsTrendingRequest(completion: {
             self.tvShowsTableView.reloadData()
         })
