@@ -34,15 +34,3 @@ class TVShowForFavoritesRealm: Object {
     
 }
 
-//    @objc dynamic var created_by : [Created_by] = []
-//    @objc dynamic var episode_run_time : [Int]?
-//    @objc dynamic var languages : [String]?
-//    @objc dynamic var last_episode_to_air : Last_episode_to_air?
-//    @objc dynamic var next_episode_to_air : Next_episode_to_air?
-//    @objc dynamic var networks : [Networks]?
-//    @objc dynamic var origin_country : [String]?
-//    @objc dynamic var production_companies : [ProductionCompanies]?
-//    @objc dynamic var production_countries : [ProductionCountries]?
-//    @objc dynamic var seasons : [Seasons]?
-//    @objc dynamic var spoken_languages : [Spoken_languages]?
-//    @objc dynamic var credits : Credits?

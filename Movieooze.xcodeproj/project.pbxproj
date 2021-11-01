@@ -575,6 +575,7 @@
 		F437C3BF26F252B700BC3ED0 /* VideoPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				F4F118B726EA68A300510265 /* Constants */,
 				F437C3C026F252C600BC3ED0 /* Model */,
 				F437C3C126F252D100BC3ED0 /* View */,
 				F437C3C226F252DA00BC3ED0 /* ViewModel */,
@@ -791,22 +792,6 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		F44C9B7926D360F500B663CC /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				F44C9B7A26D3612800B663CC /* RealmModels */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		F44C9B7A26D3612800B663CC /* RealmModels */ = {
-			isa = PBXGroup;
-			children = (
-				F44C9B7B26D3616900B663CC /* MovieRealm.swift */,
-			);
-			path = RealmModels;
-			sourceTree = "<group>";
-		};
 		F48C0EE426D35273000D280D = {
 			isa = PBXGroup;
 			children = (
@@ -830,10 +815,8 @@
 			children = (
 				F4F118D426ED0C7100510265 /* Extensions */,
 				F4F118CC26ECE68400510265 /* Common */,
-				F4F118B726EA68A300510265 /* Constants */,
 				F4F118BF26ECCC3900510265 /* Modules */,
 				F4F118B026EA631800510265 /* Application */,
-				F44C9B7926D360F500B663CC /* Models */,
 				F48C0EF926D35275000D280D /* Assets.xcassets */,
 				F48C0EFE26D35275000D280D /* Info.plist */,
 				F4B5287326F78E3D0050D211 /* Demo2ViewConroller.swift */,
@@ -1203,6 +1186,7 @@
 		F4F118DE26EDA50E00510265 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				F44C9B7B26D3616900B663CC /* MovieRealm.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";

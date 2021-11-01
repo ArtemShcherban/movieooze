@@ -32,3 +32,4 @@ class MovieForFavoritesRealm: Object {
     @objc dynamic var voteAverage = 0.0
     @objc dynamic var voteCount = 0
 }
+//

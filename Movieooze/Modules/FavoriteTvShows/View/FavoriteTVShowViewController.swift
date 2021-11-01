@@ -15,7 +15,7 @@ class FavoriteTVShowViewController: UIViewController {
     static let reuseIdentifire = String(describing: FavoriteTVShowViewController.self)
    
     var pageIndex: Int!
-    
+    var tvShowsTrendingTableViewModel: TVShowsTrendingTableViewModel!
     var favoriteTVShowTableViewViewModel: FavoriteTVShowTableViewViewModel!
     var filteredFavoriteTVShows: [TVShow] = []
     
@@ -25,12 +25,15 @@ class FavoriteTVShowViewController: UIViewController {
         super.viewDidLoad()
 
         configureSearchBar()
+
         favoriteTVShowTableViewViewModel = FavoriteTVShowTableViewViewModel()
+       
         self.favoriteTVShowTableView.register(UINib(nibName: ListCellTableView.reuseIdentifire, bundle: nil), forCellReuseIdentifier: ListCellTableView.reuseIdentifire)
   }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+      
         favoriteTVShowTableViewViewModel.getTVShowsFromRealm(completion: {
             self.favoriteTVShowTableView.reloadData()
         })

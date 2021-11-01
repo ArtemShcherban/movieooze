@@ -18,14 +18,10 @@ class TVShowsViewConroller: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tvShowsTableView.register(UINib(nibName: ListCellTableView.reuseIdentifire, bundle: nil), forCellReuseIdentifier: ListCellTableView.reuseIdentifire)
-        
         tableViewViewModel = TVShowsTrendingTableViewModel()
-        
-        tableViewViewModel.tvShowsGenresRequest(completion: {
-            
-        })
-        
+  
+        self.tvShowsTableView.register(UINib(nibName: ListCellTableView.reuseIdentifire, bundle: nil), forCellReuseIdentifier: ListCellTableView.reuseIdentifire)
+
         tableViewViewModel.tvShowsTrendingRequest(completion: {
             self.tvShowsTableView.reloadData()
         })
