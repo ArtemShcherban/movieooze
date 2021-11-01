@@ -17,9 +17,10 @@ class TVShowsTrendingTableViewModel {
         }
     }
     
-    func tvShowsGenresRequest(completion: () -> ()) {
+    func tvShowsGenresRequest(completion: @escaping(() -> ())) {
         TVShowsTrendingNetworkService.alamofireGenresListRequest { dataFromTMBD in
             ListOfGenres.addTvShowsGenresToArray(array: dataFromTMBD.genres ?? [])
+            completion()
         }
     }
     
