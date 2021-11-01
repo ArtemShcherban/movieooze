@@ -21,9 +21,10 @@ class MoviesTrendingTableViewViewModel {
         }
     }
     
-    func moviesGenresRequest(completion: () -> ()) {
+    func moviesGenresRequest(completion: @escaping(() -> ())) {
         MoviesTrendingNetworkService.alamofireGenresListRequest { dataFromTMBD in
             ListOfGenres.arrayOFGenres = dataFromTMBD.genres ?? []
+            completion()
         }
     }
     
