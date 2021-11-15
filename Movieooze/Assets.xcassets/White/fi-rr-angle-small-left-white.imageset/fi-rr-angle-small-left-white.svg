@@ -1,0 +1,12 @@
+<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+ <title>165 arrow small left</title>
+
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="514" width="514" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <path fill="#ffffff" id="svg_1" d="m10.6,12.707a1,1 0 0 1 0,-1.414l4.585,-4.586a1,1 0 0 0 -1.414001,-1.414l-4.582,4.585999a3,3 0 0 0 0,4.242001l4.585999,4.586a1,1 0 0 0 1.414001,-1.414001l-4.589,-4.585999z"/>
+ </g>
+</svg>

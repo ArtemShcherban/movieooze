@@ -32,7 +32,7 @@ struct StarsLevel {
         case 2.5..<3.5:
             starsLevelResult = UIImage(named: "fi-rr-1_5stars_orange")
         case 1.5..<2.5:
-            starsLevelResult = UIImage(named: "fi-rr-1star_orange")
+            starsLevelResult = UIImage(named: "fi-rr-star_orange")
         case 0.0..<1.5:
             starsLevelResult = UIImage(named: "fi-rr-0_5star_orange")
         default:

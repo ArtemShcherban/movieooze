@@ -10,6 +10,7 @@ import Foundation
 class MovieDetailedNetworkService {
     
     static func alamofireMovieDetailsRequest(movieID: Int, completion: @escaping(MovieDetailsEN) -> ()) {
+       
         let request = "movie/\(movieID)?"
         
         NetworkService.shared.getMovieDetails(request: request) { myJSONresponse in

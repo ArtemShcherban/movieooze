@@ -42,6 +42,7 @@ class TvShowDetailedScrollViewController: UIViewController, UIScrollViewDelegate
     var addedToFavorite: Bool!
     var addToFavoriteButtonColor = UIColor.clear
     var backButtonColor = UIColor.clear
+    var images: [UIImage] = []
     var episodesTableView: UITableView!
     
     
@@ -63,19 +64,8 @@ class TvShowDetailedScrollViewController: UIViewController, UIScrollViewDelegate
                 self.seasonsCollectionView.reloadData()
                 self.videoPlayerViewModel.tvShowVideoMaterialsRequest(tvShowID: self.tvShowID, completion: {})
                 self.similarTvShowsCollectionViewModel.similarTvShowsRequest(tvShowID: self.tvShowID, completion: {
-                    self.similarTVShowsCollectionView.reloadData()
-                })
-                //🧐 убрать print
-                print(self.tvShowViewModel.name)
-                
-                print(self.playButton.frame.maxY)
-                print(self.releaseDateTextLabel.frame.minY)
-                print(self.releaseDateTextLabel.frame.midY)
-                print(self.releaseDateTextLabel.frame.maxY)
-                print(self.overviewTextLabel.frame.minY)
-                let font = UIFont.systemFont(ofSize: 13, weight: .thin)
-                print(font.lineHeight)
-               
+                self.similarTVShowsCollectionView.reloadData()
+                })               
             })
         })
         createViews()
@@ -134,6 +124,9 @@ class TvShowDetailedScrollViewController: UIViewController, UIScrollViewDelegate
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.navigationBar.tintColor = backButtonColor
         
+        if posterImageView.image != nil {
+        self.setColorsForNavigationBarButtons()
+        }
         
         // Set Image for Add To Favorite Button
         if addedToFavorite == false {
@@ -536,7 +529,7 @@ class TvShowDetailedScrollViewController: UIViewController, UIScrollViewDelegate
         self.getTVShowPoster()
         self.getStarsLevel(starsLevel: tvShowViewModel.vote_average)
         self.getProductionCompanyLogo(logoURL: tvShowViewModel.productionCompanyLogoURL)
-        self.getColorsFromPoster()
+        self.setColorsForNavigationBarButtons()
         titleTextLable.text = tvShowViewModel.name
         releaseDateTextLabel.text = tvShowViewModel.first_air_date
         genresTextLabel.text = tvShowViewModel.genres
@@ -547,40 +540,23 @@ class TvShowDetailedScrollViewController: UIViewController, UIScrollViewDelegate
         nameOfCollectionViewSeasonsLabel.text = "Seasons: \(tvShowViewModel.number_of_seasons)"
         nameOfCollectionViewSimilarTvShowsLabel.text = "Similar Tv Shows:"
     }
-    
-    func getColorsFromPoster() {
-        let fragmentOfPosterImage = snapshot(in: self.posterImageView, rect: CGRect(x: 335, y: 42, width: 30, height: 50))
-        let quality = UIImageColorsQuality.low
-        let start = DispatchTime.now()
-        if  let colors = fragmentOfPosterImage.getColors(quality: quality) {
-            let end = DispatchTime.now()
-            //            self.starsImageView.tintColor = colors.background
-            let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
-            let timeInterval = Double(nanoTime) / 1_000_000_000
-            print("\(timeInterval) s.")
-            setColorForAddToFavoriteButton(colors: colors)
-        }
-    }
-    
-    func snapshot(in imageView: UIImageView, rect: CGRect) -> UIImage {
-        return UIGraphicsImageRenderer(bounds: rect).image { _ in
-            imageView.drawHierarchy(in: imageView.bounds, afterScreenUpdates: true)
-        }
-    }
-    
-    func setColorForAddToFavoriteButton(colors: UIImageColors) {
+
+    func setColorsForNavigationBarButtons() {
+        
+        let colorsForNavigationBarButtons = ColorsForNavigationBar.getColorsForNavigationBarButtons(posterImage: posterImageView.image ?? UIImage())
+        
         if addedToFavorite == true {
-            backButtonColor = colors.background.isDarkColor == true ? .white : Constants.MyColors.myDarkGreyColor
+            backButtonColor = colorsForNavigationBarButtons.colorsLeft.background.isDarkColor == true ? .white : Constants.MyColors.myDarkGreyColor
             self.navigationController?.navigationBar.tintColor = backButtonColor
             
         } else {
-            addToFavoriteButtonColor = colors.background.isDarkColor == true ? .white : Constants.MyColors.myDarkGreyColor
+            addToFavoriteButtonColor = colorsForNavigationBarButtons.colorsRight.background.isDarkColor == true ? .white : Constants.MyColors.myDarkGreyColor
             self.addToFavoriteButton.tintColor = addToFavoriteButtonColor
-            backButtonColor = colors.background.isDarkColor == true ? .white : Constants.MyColors.myDarkGreyColor
+            backButtonColor = colorsForNavigationBarButtons.colorsLeft.background.isDarkColor == true ? .white : Constants.MyColors.myDarkGreyColor
             self.navigationController?.navigationBar.tintColor = backButtonColor
         }
     }
-    
+
     func getTVShowPoster() {
         var imageURL = ""
         imageURL = Constants.Network.posterBaseURL + "\(tvShowViewModel.poster_path)"

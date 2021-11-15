@@ -105,6 +105,15 @@ struct RealmManager {
         }
     }
     
+//    func deleteLastMoviesForFavoritesFromRealmByID() {
+//        guard let movieForFavoritesFromRealm = realm?.objects(MovieForFavoritesRealm.self) else { return }
+//        if let movieForFavoritesInRealm = movieForFavoritesFromRealm.last {
+//            try? realm?.write {
+//                realm?.delete(movieForFavoritesInRealm)
+//            }
+//        }
+//    }
+    
     // MARK: - Поиск объекта по ID в Realm
     
     func searchMovieForFavoritesIDInRealm(movieID: Int) -> Bool {

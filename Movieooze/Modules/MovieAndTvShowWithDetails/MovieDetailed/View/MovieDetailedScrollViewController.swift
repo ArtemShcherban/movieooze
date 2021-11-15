@@ -20,7 +20,7 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
     var videoPlayerViewModel: VideoPlayerViewModel!
     var scrollView: UIScrollView!
     var headerContainerView: UIView!
-    var posterImageView: UIImageView!
+    var posterImageView, filmPosterView: UIImageView!
     var gradientView: UIView!
     var mainContainerView: UIView!
     var titleTextLable, overviewTextLabel, releaseDateTextLabel, genresTextLabel, runtimeTextLabel, countryTextLabel: UILabel!
@@ -43,9 +43,8 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
     
     var addToFavoriteButtonColor = UIColor.clear
     var backButtonColor = UIColor.clear
- 
-    
-    
+
+    var images: [UIImage] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -107,6 +106,7 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         
         // Movies View Customization
         self.moviesView.backgroundColor = .clear
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -120,6 +120,9 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.navigationBar.tintColor = backButtonColor
         
+        if posterImageView.image != nil {
+            self.setColorsForNavigationBarButtons()
+        }
         
         // Set Image for Add To Favorite Button
         if addedToFavorite == false {
@@ -466,8 +469,7 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         self.getMoviePoster(posterPath: movieDetailedViewModel.posterPath)
         self.getStarsLevel(starsLevel: movieDetailedViewModel.voteAverage)
         self.getProductionCompanyLogo(logoURL: movieDetailedViewModel.productionCompanyLogoURL)
-        self.getColorsFromPoster()
-        
+        self.setColorsForNavigationBarButtons()
         self.titleTextLable.text = movieDetailedViewModel.title
         self.overviewTextLabel.text = movieDetailedViewModel.overview
         self.releaseDateTextLabel.text = movieDetailedViewModel.releaseDate
@@ -477,36 +479,19 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         self.nameOfCollectionViewActorsLabel.text = "Actors:"
         self.nameOfCollectionViewMoviesLabel.text = "Similar movies:"
     }
-
-    func getColorsFromPoster() {
-        let fragmentOfPosterImage = snapshot(in: self.posterImageView, rect: CGRect(x: 335, y: 42, width: 30, height: 50))
-        let quality = UIImageColorsQuality.low
-        let start = DispatchTime.now()
-        if  let colors = fragmentOfPosterImage.getColors(quality: quality) {
-            let end = DispatchTime.now()
-//            self.starsImageView.tintColor = colors.background
-            let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds
-            let timeInterval = Double(nanoTime) / 1_000_000_000
-            print("\(timeInterval) s.")
-            setColorForAddToFavoriteButton(colors: colors)
-        }
-    }
     
-    func snapshot(in imageView: UIImageView, rect: CGRect) -> UIImage {
-        return UIGraphicsImageRenderer(bounds: rect).image { _ in
-            imageView.drawHierarchy(in: imageView.bounds, afterScreenUpdates: true)
-        }
-    }
-    
-    func setColorForAddToFavoriteButton(colors: UIImageColors) {
+    func setColorsForNavigationBarButtons() {
+        
+        let colorsForNavigationBarButtons = ColorsForNavigationBar.getColorsForNavigationBarButtons(posterImage: posterImageView.image ?? UIImage())
+        
         if addedToFavorite == true {
-            backButtonColor = colors.background.isDarkColor == true ? .white : Constants.MyColors.myDarkGreyColor
+            backButtonColor = colorsForNavigationBarButtons.colorsLeft.background.isDarkColor == true ? .white : Constants.MyColors.myDarkGreyColor
             self.navigationController?.navigationBar.tintColor = backButtonColor
             
         } else {
-            addToFavoriteButtonColor = colors.background.isDarkColor == true ? .white : Constants.MyColors.myDarkGreyColor
+            addToFavoriteButtonColor = colorsForNavigationBarButtons.colorsRight.background.isDarkColor == true ? .white : Constants.MyColors.myDarkGreyColor
             self.addToFavoriteButton.tintColor = addToFavoriteButtonColor
-            backButtonColor = colors.background.isDarkColor == true ? .white : Constants.MyColors.myDarkGreyColor
+            backButtonColor = colorsForNavigationBarButtons.colorsLeft.background.isDarkColor == true ? .white : Constants.MyColors.myDarkGreyColor
             self.navigationController?.navigationBar.tintColor = backButtonColor
         }
     }
@@ -566,7 +551,7 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
     }
     
     func setTitleForBackButton() {
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: self.movieDetailedViewModel.title[0..<25] , style: .plain, target: self, action: nil)
+       self.navigationItem.backBarButtonItem = UIBarButtonItem(title: self.movieDetailedViewModel.title[0..<25] , style: .plain, target: self, action: nil)
     }
 }
 

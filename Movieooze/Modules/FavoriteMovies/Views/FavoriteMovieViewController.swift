@@ -22,7 +22,6 @@ class FavoriteMovieViewController: UIViewController, UISearchControllerDelegate 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        RealmManagerTVShow.shared.deleteAllDataFromRealmTVShowForFavorites()
         configureSearchBar()
         favoriteMoviesTableViewViewModel = FavoriteMoviesTableViewViewModel()
         self.favoriteMovieTableView.register(UINib(nibName: ListCellTableView.reuseIdentifire, bundle: nil), forCellReuseIdentifier: ListCellTableView.reuseIdentifire)

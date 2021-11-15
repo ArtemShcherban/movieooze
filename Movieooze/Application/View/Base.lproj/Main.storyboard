@@ -59,12 +59,67 @@
                     </tabBar>
                     <connections>
                         <segue destination="Mf2-F4-PhF" kind="relationship" relationship="viewControllers" id="mvt-yr-hQd"/>
+                        <segue destination="TFa-iz-WzO" kind="relationship" relationship="viewControllers" id="sLk-ic-daE"/>
                         <segue destination="tBS-hh-aqd" kind="relationship" relationship="viewControllers" id="vyY-bg-G1V"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QBS-Bz-2Xu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1435" y="362"/>
+        </scene>
+        <!--Search-->
+        <scene sceneID="nvk-ir-Yfp">
+            <objects>
+                <viewController id="TFa-iz-WzO" customClass="SearchViewController" customModule="Movieooze" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="1Ys-hP-bQY">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <searchBar contentMode="redraw" barStyle="black" searchBarStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="NUz-wK-01X">
+                                <rect key="frame" x="20" y="114" width="374" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="VLu-lJ-iVw"/>
+                                </constraints>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="TFa-iz-WzO" id="yms-pr-U1M"/>
+                                </connections>
+                            </searchBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="agd-ub-wC3">
+                                <rect key="frame" x="0.0" y="190" width="414" height="450"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="450" id="Bpt-5q-Lrr"/>
+                                </constraints>
+                                <sections/>
+                                <connections>
+                                    <outlet property="dataSource" destination="TFa-iz-WzO" id="bgD-ih-TpR"/>
+                                    <outlet property="delegate" destination="TFa-iz-WzO" id="G7k-IX-8dT"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="baC-ye-aJz"/>
+                        <color key="backgroundColor" red="0.094117647060000004" green="0.1019607843" blue="0.10980392160000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="agd-ub-wC3" firstAttribute="trailing" secondItem="baC-ye-aJz" secondAttribute="trailing" id="17n-10-3Gr"/>
+                            <constraint firstItem="agd-ub-wC3" firstAttribute="trailing" secondItem="baC-ye-aJz" secondAttribute="trailing" id="2CW-7m-eqQ"/>
+                            <constraint firstItem="NUz-wK-01X" firstAttribute="leading" secondItem="baC-ye-aJz" secondAttribute="leading" constant="20" id="2Iy-lJ-o35"/>
+                            <constraint firstItem="NUz-wK-01X" firstAttribute="top" secondItem="baC-ye-aJz" secondAttribute="top" constant="70" id="O4u-Fd-fJI"/>
+                            <constraint firstItem="NUz-wK-01X" firstAttribute="trailing" secondItem="baC-ye-aJz" secondAttribute="trailing" constant="-20" id="a3y-2Q-z08"/>
+                            <constraint firstItem="agd-ub-wC3" firstAttribute="leading" secondItem="baC-ye-aJz" secondAttribute="leading" id="ieA-Fr-Gid"/>
+                            <constraint firstItem="agd-ub-wC3" firstAttribute="leading" secondItem="baC-ye-aJz" secondAttribute="leading" id="pKC-PV-aCi"/>
+                            <constraint firstItem="agd-ub-wC3" firstAttribute="top" secondItem="NUz-wK-01X" secondAttribute="bottom" constant="32" id="rNd-ML-bzt"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Search" image="fi-rr-search" id="LFf-5H-Twp"/>
+                    <connections>
+                        <outlet property="requestesTableView" destination="agd-ub-wC3" id="ggQ-G2-EHN"/>
+                        <outlet property="searchTextField" destination="NUz-wK-01X" id="efT-iF-FXi"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="p0I-xa-Qvy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1236.231884057971" y="1189.9553571428571"/>
         </scene>
         <!--Favorites-->
         <scene sceneID="NFC-gB-fly">
@@ -413,6 +468,7 @@
     <resources>
         <image name="fi-rr-film" width="24" height="24"/>
         <image name="fi-rr-heart_white" width="24" height="24"/>
+        <image name="fi-rr-search" width="24" height="24"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
