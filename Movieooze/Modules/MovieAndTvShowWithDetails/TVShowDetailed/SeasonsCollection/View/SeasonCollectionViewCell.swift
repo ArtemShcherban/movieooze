@@ -21,7 +21,7 @@ class SeasonCollectionViewCell: UICollectionViewCell {
         
         self.backgroundColor = .clear
         self.seasonImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.frame.size.width, height: 120))
-        self.seasonImageView.contentMode = .scaleAspectFill
+        self.seasonImageView.contentMode = .scaleAspectFit
         self.seasonImageView.clipsToBounds = true
         self.seasonImageView.layer.cornerRadius = 8
         self.loadSeasonImage(posterPath: cellViewModel.poster_path)
@@ -37,8 +37,12 @@ class SeasonCollectionViewCell: UICollectionViewCell {
     }
     
     func loadSeasonImage(posterPath: String) {
+        self.seasonImageView.layer.borderColor = nil
         if posterPath == "" {
-                self.seasonImageView?.image = UIImage(named: "question-mark")
+            self.seasonImageView?.image = UIImage(named: "question-mark")
+            self.seasonImageView.layer.borderWidth = 1
+            self.seasonImageView.layer.borderColor = Constants.MyColors.myLightGreyColor.cgColor
+            
         } else {
             let imageURL = Constants.Network.posterBaseURL + "\(posterPath)"
             self.seasonImageView.sd_setImage(with: URL(string: imageURL), placeholderImage: UIImage(named: "placeholder.png"))

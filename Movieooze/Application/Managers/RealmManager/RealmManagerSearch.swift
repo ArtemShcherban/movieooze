@@ -32,6 +32,19 @@ struct RealmManagerSearch {
               completion(requestes)
     }
     
+    func deleteSameRequest(request: String) -> Bool {
+        var a = false
+        if let sameRequest = realm?.objects(UserRequestRealm.self).filter("userRequestText contains[c] %@", request) {
+            if sameRequest.count > 0 {
+                a = true
+            }
+            try? realm?.write {
+                realm?.delete(sameRequest)
+            }
+        }
+        return a
+    }
+    
     func deleteFistObjectInRealm() {
         guard let userRequestes = realm?.objects(UserRequestRealm.self) else { return }
         if let firstUserRequestinArray = userRequestes.first {

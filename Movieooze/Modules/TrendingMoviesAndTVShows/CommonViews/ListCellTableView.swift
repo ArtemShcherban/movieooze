@@ -11,7 +11,7 @@ import SDWebImage
 
 class ListCellTableView: UITableViewCell {
     
-    static let reuseIdentifire = String(describing: ListCellTableView.self)
+    static let reuseIdentifier = String(describing: ListCellTableView.self)
  
     var titleMovieTextLabel: UILabel!
     var yearTextLabel: UILabel!
@@ -27,7 +27,7 @@ class ListCellTableView: UITableViewCell {
         createLabels()
         setLabelsConstaints()
         
-        // Title Movie Text Label Constraints Customization
+        // Title Movie Text Label Customization
         self.titleMovieTextLabel.backgroundColor = .clear
         self.titleMovieTextLabel.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         self.titleMovieTextLabel.textColor = .white
@@ -45,10 +45,9 @@ class ListCellTableView: UITableViewCell {
     }
     
 
-    func cellConfigureMovie(cellViewModel: MoviesTrendingCellViewModel) {
+    func cellConfigureMovie(cellViewModel: MoviesCellViewModel) {
         self.getStarsLevel(starsLevel: cellViewModel.voteAverage)
-        let imageURL = Constants.Network.posterBaseURL + "\(cellViewModel.posterPath )"
-        self.posterView.sd_setImage(with: URL(string: imageURL), completed: nil)
+        self.getPoster(posterImagePath: cellViewModel.posterPath)
         self.posterView.layer.cornerRadius = 8
         
         self.titleMovieTextLabel.text = cellViewModel.title
@@ -57,10 +56,9 @@ class ListCellTableView: UITableViewCell {
         self.genresTextLabel.text = cellViewModel.movieGenres
     }
     
-    func cellConfigureTVShow(cellViewModel: TVShowTrendingCellViewModel) {
+    func cellConfigureTVShow(cellViewModel: TvShowCellViewModel) {
         self.getStarsLevel(starsLevel: cellViewModel.vote_average)
-        let imageURL = Constants.Network.posterBaseURL + "\(cellViewModel.poster_path )"
-        self.posterView.sd_setImage(with: URL(string: imageURL), completed: nil)
+        self.getPoster(posterImagePath: cellViewModel.poster_path)
         self.posterView.layer.cornerRadius = 8
         
         self.titleMovieTextLabel.text = cellViewModel.name
@@ -86,6 +84,18 @@ class ListCellTableView: UITableViewCell {
         genresTextLabel = UILabel()
         genresTextLabel.baselineAdjustment = .alignBaselines
         self.contentView.addSubview(genresTextLabel)
+    }
+    
+    func getPoster(posterImagePath: String) {
+        self.posterView.layer.borderColor = nil
+        if posterImagePath == "" {
+            self.posterView.image = UIImage(named: "question-mark")
+            self.posterView.layer.borderWidth = 1
+            self.posterView.layer.borderColor = Constants.MyColors.myLightGreyColor.cgColor
+        } else {
+            let imageURL = Constants.Network.posterBaseURL + "\(posterImagePath)"
+            self.posterView.sd_setImage(with: URL(string: imageURL), placeholderImage: UIImage(named: "placeholder.png"))
+        }
     }
     
     func setLabelsConstaints(){

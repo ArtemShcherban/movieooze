@@ -28,8 +28,8 @@ class TVShowsTrendingTableViewModel {
         return arrayOfTVShows.count
     }
     
-    func createCellViewModel(indexPath: IndexPath) -> TVShowTrendingCellViewModel{
+    func createCellViewModel(indexPath: IndexPath) -> TvShowCellViewModel{
         let tvShow = arrayOfTVShows[indexPath.row]
-        return TVShowTrendingCellViewModel(tvShow: tvShow)
+        return TvShowCellViewModel(tvShow: tvShow)
     }
 }

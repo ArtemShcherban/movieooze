@@ -43,8 +43,11 @@ class ActorTvShowsCollectionViewCell: UICollectionViewCell {
     }
     
     func loadTvShowPoster(posterPath: String) {
+        self.actorTvShowImageView.layer.borderColor = nil
         if posterPath == "" {
             self.actorTvShowImageView.image = UIImage(named: "question-mark")
+            self.actorTvShowImageView.layer.borderWidth = 1
+            self.actorTvShowImageView.layer.borderColor = Constants.MyColors.myLightGreyColor.cgColor
         } else {
             let imageURL = Constants.Network.posterBaseURL + "\(posterPath)"
             self.actorTvShowImageView.sd_setImage(with: URL(string: imageURL), placeholderImage: UIImage(named: "placeholder.png"))

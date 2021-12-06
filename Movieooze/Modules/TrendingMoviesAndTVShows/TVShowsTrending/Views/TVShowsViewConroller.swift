@@ -20,7 +20,7 @@ class TVShowsViewConroller: UIViewController {
         
         tableViewViewModel = TVShowsTrendingTableViewModel()
   
-        self.tvShowsTableView.register(UINib(nibName: ListCellTableView.reuseIdentifire, bundle: nil), forCellReuseIdentifier: ListCellTableView.reuseIdentifire)
+        self.tvShowsTableView.register(UINib(nibName: ListCellTableView.reuseIdentifier, bundle: nil), forCellReuseIdentifier: ListCellTableView.reuseIdentifier)
 
         tableViewViewModel.tvShowsTrendingRequest(completion: {
             self.tvShowsTableView.reloadData()
@@ -39,7 +39,7 @@ extension TVShowsViewConroller: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard  let cell = tvShowsTableView.dequeueReusableCell(withIdentifier: ListCellTableView.reuseIdentifire) as? ListCellTableView else  { return UITableViewCell() }
+        guard  let cell = tvShowsTableView.dequeueReusableCell(withIdentifier: ListCellTableView.reuseIdentifier) as? ListCellTableView else  { return UITableViewCell() }
         
         let cellViewModel = tableViewViewModel.createCellViewModel(indexPath: indexPath)
         cell.cellConfigureTVShow(cellViewModel: cellViewModel)
@@ -50,7 +50,7 @@ extension TVShowsViewConroller: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let tvShowDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: TvShowDetailedScrollViewController.reuseIdentifire) as? TvShowDetailedScrollViewController {
+        if let tvShowDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: TvShowDetailedScrollViewController.reuseIdentifier) as? TvShowDetailedScrollViewController {
             tvShowDetailedScrollViewController.tvShowID = tableViewViewModel.arrayOfTVShows[indexPath.row].id
             navigationController?.pushViewController(tvShowDetailedScrollViewController, animated: true)
         }

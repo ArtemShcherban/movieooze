@@ -81,4 +81,20 @@ struct TVShow : Codable {
 
     }
     
+    init(from tvShowSearchResult: TvShowSearchResults) {
+        self.name = tvShowSearchResult.name
+        self.original_name = tvShowSearchResult.name
+        self.origin_country = tvShowSearchResult.origin_country
+        self.vote_count = tvShowSearchResult.vote_count
+        self.backdrop_path = tvShowSearchResult.backdrop_path
+        self.vote_average = tvShowSearchResult.vote_average
+        self.genre_ids = tvShowSearchResult.genre_ids
+        self.id = tvShowSearchResult.id
+        self.original_language = tvShowSearchResult.original_language
+        self.overview = tvShowSearchResult.overview
+        self.poster_path = tvShowSearchResult.poster_path
+        self.first_air_date = tvShowSearchResult.first_air_date
+        self.popularity = tvShowSearchResult.popularity
+    }
+    
 }

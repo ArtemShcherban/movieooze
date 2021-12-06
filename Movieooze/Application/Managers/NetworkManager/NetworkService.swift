@@ -36,4 +36,26 @@ class NetworkService {
             completion(myJSONresponse.data!)
         }
     }
+    
+    public func multiSearchFromTMBD(request: String, completion: @escaping (Data) -> ()) {
+        AF.request("\(Constants.Network.tmbdDefaultPath)\(Constants.Network.searchMulti)\(Constants.Network.apiKey)\(Constants.Network.languageOfRequest)\(Constants.Network.query)\(request)").responseJSON {
+            myJSONresponse in
+// 🧐 убрать print
+            print("\(Constants.Network.tmbdDefaultPath)\(Constants.Network.searchMulti)\(Constants.Network.apiKey)\(Constants.Network.languageOfRequest)\(Constants.Network.query)\(request)")
+            completion(myJSONresponse.data!)
+        }
+    }
+    
+    
+    
+    
+    
+    
+    public func separateSearchFromTMBD(whereToSearch: String, request: String, completion: @escaping (Data) -> ()) {
+        AF.request("\(Constants.Network.tmbdDefaultPath)\(whereToSearch)\(Constants.Network.apiKey)\(Constants.Network.languageOfRequest)\(Constants.Network.query)\(request)").responseJSON {
+            movieJSONresponse in
+            completion(movieJSONresponse.data!)
+        }
+        
+    }
 }

@@ -11,7 +11,7 @@ import UIImageColors
 
 class TvShowDetailedScrollViewController: UIViewController, UIScrollViewDelegate {
     
-    static let reuseIdentifire = String(describing: TvShowDetailedScrollViewController.self)
+    static let reuseIdentifier = String(describing: TvShowDetailedScrollViewController.self)
     
     var tvShowViewModel: TVShowViewModel!
     var videoPlayerViewModel: VideoPlayerViewModel!
@@ -548,12 +548,14 @@ class TvShowDetailedScrollViewController: UIViewController, UIScrollViewDelegate
         if addedToFavorite == true {
             backButtonColor = colorsForNavigationBarButtons.colorsLeft.background.isDarkColor == true ? .white : Constants.MyColors.myDarkGreyColor
             self.navigationController?.navigationBar.tintColor = backButtonColor
+            self.navigationController?.navigationBar.barStyle = colorsForNavigationBarButtons.colorsLeft.background.isDarkColor == true ? .black : .default
             
         } else {
             addToFavoriteButtonColor = colorsForNavigationBarButtons.colorsRight.background.isDarkColor == true ? .white : Constants.MyColors.myDarkGreyColor
             self.addToFavoriteButton.tintColor = addToFavoriteButtonColor
             backButtonColor = colorsForNavigationBarButtons.colorsLeft.background.isDarkColor == true ? .white : Constants.MyColors.myDarkGreyColor
             self.navigationController?.navigationBar.tintColor = backButtonColor
+            self.navigationController?.navigationBar.barStyle = colorsForNavigationBarButtons.colorsLeft.background.isDarkColor == true ? .black : .default
         }
     }
 
@@ -680,7 +682,7 @@ extension TvShowDetailedScrollViewController: UICollectionViewDelegate, UICollec
         switch collectionView {
         
         case actorsCollectionView:
-            if let actorDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: ActorDetailedScrollViewController.reuseIdentifire) as? ActorDetailedScrollViewController {
+            if let actorDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: ActorDetailedScrollViewController.reuseIdentifier) as? ActorDetailedScrollViewController {
             
                     actorDetailedScrollViewController.actorID = self.actorsCollectionViewModel.arrayOfActors[indexPath.row].id
                             navigationController?.pushViewController(actorDetailedScrollViewController, animated: true)
@@ -695,7 +697,7 @@ extension TvShowDetailedScrollViewController: UICollectionViewDelegate, UICollec
                         }
             
         case similarTVShowsCollectionView:
-            if let tvShowDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: TvShowDetailedScrollViewController.reuseIdentifire) as? TvShowDetailedScrollViewController {
+            if let tvShowDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: TvShowDetailedScrollViewController.reuseIdentifier) as? TvShowDetailedScrollViewController {
                 
                 tvShowDetailedScrollViewController.tvShowID = similarTvShowsCollectionViewModel.arrayOfSimilarTvShows[indexPath.row].id
                 navigationController?.pushViewController(tvShowDetailedScrollViewController, animated: true)

@@ -106,6 +106,7 @@ class EpisodeTableViewCell: UITableViewCell {
     func getEpisodeImage(episodeImagePath: String) {
         if episodeImagePath == "" {
             self.episodeImageView.image = UIImage(named: "question-mark 142x80")
+            self.episodeImageView.contentMode = .scaleAspectFit
             self.episodeImageView.layer.borderWidth = 1
             self.episodeImageView.layer.borderColor = Constants.MyColors.myLightGreyColor.cgColor
         } else {

@@ -22,14 +22,14 @@ class FavoriteMoviesTableViewViewModel {
         return arrayOfMoviesForFavorites.count
     }
     
-    func createCellViewModel(indexPath: IndexPath) -> MoviesTrendingCellViewModel{
+    func createCellViewModel(indexPath: IndexPath) -> MoviesCellViewModel{
         let movie = arrayOfMoviesForFavorites[indexPath.row]
-        return MoviesTrendingCellViewModel(movie: movie)
+        return MoviesCellViewModel(movie: movie)
     }
     
-    func createCellViewModel(indexPath: IndexPath, filteredArray: [Movie]) -> MoviesTrendingCellViewModel{
+    func createCellViewModel(indexPath: IndexPath, filteredArray: [Movie]) -> MoviesCellViewModel{
         let movie = filteredArray[indexPath.row]
-        return MoviesTrendingCellViewModel(movie: movie)
+        return MoviesCellViewModel(movie: movie)
     }
 }
 

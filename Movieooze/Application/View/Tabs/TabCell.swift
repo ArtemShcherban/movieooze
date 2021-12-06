@@ -22,9 +22,10 @@ class TabCell: UICollectionViewCell {
     
     override var isSelected: Bool {
         didSet {
+            
             DispatchQueue.main.async {
                 UIView.animate(withDuration: 0.3) {
-                    self.indicatorView.backgroundColor = self.isSelected ? self.indicatorColor: UIColor.clear
+                    self.indicatorView.backgroundColor = self.isSelected ? self.indicatorColor : UIColor.clear
                     self.layoutIfNeeded()
                 }
             }

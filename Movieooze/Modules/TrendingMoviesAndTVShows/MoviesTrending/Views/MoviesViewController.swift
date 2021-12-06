@@ -22,7 +22,7 @@ class MoviesViewController: UIViewController {
         tableViewViewModel = MoviesTrendingTableViewViewModel()
 
         
-        self.moviesListTableView.register(UINib(nibName: ListCellTableView.reuseIdentifire, bundle: nil), forCellReuseIdentifier: ListCellTableView.reuseIdentifire)
+        self.moviesListTableView.register(UINib(nibName: ListCellTableView.reuseIdentifier, bundle: nil), forCellReuseIdentifier: ListCellTableView.reuseIdentifier)
        
 
         tableViewViewModel?.moviesTrendingRequest(completion: {
@@ -40,7 +40,7 @@ extension MoviesViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard  let cell = tableView.dequeueReusableCell(withIdentifier: ListCellTableView.reuseIdentifire) as? ListCellTableView, let viewModel = tableViewViewModel else  { return UITableViewCell() }
+        guard  let cell = tableView.dequeueReusableCell(withIdentifier: ListCellTableView.reuseIdentifier) as? ListCellTableView, let viewModel = tableViewViewModel else  { return UITableViewCell() }
  
         let cellViewModel = viewModel.createCellViewModel(indexPath: indexPath)
         cell.cellConfigureMovie(cellViewModel: cellViewModel)
@@ -53,7 +53,7 @@ extension MoviesViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let movieDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: MovieDetailedScrollViewController.reuseIdentifire) as? MovieDetailedScrollViewController {
+        if let movieDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: MovieDetailedScrollViewController.reuseIdentifier) as? MovieDetailedScrollViewController {
             movieDetailedScrollViewController.movieID =  tableViewViewModel.arrayOfMovies[indexPath.row].id
             self.navigationController?.pushViewController(movieDetailedScrollViewController, animated: true)
         }

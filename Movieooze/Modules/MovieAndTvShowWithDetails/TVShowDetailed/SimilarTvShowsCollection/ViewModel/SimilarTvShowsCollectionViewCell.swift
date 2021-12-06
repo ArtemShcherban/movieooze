@@ -37,10 +37,8 @@ class SimilarTvShowsCollectionViewCell: UICollectionViewCell {
         self.similarTvShowTitleLabel.backgroundColor = .clear
         self.similarTvShowTitleLabel.text = cellViewModel.title
         self.addSubview(similarTvShowTitleLabel)
+        self.loadTvShowPoster(posterPath: cellViewModel.posterPath)
 
-        loadTvShowPoster(posterPath: cellViewModel.posterPath)
-//        let imageURL = Constants.Network.posterBaseURL + "\(cellViewModel.posterPath)"
-//        self.similarTvShowImageView.sd_setImage(with: URL(string: imageURL), placeholderImage: UIImage(named: "placeholder.png"))
     }
     
     func loadTvShowPoster(posterPath: String) {

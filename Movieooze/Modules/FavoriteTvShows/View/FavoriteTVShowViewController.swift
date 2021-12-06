@@ -28,7 +28,7 @@ class FavoriteTVShowViewController: UIViewController {
 
         favoriteTVShowTableViewViewModel = FavoriteTVShowTableViewViewModel()
        
-        self.favoriteTVShowTableView.register(UINib(nibName: ListCellTableView.reuseIdentifire, bundle: nil), forCellReuseIdentifier: ListCellTableView.reuseIdentifire)
+        self.favoriteTVShowTableView.register(UINib(nibName: ListCellTableView.reuseIdentifier, bundle: nil), forCellReuseIdentifier: ListCellTableView.reuseIdentifier)
   }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -82,7 +82,6 @@ extension FavoriteTVShowViewController: UISearchBarDelegate {
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//        view.endEditing(true)
         searchBar.resignFirstResponder()
     }
 }
@@ -97,7 +96,7 @@ extension FavoriteTVShowViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard  let cell = tableView.dequeueReusableCell(withIdentifier: ListCellTableView.reuseIdentifire, for: indexPath) as? ListCellTableView else {return UITableViewCell() }
+        guard  let cell = tableView.dequeueReusableCell(withIdentifier: ListCellTableView.reuseIdentifier, for: indexPath) as? ListCellTableView else {return UITableViewCell() }
         
         if isFiltering {
             let  cellViewModel = favoriteTVShowTableViewViewModel.createCellViewModel(indexPath: indexPath, filteredArray: filteredFavoriteTVShows)
@@ -120,7 +119,7 @@ extension FavoriteTVShowViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let tvShowDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: TvShowDetailedScrollViewController.reuseIdentifire) as? TvShowDetailedScrollViewController {
+        if let tvShowDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: TvShowDetailedScrollViewController.reuseIdentifier) as? TvShowDetailedScrollViewController {
             
             let tvShowFavorite: TVShow
             

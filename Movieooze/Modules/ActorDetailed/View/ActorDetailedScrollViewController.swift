@@ -10,7 +10,7 @@ import SDWebImage
 import RealmSwift
 
 class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate {
-    static let reuseIdentifire = String(describing: ActorDetailedScrollViewController.self)
+    static let reuseIdentifier = String(describing: ActorDetailedScrollViewController.self)
     
     var actorDetailedViewModel: ActorDetailedViewModel!
     var actorMoviesCollectionViewModel: ActorMoviesCollectionViewModel!
@@ -95,46 +95,10 @@ class ActorDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.navigationBar.tintColor = .white
-//        let backImageView = UIImageView()
-//        myBackButton = UIImage(named: "fi-rr-angle-left-white")
-//        let shadow =  myBackButton.addShadow().withRenderingMode(.alwaysOriginal)
-//        backImageView.image = shadow
-//        let myButton = UIBarButtonItem(customView: backImageView)
-//        myButton.style = .done
-//        myButton.action = #selector(poptoroot)
-        
-       
-       
-    
-//        self.navigationController?.navigationBar.backIndicatorImage = shadow
-//       self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = shadow
-//        self.navigationController?.navigationBar.backItem?.title = "My button"
-//        let backImageView = UIImageView()
-//        myBackButton = UIImage(named: "fi-rr-heart_white")
-//        let shadow =  myBackButton.addShadow()
-//        backImageView.image = shadow
-//        let myCustomBackButton: UIButton = UIButton.init(type: .custom)
-//        myCustomBackButton.addTarget(self, action: #selector(poptoroot(sender:)), for: .touchUpInside)
-//        myCustomBackButton.setImage(shadow, for: .normal)
-////        myCustomBackButton.setTitle(self.actorDetailedViewModel.name[0..<25], for: .normal)
-//        myCustomBackButton.setTitleColor(.red, for: .normal)
-//        myCustomBackButton.sizeToFit()
-//        let backButton = UIBarButtonItem(customView: myCustomBackButton)
-//        self.navigationItem.leftBarButtonItem = backButton
-//
-   
+
     } 
-    
-//    @objc func poptoroot(sender: UIBarButtonItem) {
-//        self.navigationController?.popViewController(animated: true)
-//    }
+
     func createViews() {
-        
-//        myBackButton = UIImage(named: "fi-rr-angle-double-left")
-//       let shadow =  myBackButton.addShadow()
-//        self.navigationController?.navigationBar.backIndicatorImage = shadow
-//        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = shadow
-//        self.navigationController?.navigationBar.backItem?.title = "My button"
         
         // Scroll View
         scrollView = UIScrollView()
@@ -488,7 +452,7 @@ extension ActorDetailedScrollViewController: UICollectionViewDataSource, UIColle
         switch collectionView {
         
         case actorMoviesCollectionView:
-            if let movieDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: MovieDetailedScrollViewController.reuseIdentifire) as? MovieDetailedScrollViewController {
+            if let movieDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: MovieDetailedScrollViewController.reuseIdentifier) as? MovieDetailedScrollViewController {
                 
                 movieDetailedScrollViewController.movieID = actorMoviesCollectionViewModel.arrayOfActorMovies[indexPath.row].id
                 
@@ -496,7 +460,7 @@ extension ActorDetailedScrollViewController: UICollectionViewDataSource, UIColle
             }
             
         case actorTvShowsCollectionView:
-            if let tvShowDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: TvShowDetailedScrollViewController.reuseIdentifire) as? TvShowDetailedScrollViewController {
+            if let tvShowDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: TvShowDetailedScrollViewController.reuseIdentifier) as? TvShowDetailedScrollViewController {
                 
                 tvShowDetailedScrollViewController.tvShowID = actorTvShowsCollectionViewModel.arrayOfActorTvShows[indexPath.row].id
                 

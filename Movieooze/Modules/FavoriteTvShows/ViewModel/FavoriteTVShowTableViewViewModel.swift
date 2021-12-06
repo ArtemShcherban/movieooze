@@ -21,13 +21,13 @@ class FavoriteTVShowTableViewViewModel {
         return arrayOfTVShowsForFavorites.count
     }
     
-    func createCellViewModel(indexPath: IndexPath) -> TVShowTrendingCellViewModel{
+    func createCellViewModel(indexPath: IndexPath) -> TvShowCellViewModel{
         let tvShow = arrayOfTVShowsForFavorites[indexPath.row]
-        return TVShowTrendingCellViewModel(tvShow: tvShow)
+        return TvShowCellViewModel(tvShow: tvShow)
     }
     
-    func createCellViewModel(indexPath: IndexPath, filteredArray: [TVShow]) -> TVShowTrendingCellViewModel{
+    func createCellViewModel(indexPath: IndexPath, filteredArray: [TVShow]) -> TvShowCellViewModel{
         let tvShow = filteredArray[indexPath.row]
-        return TVShowTrendingCellViewModel(tvShow: tvShow)
+        return TvShowCellViewModel(tvShow: tvShow)
     }
 }

@@ -43,8 +43,11 @@ class ActorMoviesCollectionViewCell: UICollectionViewCell {
     }
     
     func loadMoviePoster(posterPath: String) {
+        self.actorMovieImageView.layer.borderColor = nil
         if posterPath == "" {
             self.actorMovieImageView.image = UIImage(named: "question-mark")
+            self.actorMovieImageView.layer.borderWidth = 1
+            self.actorMovieImageView.layer.borderColor = Constants.MyColors.myLightGreyColor.cgColor
         } else {
             let imageURL = Constants.Network.posterBaseURL + "\(posterPath)"
             self.actorMovieImageView.sd_setImage(with: URL(string: imageURL), placeholderImage: UIImage(named: "placeholder.png"))

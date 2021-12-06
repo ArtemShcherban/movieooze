@@ -59,7 +59,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="Mf2-F4-PhF" kind="relationship" relationship="viewControllers" id="mvt-yr-hQd"/>
-                        <segue destination="TFa-iz-WzO" kind="relationship" relationship="viewControllers" id="sLk-ic-daE"/>
+                        <segue destination="qMm-Mf-Lcq" kind="relationship" relationship="viewControllers" id="QGd-wf-nhI"/>
                         <segue destination="tBS-hh-aqd" kind="relationship" relationship="viewControllers" id="vyY-bg-G1V"/>
                     </connections>
                 </tabBarController>
@@ -72,11 +72,11 @@
             <objects>
                 <viewController id="TFa-iz-WzO" customClass="SearchViewController" customModule="Movieooze" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="1Ys-hP-bQY">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <searchBar contentMode="redraw" barStyle="black" searchBarStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="NUz-wK-01X">
-                                <rect key="frame" x="20" y="114" width="374" height="44"/>
+                                <rect key="frame" x="20" y="30" width="374" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="VLu-lJ-iVw"/>
                                 </constraints>
@@ -86,7 +86,7 @@
                                 </connections>
                             </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="agd-ub-wC3">
-                                <rect key="frame" x="0.0" y="190" width="414" height="450"/>
+                                <rect key="frame" x="0.0" y="106" width="414" height="450"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="450" id="Bpt-5q-Lrr"/>
@@ -104,7 +104,7 @@
                             <constraint firstItem="agd-ub-wC3" firstAttribute="trailing" secondItem="baC-ye-aJz" secondAttribute="trailing" id="17n-10-3Gr"/>
                             <constraint firstItem="agd-ub-wC3" firstAttribute="trailing" secondItem="baC-ye-aJz" secondAttribute="trailing" id="2CW-7m-eqQ"/>
                             <constraint firstItem="NUz-wK-01X" firstAttribute="leading" secondItem="baC-ye-aJz" secondAttribute="leading" constant="20" id="2Iy-lJ-o35"/>
-                            <constraint firstItem="NUz-wK-01X" firstAttribute="top" secondItem="baC-ye-aJz" secondAttribute="top" constant="70" id="O4u-Fd-fJI"/>
+                            <constraint firstItem="NUz-wK-01X" firstAttribute="top" secondItem="baC-ye-aJz" secondAttribute="top" constant="30" id="O4u-Fd-fJI"/>
                             <constraint firstItem="NUz-wK-01X" firstAttribute="trailing" secondItem="baC-ye-aJz" secondAttribute="trailing" constant="-20" id="a3y-2Q-z08"/>
                             <constraint firstItem="agd-ub-wC3" firstAttribute="leading" secondItem="baC-ye-aJz" secondAttribute="leading" id="ieA-Fr-Gid"/>
                             <constraint firstItem="agd-ub-wC3" firstAttribute="leading" secondItem="baC-ye-aJz" secondAttribute="leading" id="pKC-PV-aCi"/>
@@ -112,6 +112,7 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Search" image="fi-rr-search" id="LFf-5H-Twp"/>
+                    <navigationItem key="navigationItem" id="ifP-Dz-LuY"/>
                     <connections>
                         <outlet property="requestesTableView" destination="agd-ub-wC3" id="ggQ-G2-EHN"/>
                         <outlet property="searchTextField" destination="NUz-wK-01X" id="efT-iF-FXi"/>
@@ -119,7 +120,179 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="p0I-xa-Qvy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1236.231884057971" y="1189.9553571428571"/>
+            <point key="canvasLocation" x="-1248" y="1483"/>
+        </scene>
+        <!--Search-->
+        <scene sceneID="pPP-9c-bU7">
+            <objects>
+                <navigationController id="qMm-Mf-Lcq" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Search" image="fi-rr-search" id="R8J-eh-Iq9"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="Mxb-AI-LfJ">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="barTintColor" red="0.094117647060000004" green="0.1019607843" blue="0.10980392160000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="TFa-iz-WzO" kind="relationship" relationship="rootViewController" id="7QP-79-HOQ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LRA-Sm-i4D" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2017" y="1483"/>
+        </scene>
+        <!--Person Search Result View Controller-->
+        <scene sceneID="Rpd-mS-uNU">
+            <objects>
+                <viewController storyboardIdentifier="PersonSearchResultViewController" id="HOA-pa-dB0" customClass="PersonSearchResultViewController" customModule="Movieooze" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="9aq-Op-6zM">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="yOs-Vp-f7V">
+                                <rect key="frame" x="0.0" y="48" width="414" height="814"/>
+                                <color key="backgroundColor" red="0.094117647060000004" green="0.1019607843" blue="0.10980392160000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="HOA-pa-dB0" id="x8a-AQ-85u"/>
+                                    <outlet property="delegate" destination="HOA-pa-dB0" id="fM2-v6-WHf"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="xHk-Wf-PRJ"/>
+                        <color key="backgroundColor" red="0.094117647060000004" green="0.1019607843" blue="0.10980392160000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="yOs-Vp-f7V" firstAttribute="leading" secondItem="xHk-Wf-PRJ" secondAttribute="leading" id="Oyq-L3-tbH"/>
+                            <constraint firstItem="xHk-Wf-PRJ" firstAttribute="trailing" secondItem="yOs-Vp-f7V" secondAttribute="trailing" id="QDj-J7-eHJ"/>
+                            <constraint firstItem="xHk-Wf-PRJ" firstAttribute="bottom" secondItem="yOs-Vp-f7V" secondAttribute="bottom" id="X4c-J6-3Uq"/>
+                            <constraint firstItem="yOs-Vp-f7V" firstAttribute="top" secondItem="xHk-Wf-PRJ" secondAttribute="top" constant="4" id="ZTb-Ds-GAI"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="personSearchResultTableView" destination="yOs-Vp-f7V" id="Gze-1o-rfo"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qwF-Mr-WVI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1979" y="1479"/>
+        </scene>
+        <!--No Search Result View Controller-->
+        <scene sceneID="n65-cQ-bab">
+            <objects>
+                <viewController storyboardIdentifier="NoSearchResultViewController" id="xbs-3Z-r7e" customClass="NoSearchResultViewController" customModule="Movieooze" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Kao-9C-Gdh">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="WnC-Ax-4Qw"/>
+                        <color key="backgroundColor" systemColor="systemTealColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="krh-ic-g45" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2751" y="1483"/>
+        </scene>
+        <!--Start Search View Controller-->
+        <scene sceneID="1Th-Eb-sMD">
+            <objects>
+                <viewController storyboardIdentifier="StartSearchViewController" id="sEl-LG-la7" customClass="StartSearchViewController" customModule="Movieooze" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="IsW-in-Nnv">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aXp-p0-7Nr" customClass="TabsView" customModule="Movieooze" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="44" width="414" height="24"/>
+                                <color key="backgroundColor" red="0.094117647060000004" green="0.1019607843" blue="0.10980392160000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="Ihf-pn-gOv"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vfc-ti-2kH"/>
+                        <color key="backgroundColor" red="0.094117647060000004" green="0.1019607843" blue="0.10980392160000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="vfc-ti-2kH" firstAttribute="trailing" secondItem="aXp-p0-7Nr" secondAttribute="trailing" id="LCe-3A-ccK"/>
+                            <constraint firstItem="aXp-p0-7Nr" firstAttribute="leading" secondItem="vfc-ti-2kH" secondAttribute="leading" id="SIQ-ro-L9C"/>
+                            <constraint firstItem="aXp-p0-7Nr" firstAttribute="top" secondItem="vfc-ti-2kH" secondAttribute="top" id="hC3-YW-ieh"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tabsView" destination="aXp-p0-7Nr" id="RKg-u2-Ur1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UQu-aJ-YPe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-494" y="1483"/>
+        </scene>
+        <!--Movie Search Result View Controller-->
+        <scene sceneID="A5y-xj-Og9">
+            <objects>
+                <viewController storyboardIdentifier="MovieSearchResultViewController" id="wbE-iv-5gj" customClass="MovieSearchResultViewController" customModule="Movieooze" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fzr-Zv-29n">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="VC3-Zf-cHH">
+                                <rect key="frame" x="0.0" y="48" width="414" height="814"/>
+                                <color key="backgroundColor" red="0.094117647060000004" green="0.1019607843" blue="0.10980392160000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="wbE-iv-5gj" id="2db-1W-BtB"/>
+                                    <outlet property="delegate" destination="wbE-iv-5gj" id="DCn-mi-5Pe"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="0WL-5W-k4v"/>
+                        <color key="backgroundColor" red="0.094117647060000004" green="0.1019607843" blue="0.10980392160000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="0WL-5W-k4v" firstAttribute="trailing" secondItem="VC3-Zf-cHH" secondAttribute="trailing" id="Hqz-GV-bVY"/>
+                            <constraint firstItem="0WL-5W-k4v" firstAttribute="bottom" secondItem="VC3-Zf-cHH" secondAttribute="bottom" id="cgN-1q-B7h"/>
+                            <constraint firstItem="VC3-Zf-cHH" firstAttribute="leading" secondItem="0WL-5W-k4v" secondAttribute="leading" id="f8D-8h-lcI"/>
+                            <constraint firstItem="VC3-Zf-cHH" firstAttribute="top" secondItem="0WL-5W-k4v" secondAttribute="top" constant="4" id="kCU-b4-hBS"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="movieSearchResultTableView" destination="VC3-Zf-cHH" id="H1J-me-4ta"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="02O-eJ-rhj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="467" y="1483"/>
+        </scene>
+        <!--Tv Show Search Result View Controller-->
+        <scene sceneID="lgD-lY-myb">
+            <objects>
+                <viewController storyboardIdentifier="TvShowSearchResultViewController" id="drk-62-8tc" customClass="TvShowSearchResultViewController" customModule="Movieooze" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fVk-dg-Sge">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gla-dD-DKM">
+                                <rect key="frame" x="0.0" y="48" width="414" height="814"/>
+                                <color key="backgroundColor" red="0.094117647060000004" green="0.1019607843" blue="0.10980392160000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="drk-62-8tc" id="kGD-QK-Fcf"/>
+                                    <outlet property="delegate" destination="drk-62-8tc" id="tRw-kR-dXr"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="nsR-o8-xKY"/>
+                        <color key="backgroundColor" red="0.094117647060000004" green="0.1019607843" blue="0.10980392160000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="gla-dD-DKM" firstAttribute="top" secondItem="nsR-o8-xKY" secondAttribute="top" constant="4" id="8lN-mf-d83"/>
+                            <constraint firstItem="nsR-o8-xKY" firstAttribute="bottom" secondItem="gla-dD-DKM" secondAttribute="bottom" id="Afv-Tl-TfY"/>
+                            <constraint firstItem="nsR-o8-xKY" firstAttribute="trailing" secondItem="gla-dD-DKM" secondAttribute="trailing" id="B9e-Fj-DF4"/>
+                            <constraint firstItem="gla-dD-DKM" firstAttribute="leading" secondItem="nsR-o8-xKY" secondAttribute="leading" id="yGL-a7-DHg"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tvShowSearchResultTableView" destination="gla-dD-DKM" id="Fam-6q-9FA"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="37G-Th-WJo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1210" y="1483"/>
         </scene>
         <!--Favorites-->
         <scene sceneID="NFC-gB-fly">
@@ -141,7 +314,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d2F-GO-P9c" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-249" y="996"/>
+            <point key="canvasLocation" x="-249" y="830"/>
         </scene>
         <!--Start View Controller-->
         <scene sceneID="lEz-hP-vfb">
@@ -225,7 +398,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Msf-jF-McY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2199" y="996"/>
+            <point key="canvasLocation" x="2199" y="830"/>
         </scene>
         <!--FavoriteTV Show View Controller-->
         <scene sceneID="q3s-xj-Wb2">
@@ -271,7 +444,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LSg-xe-Ofk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3115.9420289855075" y="995.75892857142856"/>
+            <point key="canvasLocation" x="3116" y="830"/>
         </scene>
         <!--Tabs Page View Controller-->
         <scene sceneID="IFe-bS-7VU">
@@ -462,7 +635,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Kh-dJ-u5c" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="467" y="996"/>
+            <point key="canvasLocation" x="467" y="830"/>
         </scene>
     </scenes>
     <resources>
@@ -477,6 +650,9 @@
         </systemColor>
         <systemColor name="systemRedColor">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemTealColor">
+            <color red="0.35294117647058826" green="0.78431372549019607" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

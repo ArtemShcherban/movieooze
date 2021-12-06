@@ -24,7 +24,7 @@ class FavoriteMovieViewController: UIViewController, UISearchControllerDelegate 
         super.viewDidLoad()
         configureSearchBar()
         favoriteMoviesTableViewViewModel = FavoriteMoviesTableViewViewModel()
-        self.favoriteMovieTableView.register(UINib(nibName: ListCellTableView.reuseIdentifire, bundle: nil), forCellReuseIdentifier: ListCellTableView.reuseIdentifire)
+        self.favoriteMovieTableView.register(UINib(nibName: ListCellTableView.reuseIdentifier, bundle: nil), forCellReuseIdentifier: ListCellTableView.reuseIdentifier)
   }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -93,7 +93,7 @@ extension FavoriteMovieViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard  let cell = tableView.dequeueReusableCell(withIdentifier: ListCellTableView.reuseIdentifire, for: indexPath) as? ListCellTableView else {return UITableViewCell() }
+        guard  let cell = tableView.dequeueReusableCell(withIdentifier: ListCellTableView.reuseIdentifier, for: indexPath) as? ListCellTableView else {return UITableViewCell() }
         
         if isFiltering {
             let  cellViewModel = favoriteMoviesTableViewViewModel.createCellViewModel(indexPath: indexPath, filteredArray: filteredFavoriteMovies)
@@ -116,7 +116,7 @@ extension FavoriteMovieViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let movieDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: MovieDetailedScrollViewController.reuseIdentifire) as? MovieDetailedScrollViewController {
+        if let movieDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: MovieDetailedScrollViewController.reuseIdentifier) as? MovieDetailedScrollViewController {
             
             let movieFavorite: Movie
             

@@ -32,9 +32,9 @@ class MoviesTrendingTableViewViewModel {
         return arrayOfMovies.count
     }
     
-    func createCellViewModel(indexPath: IndexPath) -> MoviesTrendingCellViewModel{
+    func createCellViewModel(indexPath: IndexPath) -> MoviesCellViewModel{
         let movie = arrayOfMovies[indexPath.row]
-        return MoviesTrendingCellViewModel(movie: movie)
+        return MoviesCellViewModel(movie: movie)
     }
 }
 

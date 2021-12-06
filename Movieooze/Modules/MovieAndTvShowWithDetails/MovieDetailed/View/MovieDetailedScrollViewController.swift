@@ -12,7 +12,7 @@ import UIImageColors
 
 class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate {
     
-    static let reuseIdentifire = String(describing: MovieDetailedScrollViewController.self)
+    static let reuseIdentifier = String(describing: MovieDetailedScrollViewController.self)
     
     var movieDetailedViewModel: MovieDetailedViewModel!
     var similarMoviesCollectionViewModel: SimilarMoviesCollectionViewModel!
@@ -487,12 +487,14 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
         if addedToFavorite == true {
             backButtonColor = colorsForNavigationBarButtons.colorsLeft.background.isDarkColor == true ? .white : Constants.MyColors.myDarkGreyColor
             self.navigationController?.navigationBar.tintColor = backButtonColor
-            
+            self.navigationController?.navigationBar.barStyle = colorsForNavigationBarButtons.colorsLeft.background.isDarkColor == true ? .black : .default
+
         } else {
             addToFavoriteButtonColor = colorsForNavigationBarButtons.colorsRight.background.isDarkColor == true ? .white : Constants.MyColors.myDarkGreyColor
             self.addToFavoriteButton.tintColor = addToFavoriteButtonColor
             backButtonColor = colorsForNavigationBarButtons.colorsLeft.background.isDarkColor == true ? .white : Constants.MyColors.myDarkGreyColor
             self.navigationController?.navigationBar.tintColor = backButtonColor
+            self.navigationController?.navigationBar.barStyle = colorsForNavigationBarButtons.colorsLeft.background.isDarkColor == true ? .black : .default
         }
     }
     
@@ -551,7 +553,7 @@ class MovieDetailedScrollViewController: UIViewController, UIScrollViewDelegate 
     }
     
     func setTitleForBackButton() {
-       self.navigationItem.backBarButtonItem = UIBarButtonItem(title: self.movieDetailedViewModel.title[0..<25] , style: .plain, target: self, action: nil)
+       self.navigationItem.backBarButtonItem = UIBarButtonItem(title: self.movieDetailedViewModel.title[0..<25], style: .plain, target: self, action: nil)
     }
 }
 
@@ -587,7 +589,7 @@ extension MovieDetailedScrollViewController: UICollectionViewDataSource, UIColle
         
         if collectionView == moviesCollectionView {
             
-            if let movieDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: MovieDetailedScrollViewController.reuseIdentifire) as? MovieDetailedScrollViewController {
+            if let movieDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: MovieDetailedScrollViewController.reuseIdentifier) as? MovieDetailedScrollViewController {
                 
                 movieDetailedScrollViewController.movieID = similarMoviesCollectionViewModel.arrayOfSimilarMovies[indexPath.row].id
                 navigationController?.pushViewController(movieDetailedScrollViewController, animated: true)
@@ -595,7 +597,7 @@ extension MovieDetailedScrollViewController: UICollectionViewDataSource, UIColle
             
         } else  {
             
-            if let actorDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: ActorDetailedScrollViewController.reuseIdentifire) as? ActorDetailedScrollViewController {
+            if let actorDetailedScrollViewController = storyboard.instantiateViewController(withIdentifier: ActorDetailedScrollViewController.reuseIdentifier) as? ActorDetailedScrollViewController {
                 
                 actorDetailedScrollViewController.actorID = self.actorsCollectionViewModel.arrayOfActors[indexPath.row].id
                 navigationController?.pushViewController(actorDetailedScrollViewController, animated: true)

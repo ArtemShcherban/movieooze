@@ -71,4 +71,21 @@ struct Movie: Codable {
         self.voteCount = movieForFavorites.voteCount
         self.video = movieForFavorites.video
     }
+    
+    init(from movieSearchResult: MovieSearchResult) {
+    self.title = movieSearchResult.title
+    self.adult = movieSearchResult.adult
+    self.overview = movieSearchResult.overview
+    self.posterPath = movieSearchResult.poster_path
+    self.voteAverage = movieSearchResult.vote_average
+    self.id = movieSearchResult.id
+    self.backdropPath = movieSearchResult.backdrop_path
+    self.genreIds = movieSearchResult.genre_ids
+    self.originalLanguage = movieSearchResult.original_language
+    self.originalTitle = movieSearchResult.original_title
+    self.popularity = movieSearchResult.popularity
+    self.releaseDate = movieSearchResult.release_date
+    self.voteCount = movieSearchResult.vote_count
+    self.video = movieSearchResult.video
+}
 }

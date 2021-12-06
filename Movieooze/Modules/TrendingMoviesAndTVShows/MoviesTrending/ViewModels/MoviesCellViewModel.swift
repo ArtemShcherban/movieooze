@@ -1,13 +1,13 @@
 //
-//  MoviesTrendingCellViewModel.swift
+//  MoviesCellViewModel.swift
 //  Movieooze
 //
-//  Created by Artem Shcherban on 11.09.2021.
+//  Created by Artem Shcherban on 03.12.2021.
 //
 
 import Foundation
 
-class MoviesTrendingCellViewModel {
+class MoviesCellViewModel {
     
  private var movie: Movie
 
